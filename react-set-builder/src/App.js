@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import logo from './logo.svg';
-import {select, line, curveCardinal } from "d3";
+import {select, line, curveCardinal, axisBottom, axisRight, scaleLinear } from "d3";
 import './App.css';
 
 
@@ -10,22 +10,41 @@ function App() {
   const svgRef = useRef();
   useEffect(() => {
     const svg = select(svgRef.current);
+
+    const xScale = scaleLinear()
+      .domain([0, data.length-1])
+      .range([0, 300])
+
+
+    const yScale = scaleLinear()
+      .domain([0, 75])
+      .range([150, 0]) 
+
+    const xAxis = axisBottom(xScale)
+      .ticks(data.length)
+      .tickFormat(index => index + 1);
+    svg.select(".x-axis")
+      .style("transform", "translateY(150px)")
+      .call(xAxis);
+
     const myLine = line()
-      .x((value, index) => index * 50)
-      .y(value => 150 - value)
+      .x((value, index) => xScale(index))
+      .y(yScale)
       .curve(curveCardinal);
-    // svg
-    //   .selectAll("circle")
-    //   .data(data)
-    //   .join("circle")
-    //   .attr("r", value => value)
-    //   .attr("cx", value => value * 2)
-    //   .attr("cy", value => value *2)
-    //   .attr("stroke", "red")
-    svg.selectAll("path")
+
+
+    const yAxis = axisRight(yScale);
+    svg
+      .select(".y-axis")
+      .style("transform", "translateX(300px)")
+      .call(yAxis)
+    
+
+    svg.selectAll(".line")
       .data([data])
       .join("path")
-      .attr("d", value => myLine(value))
+      .attr("class", "line")
+      .attr("d", myLine)
       .attr("fill", "none")
       .attr("stroke", "red");
     }, [data])
@@ -33,9 +52,13 @@ function App() {
   return (
     <React.Fragment>
       <svg ref={svgRef}>
-        <path d="M0, 150 100, 100 150, 120" stroke="blue" fill="none" />
+        <g className = "x-axis" />
+        <g className = "y-axis" />
       </svg>
       <br/>
+      <br></br>
+      <br>
+      </br>
       <button onClick={() => setData(data.map(value => value + 5))}> 
         Update data
       </button>
