@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import logo from './logo.svg';
-import {select, axisBottom, axisRight, scaleLinear, scaleBand, drag, keys, forceSimulation, create} from "d3";
+import {select, axisBottom, axisRight, scaleLinear, scaleBand, drag, keys, forceSimulation, create, forceManyBody, forceCenter} from "d3";
 import './App.css';
 
 
@@ -14,11 +14,26 @@ function App() {
   const svgRef = useRef();
   useEffect(() => {
 
-    const drg = drag().on("start", dragstart).on("drag", dragged);
-
+    // const drg = drag().on("start", dragstart).on("drag", dragged);
 
     const svg = select(svgRef.current);
-    console.log(svg);
+
+    const node = svg
+      .selectAll(".node")
+      .data(data)
+      .join("circle")
+      .attr("r", 12)
+      .attr("class", "node")
+      // .attr("fixed", true)
+      // .classed("node", true)
+      // .classed("fixed", d => d.value !== undefined);
+
+    const simulation = forceSimulation()
+      .nodes(data)
+      .force("charge", forceManyBody())
+      .force("center", forceCenter(50, 50))
+      .on("tick", tick);
+
     const xScale = scaleBand()
       .domain(data.map((d) => d.id))
       .range([0, 300])
@@ -27,11 +42,6 @@ function App() {
     const yScale = scaleLinear()
       .domain([0, 100])
       .range([150, 0]);
-
-    const colorScale = scaleLinear()
-      .domain([75, 150])
-      .range(["green", "red"])
-      .clamp(true);
 
     const xAxis = axisBottom(xScale)
       .ticks(data.length)
@@ -45,43 +55,51 @@ function App() {
       .style("transform", "translateX(300px)")
       .call(yAxis)
 
-    const lines = svg.selectAll(".myline")
-      .data(data)
-      .join("line")
-      .attr("class", "myline")
-      .attr("x1", (d) => xScale(d.id))
-      .attr("x2", (d) => xScale(d.id))
-      .attr("y1", (d) => yScale(d.value))
-      .attr("y2", yScale(0))
-      .attr("stroke", "red");
+    function tick(){
+        node
+          .attr("cx", (d) => xScale(d.id))
+          .attr("cy", (d) => yScale(d.value))
+          .attr("r", 4)
+        }
+      
 
-    const circles = svg.selectAll(".myCircle")
-      .data(data)
-      .join("circle")
-      .attr("class", "myCircle")
-      .attr("cx", (d) => xScale(d.id))
-      .attr("cy", (d) => yScale(d.value))
-      .attr("r", "4")
-      .style("fill", "blue")
-      .attr("stroke", "black")
+    // const lines = svg.selectAll(".myline")
+    //   .data(data)
+    //   .join("line")
+    //   .attr("class", "myline")
+    //   .attr("x1", (d) => xScale(d.id))
+    //   .attr("x2", (d) => xScale(d.id))
+    //   .attr("y1", (d) => yScale(d.value))
+    //   .attr("y2", yScale(0))
+    //   .attr("stroke", "red");
+
+    // const circles = svg.selectAll(".myCircle")
+    //   .data(data)
+    //   .join("circle")
+    //   .attr("class", "myCircle")
+    //   .attr("cx", (d) => xScale(d.id))
+    //   .attr("cy", (d) => yScale(d.value))
+    //   .attr("r", "4")
+    //   .style("fill", "blue")
+    //   .attr("stroke", "black")
     
-    circles.call(drg).on("click",() => {
+    // circles.call(drg).on("click",() => {
 
-    })
+    // })
 
 
-    function dragged(event, d, index) {
-      // console.log(yScale.invert(event.y))
-      d.value = 0;
-      // d = yScale.invert(event.y)
-      // d.value = event.y, 0, 75)
-      console.log(data);
-    }
+    // function dragged(event, d, index) {
+    //   // console.log(yScale.invert(event.y))
+    //   d.value = 0;
+    //   // d = yScale.invert(event.y)
+    //   // d.value = event.y, 0, 75)
+    //   console.log(data);
+    // }
 
-    function dragstart(){
+    // function dragstart(){
 
-      select(this).classed("fixed", true);
-    }
+    //   select(this).classed("fixed", true);
+    // }
     // .on("click", (value, index) => {
 
     // });
