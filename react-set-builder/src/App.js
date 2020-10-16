@@ -13,10 +13,31 @@ function App() {
 
   const svgRef = useRef();
   useEffect(() => {
+    const svg = select(svgRef.current)
+      .attr("viewBox", [0, 0, 500, 500]);
 
+    const xScale = scaleBand()
+      .domain(data.map((d) => d.id))
+      .range([0, 300])
+      .padding(0.5);
+
+    const yScale = scaleLinear()
+      .domain([0, 100])
+      .range([100, 0]);
+
+    const xAxis = axisBottom(xScale)
+      .ticks(data.length)
+    svg.select(".x-axis")
+      .style("transform", "translateY(150px)")
+      .call(xAxis);
+
+    const yAxis = axisRight(yScale);
+    svg
+      .select(".y-axis")
+      .style("transform", "translateX(300px)")
+      .call(yAxis)
     // const drg = drag().on("start", dragstart).on("drag", dragged);
 
-    const svg = select(svgRef.current);
 
     const node = svg
       .selectAll(".node")
@@ -31,29 +52,14 @@ function App() {
     const simulation = forceSimulation()
       .nodes(data)
       .force("charge", forceManyBody())
-      .force("center", forceCenter(50, 50))
+      .force("center", forceCenter(100, 50))
       .on("tick", tick);
+    
+    const drg = drag()
+      .on("start", dragStart)
+      .on("drag", dragged);
 
-    const xScale = scaleBand()
-      .domain(data.map((d) => d.id))
-      .range([0, 300])
-      .padding(0.5);
-
-    const yScale = scaleLinear()
-      .domain([0, 100])
-      .range([150, 0]);
-
-    const xAxis = axisBottom(xScale)
-      .ticks(data.length)
-    svg.select(".x-axis")
-      .style("transform", "translateY(150px)")
-      .call(xAxis);
-
-    const yAxis = axisRight(yScale);
-    svg
-      .select(".y-axis")
-      .style("transform", "translateX(300px)")
-      .call(yAxis)
+    node.call(drg).on("click", click);
 
     function tick(){
         node
@@ -62,6 +68,9 @@ function App() {
           .attr("r", 4)
         }
       
+    function clamp(x, lo, hi){
+      return x < lo ? lo : x > hi ? hi : x;
+    }
 
     // const lines = svg.selectAll(".myline")
     //   .data(data)
@@ -96,13 +105,23 @@ function App() {
     //   console.log(data);
     // }
 
-    // function dragstart(){
+    function click(event, d){
+      select(this)
+        .attr("fixed", true);
+      simulation.alpha(1).restart();
+    }
 
-    //   select(this).classed("fixed", true);
-    // }
-    // .on("click", (value, index) => {
+    function dragStart(){
+      select(this)
+        .attr("fixed", true)
+    }
 
-    // });
+    function dragged(event, d) {
+      console.log(yScale.invert(event.y))
+      d.value = clamp(yScale.invert(event.y), 0, 100)
+      simulation.alpha(1).restart();
+      // console.log(yScale.invert(event.y));
+    }
 
     }, [data])
 
