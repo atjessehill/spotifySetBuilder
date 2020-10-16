@@ -1,17 +1,26 @@
 import React, { useState, useRef, useEffect } from 'react';
 import logo from './logo.svg';
-import {select, axisBottom, axisRight, scaleLinear, scaleBand } from "d3";
+import {select, axisBottom, axisRight, scaleLinear, scaleBand, drag, keys, forceSimulation, create} from "d3";
 import './App.css';
 
 
+
 function App() {
-  const [data, setData] = useState([25, 30, 45, 60, 20, 75])
+  const [data, setData] = useState(songs)
+  data.forEach(d => {
+    d.id = d.id
+  })
 
   const svgRef = useRef();
   useEffect(() => {
+
+    const drg = drag().on("start", dragstart).on("drag", dragged);
+
+
     const svg = select(svgRef.current);
+    console.log(svg);
     const xScale = scaleBand()
-      .domain(data.map((value, index) => index))
+      .domain(data.map((d) => d.id))
       .range([0, 300])
       .padding(0.5);
 
@@ -36,26 +45,47 @@ function App() {
       .style("transform", "translateX(300px)")
       .call(yAxis)
 
-    svg.selectAll(".myline")
+    const lines = svg.selectAll(".myline")
       .data(data)
       .join("line")
       .attr("class", "myline")
-      .attr("x1", (value, index) => xScale(index))
-      .attr("x2", (value, index) => xScale(index))
-      .attr("y1", (value, index) => yScale(value))
+      .attr("x1", (d) => xScale(d.id))
+      .attr("x2", (d) => xScale(d.id))
+      .attr("y1", (d) => yScale(d.value))
       .attr("y2", yScale(0))
       .attr("stroke", "red");
 
-    svg.selectAll(".myCircle")
+    const circles = svg.selectAll(".myCircle")
       .data(data)
       .join("circle")
       .attr("class", "myCircle")
-      .attr("cx", (value, index) => xScale(index))
-      .attr("cy", (value, index) => yScale(value))
+      .attr("cx", (d) => xScale(d.id))
+      .attr("cy", (d) => yScale(d.value))
       .attr("r", "4")
       .style("fill", "blue")
-      .attr("stroke", "black");
-   
+      .attr("stroke", "black")
+    
+    circles.call(drg).on("click",() => {
+
+    })
+
+
+    function dragged(event, d, index) {
+      // console.log(yScale.invert(event.y))
+      d.value = 0;
+      // d = yScale.invert(event.y)
+      // d.value = event.y, 0, 75)
+      console.log(data);
+    }
+
+    function dragstart(){
+
+      select(this).classed("fixed", true);
+    }
+    // .on("click", (value, index) => {
+
+    // });
+
     }, [data])
 
   return (
@@ -80,5 +110,33 @@ function App() {
     </React.Fragment>
   );
 }
+
+
+var songs = [
+  {
+    id: "xxx1",
+    value: 65
+  },
+  {
+    id: "xxx2",
+    value: 75
+  },
+  {
+    id: "xxx3",
+    value: 85
+  },
+  {
+    id: "xxx4",
+    value: 78
+  },
+  {
+    id: "xxx5",
+    value: 72
+  },
+  {
+    id: "xxx6",
+    value: 65
+  },
+]
 
 export default App;
