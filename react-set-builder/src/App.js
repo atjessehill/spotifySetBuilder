@@ -36,23 +36,20 @@ function App() {
       .style("transform", "translateX(300px)")
       .call(yAxis)
 
-    svg.selectAll("myline")
+    svg.selectAll(".myline")
       .data(data)
-      .enter()
-      .append("line")
+      .join("line")
+      .attr("class", "myline")
       .attr("x1", (value, index) => xScale(index))
       .attr("x2", (value, index) => xScale(index))
-      .attr("y1", (value, index) => {
-        console.log(yScale(value));
-        return yScale(value)
-      })
+      .attr("y1", (value, index) => yScale(value))
       .attr("y2", yScale(0))
       .attr("stroke", "red");
 
-    svg.selectAll("myCircle")
+    svg.selectAll(".myCircle")
       .data(data)
-      .enter()
-      .append("circle")
+      .join("circle")
+      .attr("class", "myCircle")
       .attr("cx", (value, index) => xScale(index))
       .attr("cy", (value, index) => yScale(value))
       .attr("r", "4")
