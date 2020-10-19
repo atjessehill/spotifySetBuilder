@@ -45,7 +45,7 @@ function App() {
       .join("circle")
       .attr("r", 12)
       .attr("class", "node")
-      // .attr("fixed", true)
+      .attr("fixed", true)
       // .classed("node", true)
       // .classed("fixed", d => d.value !== undefined);
 
@@ -72,40 +72,8 @@ function App() {
       return x < lo ? lo : x > hi ? hi : x;
     }
 
-    // const lines = svg.selectAll(".myline")
-    //   .data(data)
-    //   .join("line")
-    //   .attr("class", "myline")
-    //   .attr("x1", (d) => xScale(d.id))
-    //   .attr("x2", (d) => xScale(d.id))
-    //   .attr("y1", (d) => yScale(d.value))
-    //   .attr("y2", yScale(0))
-    //   .attr("stroke", "red");
-
-    // const circles = svg.selectAll(".myCircle")
-    //   .data(data)
-    //   .join("circle")
-    //   .attr("class", "myCircle")
-    //   .attr("cx", (d) => xScale(d.id))
-    //   .attr("cy", (d) => yScale(d.value))
-    //   .attr("r", "4")
-    //   .style("fill", "blue")
-    //   .attr("stroke", "black")
-    
-    // circles.call(drg).on("click",() => {
-
-    // })
-
-
-    // function dragged(event, d, index) {
-    //   // console.log(yScale.invert(event.y))
-    //   d.value = 0;
-    //   // d = yScale.invert(event.y)
-    //   // d.value = event.y, 0, 75)
-    //   console.log(data);
-    // }
-
     function click(event, d){
+      delete d.fy;
       select(this)
         .attr("fixed", true);
       simulation.alpha(1).restart();
@@ -117,10 +85,8 @@ function App() {
     }
 
     function dragged(event, d) {
-      console.log(yScale.invert(event.y))
-      d.value = clamp(yScale.invert(event.y), 0, 100)
+      d.value = clamp(d.value-event.dy, 0, 100)
       simulation.alpha(1).restart();
-      // console.log(yScale.invert(event.y));
     }
 
     }, [data])
