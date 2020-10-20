@@ -37,11 +37,33 @@
   }
 }
 
-svg{
-  background: #eee;
-  overflow: visible;
-  margin-bottom: 2rem;
+
+#g{
+  background: red;
+   /* overflow: visible; */
+  margin:auto;
+  text-align:center;
+    /* margin-bottom: 2rem; */
   display: block;
+}
+
+#node{
+
+}
+
+#parameter-col{
+  background-color: lightblue;
+}
+
+#chart-col{
+  background-color: lightgreen;
+  margin:auto;
+  text-align:center;
+  display: block;
+}
+
+#right-col{
+  background-color: #61dafb;
 }
 
 #root {
