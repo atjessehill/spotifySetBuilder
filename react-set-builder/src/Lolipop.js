@@ -12,39 +12,41 @@ const MARGIN = { LEFT: 100, RIGHT: 10, TOP: 50, BOTTOM: 130};
 const WIDTH = 600 - MARGIN.LEFT - MARGIN.RIGHT;
 const HEIGHT = 500 - MARGIN.TOP - MARGIN.BOTTOM;
 
-// const useResizeObserver = (ref) => {
-//     const [dimensions, setDimensions] = useState(null);
-//     useEffect(() => {
-//         const observeTarget = ref.current;
-//         const resizeObserver = new resizeObserver((entries) => {
-//             entries.forEach((entry) => {
-//                 setDimensions(entry.contentRect);
-//             });
-//         });
-//         resizeObserver.observe(observeTarget);
-//         return () => {
-//             resizeObserver.unobserve(observeTarget);
-//         };
-
-//     }, [ref]);
-//     return dimensions;
-// }
+const useResizeObserver = (ref) => {
+    const [dimensions, setDimensions] = useState(null);
+    useEffect(() => {
+      const observeTarget = ref.current;
+      const resizeObserver = new ResizeObserver((entries) => {
+        entries.forEach((entry) => {
+          setDimensions(entry.contentRect);
+        });
+      });
+      resizeObserver.observe(observeTarget);
+      return () => {
+        resizeObserver.unobserve(observeTarget);
+      };
+    }, [ref]);
+    return dimensions;
+  };
 
 function Lolipop({data}) {
 
     const svgRef = useRef();
     const wrapperRef = useRef();
-    // const dimensions = useResizeObserver(wrapperRef);
+    const dimensions = useResizeObserver(wrapperRef);
 
 
     useEffect(() => {
         // const svg = select(svgRef.current)
-        const svg = select("#chart-area").append("svg")
+        const svg = select(svgRef.current);
+        console.log(dimensions);
+        if (!dimensions) return;
+        // console.log(dimensions.height);
           // .attr("viewBox", [0, 0, 500, 500]);
-          .attr("width", WIDTH + MARGIN.LEFT + MARGIN.RIGHT)
-          .attr("height", HEIGHT + MARGIN.TOP + MARGIN.BOTTOM)
+        //   .attr("width", WIDTH + MARGIN.LEFT + MARGIN.RIGHT)
+        //   .attr("height", HEIGHT + MARGIN.TOP + MARGIN.BOTTOM)
         
-        const g = svg.append("g")
+        // const g = svg.append("g")
           // .attr("transform",`translate(${MARGIN.LEFT}, ${MARGIN.TOP})`)
     
         const xScale = scaleBand()
@@ -58,9 +60,9 @@ function Lolipop({data}) {
     
         const xAxis = axisBottom(xScale)
           .ticks(data.length)
-        // svg.select(".x-axis")
+        svg.select(".x-axis")
         //   .style("transform", `translateY(${(HEIGHT - MARGIN.TOP - MARGIN.BOTTOM)/2}px)`)
-        //   .call(xAxis);
+          .call(xAxis);
     
         const yAxis = axisRight(yScale);
         svg
@@ -70,7 +72,7 @@ function Lolipop({data}) {
           .call(yAxis)
         // const drg = drag().on("start", dragstart).on("drag", dragged);
     
-        const node = g
+        const node = svg
           .selectAll(".node")
           .data(data)
           .join("circle")
@@ -79,12 +81,12 @@ function Lolipop({data}) {
           // .attr("fixed", true)
     
     
-        const link = g
+        const link = svg
           .selectAll(".stick")
           .data(data)
           .join("line")
           .attr("class", "stick")
-          .attr("stroke", "grey")
+          .attr("stroke", "red")
           // .classed("node", true)
           // .classed("fixed", d => d.value !== undefined);
     
@@ -134,11 +136,14 @@ function Lolipop({data}) {
           simulation.alpha(1).restart();
         }
     
-        }, [data])
+        }, [data, dimensions])
     
         return (
-            <div id="chart-area">
-
+            <div ref={wrapperRef} style={{marginBottom: "2rem", marginTop: "2rem"}}>
+                <svg ref={svgRef}>
+                    <g className="x-axis"/>
+                    <g className="y-axis"/>
+                </svg>
             </div>
         )
 

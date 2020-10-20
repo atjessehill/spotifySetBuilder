@@ -47,8 +47,8 @@
   display: block;
 }
 
-#node{
-
+svg{
+  background-color: grey;
 }
 
 #parameter-col{

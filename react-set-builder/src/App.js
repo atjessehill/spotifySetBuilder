@@ -9,10 +9,6 @@ import Column from 'react-bootstrap/Col';
 import Lolipop from './Lolipop';
 
 
-const MARGIN = { LEFT: 100, RIGHT: 10, TOP: 50, BOTTOM: 130};
-const WIDTH = 600 - MARGIN.LEFT - MARGIN.RIGHT;
-const HEIGHT = 500 - MARGIN.TOP - MARGIN.BOTTOM;
-
 function App() {
 
   const [data, setData] = useState(songs)
@@ -39,15 +35,6 @@ function App() {
           </Column>
         </Row>
       </Container>
-
-      {/* <svg ref={svgRef}>
-        <g className = "x-axis" />
-        <g className = "y-axis" />
-      </svg>
-      <br/>
-      <br></br>
-      <br>
-      </br> */}
       <button onClick={() => setData(data.map(value => value + 5))}> 
         Update data
       </button>
