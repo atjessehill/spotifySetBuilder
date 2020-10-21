@@ -59,15 +59,6 @@ function App() {
           </Column>
         </Row>
       </Container>
-      <button onClick={() => setData(data.map(value => value + 5))}> 
-        Update data
-      </button>
-      <button onClick={() => generate()}> 
-        Generate
-      </button>
-      <button onClick={addSong}> 
-        Add data
-      </button>
     </React.Fragment>
   );
 }
