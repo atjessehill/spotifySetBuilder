@@ -20,14 +20,38 @@ function App() {
     console.log("Generate");
     console.log(data);
   }
+
+  function addSong(){
+
+    const newTrack = {
+      id: "xx"+(data.length+1).toString(),
+      value: Math.max(data[data.length-1].value-5, 25)
+    }
+
+    setData([...data, newTrack])
+  }
+
+  function removeSong(){
+    if (data.length == 1)return
+    data.pop();
+    setData([...data]);
+  }
+
   return (
     <React.Fragment>
       <Container id='view-area'>
         <Row>
           <Column id='parameter-col'>
-            <h1> Col 1</h1>
+            <input type="text" id="name-input" placeholder="my special playlist"></input>
+            <br/>
+            <div id="num-track-display">
+              <h5> {data.length} tracks</h5>
+              <button onClick={addSong}> + </button>
+              <button onClick={removeSong}> - </button>
+            </div>
+
           </Column>
-          <Column md={7} id='chart-col'>
+          <Column id='chart-col'>
             <Lolipop data={data} />
           </Column>
           <Column id='right-col'>
@@ -41,7 +65,7 @@ function App() {
       <button onClick={() => generate()}> 
         Generate
       </button>
-      <button onClick={() => setData([...data, Math.round(Math.random()*100)] )}> 
+      <button onClick={addSong}> 
         Add data
       </button>
     </React.Fragment>

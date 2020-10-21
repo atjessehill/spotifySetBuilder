@@ -8,9 +8,6 @@ import Row from 'react-bootstrap/Row';
 import Column from 'react-bootstrap/Col';
 import ResizeObserver from "resize-observer-polyfill";
 
-const MARGIN = { LEFT: 100, RIGHT: 10, TOP: 50, BOTTOM: 130};
-const WIDTH = 600 - MARGIN.LEFT - MARGIN.RIGHT;
-const HEIGHT = 500 - MARGIN.TOP - MARGIN.BOTTOM;
 
 const useResizeObserver = (ref) => {
     const [dimensions, setDimensions] = useState(null);
@@ -37,38 +34,28 @@ function Lolipop({data}) {
 
 
     useEffect(() => {
-        // const svg = select(svgRef.current)
-        const svg = select(svgRef.current);
-        console.log(dimensions);
-        if (!dimensions) return;
-        // console.log(dimensions.height);
-          // .attr("viewBox", [0, 0, 500, 500]);
-        //   .attr("width", WIDTH + MARGIN.LEFT + MARGIN.RIGHT)
-        //   .attr("height", HEIGHT + MARGIN.TOP + MARGIN.BOTTOM)
-        
-        // const g = svg.append("g")
-          // .attr("transform",`translate(${MARGIN.LEFT}, ${MARGIN.TOP})`)
-    
+        const svg = select(svgRef.current)
+
+        if (!dimensions) return;       
+
         const xScale = scaleBand()
           .domain(data.map((d) => d.id))
-          .range([0, 300])
+          .range([0, dimensions.width])
           .padding(0.5);
     
         const yScale = scaleLinear()
           .domain([0, 100])
-          .range([100, 0]);
+          .range([dimensions.height, 0]);
     
-        const xAxis = axisBottom(xScale)
-          .ticks(data.length)
+        const xAxis = axisBottom(xScale).ticks(data.length)
         svg.select(".x-axis")
-        //   .style("transform", `translateY(${(HEIGHT - MARGIN.TOP - MARGIN.BOTTOM)/2}px)`)
-          .call(xAxis);
+            .style("transform", `translateY(${dimensions.height}px)`)
+            .call(xAxis);
     
         const yAxis = axisRight(yScale);
         svg
           .select(".y-axis")
-          // .style("transform", `translateY(${(WIDTH - MARGIN.LEFT - MARGIN.RIGHT)/2}px)`)
-          .attr("align", "center")
+          .style("transform", `translateX(50px)`)
           .call(yAxis)
         // const drg = drag().on("start", dragstart).on("drag", dragged);
     
@@ -107,14 +94,20 @@ function Lolipop({data}) {
               .attr("cx", (d) => xScale(d.id))
               .attr("cy", (d) => yScale(d.value))
               .attr("r", 4)
+              // .attr("class", (d, index, i) => "node " + index.toString())
             link
               .attr("x1", (d) => xScale(d.id))
               .attr("y2", (d) => yScale(d.value)+6)
               .attr("x2", (d) => xScale(d.id))
               .attr("y1", (d) => yScale(0))
+              // .attr("class", (d, index, i) => "link " + i.toString())
+
             }
     
           
+        function clampheight(x, lo){
+            return x
+        }
         function clamp(x, lo, hi){
           return x < lo ? lo : x > hi ? hi : x;
         }
