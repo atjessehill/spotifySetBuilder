@@ -31,4 +31,14 @@ button {
 
 #num-track-display{
   margin:5%;
+  display:inline-block;
+
+}
+
+.trackbutton {
+  display:inline-block;
+
+  border-radius: 12px;
+  max-width:10%;
+  margin: 1%;
 }
