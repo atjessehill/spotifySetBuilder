@@ -34,10 +34,10 @@ function App() {
       
   }
 
-  function getRecommendations(seedIndex, i,  num_seeds, k){
+  function getRecommendations(i, start,  end, k){
     return new Promise((resolve, reject) => {
 
-      const seeds = thisplaylist.slice(seedIndex, seedIndex+num_seeds)
+      const seeds = thisplaylist.slice(start, end)
       let seed_tracks = "seed_tracks="+seeds.join(',')
       let metricList = [];
       for (let metric in k){
@@ -53,7 +53,7 @@ function App() {
       })
       .then((res) => {
         let recs = res.data.tracks;
-        if (recs.length == 0)console.log("Could not find recommendations");
+        if (recs.length == 0)console.log("Could not find recommendations"); // TODO add rejection and error checking
 
         for (let track in recs){
           if(!thisplaylist.includes(recs[track].id)){
@@ -102,20 +102,39 @@ function App() {
         for(let metric in targets){
           k[metric] = targets[metric][i]
         }
-        const num_seeds = Math.min(i-seedIndex, 5)
+        const end = seedIndex + Math.min(i-seedIndex, 5)
 
-        promise = addToChain(promise, i, seedIndex, num_seeds, k)
+        promise = addToChain(promise, i, seedIndex, end, k)
        
 
       }
-    })
-    
 
+      for(let i=seedIndex-1; i>-1; i--){
+        const k = {}
+        for(let metric in targets){
+          k[metric] = targets[metric][i]
+        }
+        let x = thisplaylist.length-i
+        x = (x >=5) ? 5 : x
+        const start = i+1;
+        const end = i+x+1
+
+        promise = addToChain(promise, i, start, end, k)
+        
+
+      }
+      promise.finally(() => {
+        console.log("Done")
+        console.log(thisplaylist)
+      })
+    })
+
+    
   }
 
-  function addToChain(chain, i, seedIndex, num_seeds, k){
+  function addToChain(chain, i, start, end, k){
     return chain.then(() => {
-      return getRecommendations(seedIndex, i, num_seeds, k);
+      return getRecommendations(i, start, end, k);
     })
   }
 
