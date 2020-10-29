@@ -16,7 +16,9 @@ function App() {
     'location': 2,
     'id': '0dDG6oBNPPkQHKE8UC5Mc1'
   }
-  const key = 'BQDd_uJXqVjmnEDlHdiD3GEyfcrDpcJnFA1b1N90dzWEH_7s6uecbyvQqAkV_fpkSeqA2g1JKwpyLgj8ht_bWlrh85uFv0gnWz6tGspa77M6bfHVg63tp1uFdM9qdeXYG99qBYpC1fLjKx3-D1gnF85Sm6UGIlDzm1iDxqM-6HyQENCShFSVQme2tb9CWpCEHkVTcEFu9DpY-4OK_NINx3xDCLk_jrNjvYnYAKeETsbX32NlYSo'
+  const key = 'BQCI5xJAa-ZBmRUcdFfoesUKUMZpiqFkjHjIExEqcz2X5ZwqTW7Svrx2Aw7QTuZX3jqXMK2QrJDWHbUeRNDmMCtZ6wqN1ByMIMsxCcnMT7snemNUBRg86HBe_K9LydmzvoIUwx0WQbYxBxEGwfJ22iD-as-uwyS8FyG_75kYuBEnFp9hbKQLAG8nTjxfytFB4y4wkbfwGJW8b3mEwtsygT6XdN1t_plKavqG0a-ART1wbD5wkZ4'
+  
+  const thisplaylist = new Array(data.length).fill(0)
 
   data.forEach(d => {
     d.id = d.id
@@ -29,9 +31,17 @@ function App() {
       }
 
     })
-    
+      
+  }
 
-   
+  function testRecs(seedIndex, num_seeds, k){
+    return new Promise((resolve, reject) => {
+      console.log(num_seeds);
+      let t = seedIndex+num_seeds;
+      console.log("Requesting for index " + seedIndex + " to " + t);
+      resolve();
+    })
+
   }
 
   async function getRecommendations(seeds, k){
@@ -81,29 +91,37 @@ function App() {
 
     })
     .then(() => {
-      for(let i=seedIndex+1; i<length; i++){
 
+      let promise = Promise.resolve()
+
+      for(let i=seedIndex+1; i<length; i++){
         const k = {}
         for(let metric in targets){
           k[metric] = targets[metric][i]
         }
         const num_seeds = Math.min(i-seedIndex, 5)
-        const trackseeds = playlist.slice(seedIndex,seedIndex+num_seeds)
 
-        getRecommendations(trackseeds, k)
-          .then((res) => {
-            let recommendations = res.data.tracks;
-            // console.log(recommendations)
-            if (recommendations.length == 0) console.log("Nothing found")
-            for(let track in recommendations){
-              if(!playlist.includes(recommendations[track].id)){
-                playlist[i] = recommendations[track].id
-                console.log(playlist)
+        promise = addToChain(promise, seedIndex, num_seeds, k)
 
-                break
-              }
-            }
-          })        
+        // const trackseeds = playlist.slice(seedIndex,seedIndex+num_seeds)
+        
+
+
+
+        // getRecommendations(trackseeds, k)
+        //   .then((res) => {
+        //     let recommendations = res.data.tracks;
+        //     // console.log(recommendations)
+        //     if (recommendations.length == 0) console.log("Nothing found")
+        //     for(let track in recommendations){
+        //       if(!playlist.includes(recommendations[track].id)){
+        //         playlist[i] = recommendations[track].id
+        //         console.log(playlist)
+
+        //         break
+        //       }
+        //     }
+        //   })        
 
       }
     })
@@ -119,6 +137,12 @@ function App() {
 
 
 
+  }
+
+  function addToChain(chain, seedIndex, num_seeds, k){
+    return chain.then(() => {
+      return testRecs(seedIndex, num_seeds, k);
+    })
   }
 
   function addSong(){
