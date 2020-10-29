@@ -16,10 +16,10 @@ function App() {
     'location': 2,
     'id': '0dDG6oBNPPkQHKE8UC5Mc1'
   }
-  const key = 'BQCI5xJAa-ZBmRUcdFfoesUKUMZpiqFkjHjIExEqcz2X5ZwqTW7Svrx2Aw7QTuZX3jqXMK2QrJDWHbUeRNDmMCtZ6wqN1ByMIMsxCcnMT7snemNUBRg86HBe_K9LydmzvoIUwx0WQbYxBxEGwfJ22iD-as-uwyS8FyG_75kYuBEnFp9hbKQLAG8nTjxfytFB4y4wkbfwGJW8b3mEwtsygT6XdN1t_plKavqG0a-ART1wbD5wkZ4'
+  const key = 'BQDTKAPCWd89FAdUKXKZuIi71SYnbwtl4jDMgTXbqVxTq3VJcZrDspOp2XUJQIeR8HLJ99OG3BV8c9C8DJ2I6SgCMsCJmhwiGvGjr8hITOZwC1-3qt5UmRKUq_PSuG1NtZ9-FgzZWhQS0aCoh7EHDOMc7XphrzG9lx8hOrkQ7E2jIJV4VhDoUh_-EsbQATBjfzZkW91sTyvr7bkrAoYgzIeLswdOMqt87pBoq15JzowdkCu1w5Q'
   
-  const thisplaylist = new Array(data.length).fill(0)
-
+  let thisplaylist = new Array(data.length).fill(0)
+  let testval = 0
   data.forEach(d => {
     d.id = d.id
   })
@@ -34,33 +34,37 @@ function App() {
       
   }
 
-  function testRecs(seedIndex, num_seeds, k){
+  function getRecommendations(seedIndex, i,  num_seeds, k){
     return new Promise((resolve, reject) => {
-      console.log(num_seeds);
-      let t = seedIndex+num_seeds;
-      console.log("Requesting for index " + seedIndex + " to " + t);
-      resolve();
-    })
 
-  }
-
-  async function getRecommendations(seeds, k){
-
-    console.log(seeds)
-    let seed_tracks = "seed_tracks="+seeds.join(',');
-    let metricList = [];
-    for (let metric in k){
-      metricList.push(metric+'='+k[metric])
-
-    }
-    let metricStr = metricList.join('&')
-    return await axios.get(`https://api.spotify.com/v1/recommendations/?&${seed_tracks}&${metricStr}`, {
+      const seeds = thisplaylist.slice(seedIndex, seedIndex+num_seeds)
+      let seed_tracks = "seed_tracks="+seeds.join(',')
+      let metricList = [];
+      for (let metric in k){
+        metricList.push(metric+'='+k[metric])
+      }
+      let metricStr = metricList.join('&')
+      console.log("REQUESTING" + seed_tracks + " " + metricStr)
+      console.log(" AT " + i )
+      axios.get(`https://api.spotify.com/v1/recommendations/?&${seed_tracks}&${metricStr}`, {
       headers: {
         'Authorization': `Bearer ${key}`,
       }
-    })
-    .then((res) => {
-      return res
+      })
+      .then((res) => {
+        let recs = res.data.tracks;
+        if (recs.length == 0)console.log("Could not find recommendations");
+
+        for (let track in recs){
+          if(!thisplaylist.includes(recs[track].id)){
+            thisplaylist[i] = recs[track].id;
+          }
+        }
+        resolve();
+
+        
+      })
+
     })
 
   }
@@ -71,8 +75,7 @@ function App() {
     const seedIndex = seed['location']
     let features;
 
-    let playlist = new Array(length).fill(0)
-    playlist[seedIndex] = seed['id']
+    thisplaylist[seedIndex] = seed['id']
     getFeatures(seed['id'])
     .then((res) => {
       features = res.data
@@ -101,47 +104,18 @@ function App() {
         }
         const num_seeds = Math.min(i-seedIndex, 5)
 
-        promise = addToChain(promise, seedIndex, num_seeds, k)
-
-        // const trackseeds = playlist.slice(seedIndex,seedIndex+num_seeds)
-        
-
-
-
-        // getRecommendations(trackseeds, k)
-        //   .then((res) => {
-        //     let recommendations = res.data.tracks;
-        //     // console.log(recommendations)
-        //     if (recommendations.length == 0) console.log("Nothing found")
-        //     for(let track in recommendations){
-        //       if(!playlist.includes(recommendations[track].id)){
-        //         playlist[i] = recommendations[track].id
-        //         console.log(playlist)
-
-        //         break
-        //       }
-        //     }
-        //   })        
+        promise = addToChain(promise, i, seedIndex, num_seeds, k)
+       
 
       }
     })
     
-    
-        // const x = length-i
-        // x = (x >=5 ) ? 5 : x
-        // const trackseeds = 
-
-        // console.log(k)
-
-
-
-
 
   }
 
-  function addToChain(chain, seedIndex, num_seeds, k){
+  function addToChain(chain, i, seedIndex, num_seeds, k){
     return chain.then(() => {
-      return testRecs(seedIndex, num_seeds, k);
+      return getRecommendations(seedIndex, i, num_seeds, k);
     })
   }
 
