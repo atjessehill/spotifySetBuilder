@@ -7,11 +7,10 @@ import Column from 'react-bootstrap/Col';
 import Lolipop from './Lolipop';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
+import {getFeatures } from '../services/SpotifyCalls';
 
 function PlaylistBuilder() {
   const cookies = new Cookies();
-  console.log(cookies.get('SPOT_USER_accessToken'))
-  console.log(cookies.get('SPOT_USER_refreshToken'))
 
   const [data, setData] = useState(songs)
   let generated = false;
@@ -19,23 +18,15 @@ function PlaylistBuilder() {
     'location': 2,
     'id': '0dDG6oBNPPkQHKE8UC5Mc1'
   }
-  const key = 'BQBsQKUZ3NGnyPlcyuY1lgFDkcmuYpZV0ecw54n9g1vaXPWtRJ4U6daNgDqGOPV0notpgauQwNvJxvopHh8wDeBIk0X5MD9ggsfKoD50Cokxg15inOUzeXzO76stzvyuZGb0hNz1kfWMC5WBMCfZr0b1pNaagycbG1UY1w4tcj199wfDtC9UO4LVo3IQv_kMWvRr6vbmdI6XQAVWmIWo9dvozRijtZ3-PKfBaI2gLZzdNITatv0'
+  
+  let key = 'BQBsQKUZ3NGnyPlcyuY1lgFDkcmuYpZV0ecw54n9g1vaXPWtRJ4U6daNgDqGOPV0notpgauQwNvJxvopHh8wDeBIk0X5MD9ggsfKoD50Cokxg15inOUzeXzO76stzvyuZGb0hNz1kfWMC5WBMCfZr0b1pNaagycbG1UY1w4tcj199wfDtC9UO4LVo3IQv_kMWvRr6vbmdI6XQAVWmIWo9dvozRijtZ3-PKfBaI2gLZzdNITatv0'
   
   let thisplaylist = new Array(data.length).fill(0)
-  let testval = 0
+
   data.forEach(d => {
     d.id = d.id
   })
 
-  async function getFeatures(id){
-    return await axios.get(`https://api.spotify.com/v1/audio-features/${id}`, {
-      headers: {
-        'Authorization': `Bearer ${key}`
-      }
-
-    })
-      
-  }
 
   function getRecommendations(i, start,  end, k){
     console.log("K is ")
@@ -217,30 +208,9 @@ function PlaylistBuilder() {
     });
 
 
-    // axios({
-    //   method: 'POST',
-    //   url: 'https://api.spotify.com/v1/users/jup118/playlists/',
-    //     'Authorization': `Bearer ${key}`,
-    //   body: JSON.stringify({name: "testnamehere"})
-    // }
-    // )
-    // .then((res) =>{
-    //   console.log(res)
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    // })
-      // headers: {
-      //   'Authorization': `Bearer ${key}`,
-      // },
-      // body: JSON.stringify({name: "zzzzzz"})
-      // })
-
-
   }
 
   return (
-    // <React.Fragment>
       <Container id='view-area'>
         <Row>
           <Column id='parameter-col'>
@@ -264,7 +234,6 @@ function PlaylistBuilder() {
           </Column>
         </Row>
       </Container>
-    // </React.Fragment>
   );
 }
 
