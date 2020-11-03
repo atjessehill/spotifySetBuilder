@@ -1,15 +1,45 @@
+import Axios from 'axios';
 import React, {Component, useEffect} from 'react';
+import axios from 'axios';
+import querystring from 'querystring'
+import request from 'request';
+const { REACT_APP_SPOT_CLIENT, REACT_APP_SPOT_CLIENT_SECRET } = process.env;
 
 function Login(props){
-
-
-    
+  
     useEffect(() => {
         const search = props.location.search;
         const params = new URLSearchParams(search);
-        const code = params.get('code')
-        console.log("useeffect");
-        console.log(code)
+        const authCode = params.get('code')
+        const redirect = 'http://localhost:3000/login'
+        const clientId = REACT_APP_SPOT_CLIENT;
+        const clientSecret = REACT_APP_SPOT_CLIENT_SECRET;
+
+
+        let authOptions = {
+            url: 'https://accounts.spotify.com/api/token',
+            form: {
+                code: authCode,
+                redirect_uri: redirect,
+                grant_type: 'authorization_code'
+            },
+            headers: {
+                'Authorization': 'Basic '+ btoa(clientId+':'+clientSecret),
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            json: true
+        }
+
+        request.post(authOptions, (error, response, body) => {
+
+            if(response.statusCode == 200){
+                const accessToken = body.access_token;
+                const refreshToken = body.refresh_token;
+
+            }
+        })
+
+ 
     })
 
     return (
