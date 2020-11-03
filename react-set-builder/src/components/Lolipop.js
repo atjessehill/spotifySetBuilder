@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import logo from './logo.svg';
 import {select, axisBottom, axisRight, scaleLinear, scaleBand, drag, keys, forceSimulation, create, forceManyBody, forceCenter} from "d3";
-import './App.css';
+import '../App.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 // import Column from 'react-bootstrap/CardColumns';
