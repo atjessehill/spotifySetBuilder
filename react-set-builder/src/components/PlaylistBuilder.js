@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {select, axisBottom, axisRight, scaleLinear, scaleBand, drag, keys, forceSimulation, create, forceManyBody, forceCenter} from "d3";
 import '../App.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -237,7 +236,7 @@ function PlaylistBuilder() {
   }
 
   return (
-    <React.Fragment>
+    // <React.Fragment>
       <Container id='view-area'>
         <Row>
           <Column id='parameter-col'>
@@ -261,9 +260,10 @@ function PlaylistBuilder() {
           </Column>
         </Row>
       </Container>
-    </React.Fragment>
+    // </React.Fragment>
   );
 }
+
 
 
 var songs = [
