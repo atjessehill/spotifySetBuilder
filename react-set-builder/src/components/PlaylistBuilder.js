@@ -6,8 +6,12 @@ import Row from 'react-bootstrap/Row';
 import Column from 'react-bootstrap/Col';
 import Lolipop from './Lolipop';
 import axios from 'axios';
+import Cookies from 'universal-cookie';
 
 function PlaylistBuilder() {
+  const cookies = new Cookies();
+  console.log(cookies.get('SPOT_USER_accessToken'))
+  console.log(cookies.get('SPOT_USER_refreshToken'))
 
   const [data, setData] = useState(songs)
   let generated = false;

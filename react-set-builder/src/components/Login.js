@@ -3,11 +3,17 @@ import React, {Component, useEffect} from 'react';
 import axios from 'axios';
 import querystring from 'querystring'
 import request from 'request';
+import Cookies from 'universal-cookie';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
+
+
 const { REACT_APP_SPOT_CLIENT, REACT_APP_SPOT_CLIENT_SECRET } = process.env;
 
 function Login(props){
   
     useEffect(() => {
+
+        const cookies = new Cookies();
         const search = props.location.search;
         const params = new URLSearchParams(search);
         const authCode = params.get('code')
@@ -33,11 +39,13 @@ function Login(props){
         request.post(authOptions, (error, response, body) => {
 
             if(response.statusCode == 200){
-                const accessToken = body.access_token;
-                const refreshToken = body.refresh_token;
-
+                cookies.set('SPOT_USER_accessToken', body.access_token, {path: '/'});
+                cookies.set('SPOT_USER_refreshToken', body.refresh_token, {path: '/'});
             }
+            props.history.push('/')
         })
+
+
 
  
     })
