@@ -7,7 +7,7 @@ import Column from 'react-bootstrap/Col';
 import Lolipop from './Lolipop';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
-import {getFeatures } from '../services/SpotifyCalls';
+import {getFeatures, requestRecs, login, createPlaylist, addSongstoPlaylist } from '../services/SpotifyCalls';
 
 function PlaylistBuilder() {
   const cookies = new Cookies();
@@ -40,13 +40,8 @@ function PlaylistBuilder() {
         metricList.push(metric+'='+k[metric])
       }
       let metricStr = metricList.join('&')
-      console.log("REQUESTING" + seed_tracks + " " + metricStr)
-      console.log(" AT " + i )
-      axios.get(`https://api.spotify.com/v1/recommendations/?&${seed_tracks}&${metricStr}`, {
-      headers: {
-        'Authorization': `Bearer ${key}`,
-      }
-      })
+
+      requestRecs(seed_tracks, metricStr)
       .then((res) => {
         let recs = res.data.tracks;
         if (recs.length == 0)console.log("Could not find recommendations"); // TODO add rejection and error checking
@@ -162,49 +157,22 @@ function PlaylistBuilder() {
     setData([...data]);
   }
 
-  function login(){
-    console.log('login');
-    const scope = 'playlist-modify-public'
-    const redirect = 'http%3A%2F%2Flocalhost%3A3000%2Flogin'
-    const client_id = 'f4d25f2bdfee4094a7d93f0ec7e4f264'
-    const url = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=code&redirect_uri=${redirect}&scope=${scope}`
-    window.location.assign(url);
-    
-  }
+
 
   function savePlaylist(){
-    const TESTplaylistName = 'TESTplaylist';
-    if (!generated)return
+    const playlistname = 'TESTplaylist';
+    // if (!generated)return
 
-    return fetch('https://api.spotify.com/v1/users/jup118/playlists/', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${key}`,
-      },
-      body: JSON.stringify({name: "testnamehere"})
-    })
-    .then((res)=>{
-      if(res.ok)return res.json()
-      throw new Error('Request failed: Creating playlist!');
-    })
-    .then((jsonResponse) => {
-      const playlistId = jsonResponse.id
-      const uris = thisplaylist.join('')
-      console.log(playlistId)
-      return fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${uris}`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${key}`,
-        },
-      })
+  createPlaylist(playlistname)
+    .then((response) => {
+      const playlistId = response.data.id
+      const uris = thisplaylist.join(',')
+      console.log(uris)
+      addSongstoPlaylist(playlistId, uris)
       .then((res) => {
-        if (res.ok) return res.json();
-        console.log(res);
-        // throw new Error('Request Failed: Adding songs to playlist');
+        // TODO show confirmation that a user is done
       })
-      .then((response) => {
-        console.log(response);
-      })
+
     });
 
 
