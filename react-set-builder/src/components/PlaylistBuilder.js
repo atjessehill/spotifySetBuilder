@@ -170,7 +170,7 @@ function PlaylistBuilder() {
   function login(){
     console.log('login');
     const scope = 'playlist-modify-public'
-    const redirect = 'http%3A%2F%2Flocalhost%3A3000'
+    const redirect = 'http%3A%2F%2Flocalhost%3A3000%2Flogin'
     const client_id = 'f4d25f2bdfee4094a7d93f0ec7e4f264'
     const url = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=code&redirect_uri=${redirect}&scope=${scope}`
     window.location.assign(url);
