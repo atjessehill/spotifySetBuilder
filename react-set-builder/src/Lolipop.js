@@ -47,16 +47,16 @@ function Lolipop({data}) {
           .domain([0, 100])
           .range([dimensions.height, 0]);
     
-        const xAxis = axisBottom(xScale).ticks(data.length)
-        svg.select(".x-axis")
-            .style("transform", `translateY(${dimensions.height}px)`)
-            .call(xAxis);
+        // const xAxis = axisBottom(xScale).ticks(data.length)
+        // svg.select(".x-axis")
+        //     .style("transform", `translateY(${dimensions.height}px)`)
+        //     .call(xAxis);
     
-        const yAxis = axisRight(yScale);
-        svg
-          .select(".y-axis")
-          .style("transform", `translateX(50px)`)
-          .call(yAxis)
+        // const yAxis = axisRight(yScale);
+        // svg
+        //   .select(".y-axis")
+        //   .style("transform", `translateX(50px)`)
+        //   .call(yAxis)
         // const drg = drag().on("start", dragstart).on("drag", dragged);
     
         const node = svg
@@ -92,12 +92,12 @@ function Lolipop({data}) {
         function tick(){
             node
               .attr("cx", (d) => xScale(d.id))
-              .attr("cy", (d) => yScale(d.value))
+              .attr("cy", (d) => yScale(d.danceability))
               .attr("r", 4)
               // .attr("class", (d, index, i) => "node " + index.toString())
             link
               .attr("x1", (d) => xScale(d.id))
-              .attr("y2", (d) => yScale(d.value)+6)
+              .attr("y2", (d) => yScale(d.danceability)+6)
               .attr("x2", (d) => xScale(d.id))
               .attr("y1", (d) => yScale(0))
               // .attr("class", (d, index, i) => "link " + i.toString())
@@ -125,7 +125,7 @@ function Lolipop({data}) {
         }
     
         function dragged(event, d) {
-          d.value = clamp(d.value-event.dy, 10, 100)
+          d.danceability = clamp(d.danceability-event.dy, 10, 100)
           simulation.alpha(1).restart();
         }
     

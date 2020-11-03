@@ -12,11 +12,12 @@ import axios from 'axios';
 function App() {
 
   const [data, setData] = useState(songs)
+  let generated = false;
   const seed = {
     'location': 2,
     'id': '0dDG6oBNPPkQHKE8UC5Mc1'
   }
-  const key = 'BQDTKAPCWd89FAdUKXKZuIi71SYnbwtl4jDMgTXbqVxTq3VJcZrDspOp2XUJQIeR8HLJ99OG3BV8c9C8DJ2I6SgCMsCJmhwiGvGjr8hITOZwC1-3qt5UmRKUq_PSuG1NtZ9-FgzZWhQS0aCoh7EHDOMc7XphrzG9lx8hOrkQ7E2jIJV4VhDoUh_-EsbQATBjfzZkW91sTyvr7bkrAoYgzIeLswdOMqt87pBoq15JzowdkCu1w5Q'
+  const key = 'BQBsQKUZ3NGnyPlcyuY1lgFDkcmuYpZV0ecw54n9g1vaXPWtRJ4U6daNgDqGOPV0notpgauQwNvJxvopHh8wDeBIk0X5MD9ggsfKoD50Cokxg15inOUzeXzO76stzvyuZGb0hNz1kfWMC5WBMCfZr0b1pNaagycbG1UY1w4tcj199wfDtC9UO4LVo3IQv_kMWvRr6vbmdI6XQAVWmIWo9dvozRijtZ3-PKfBaI2gLZzdNITatv0'
   
   let thisplaylist = new Array(data.length).fill(0)
   let testval = 0
@@ -35,6 +36,8 @@ function App() {
   }
 
   function getRecommendations(i, start,  end, k){
+    console.log("K is ")
+    console.log(k)
     return new Promise((resolve, reject) => {
 
       const seeds = thisplaylist.slice(start, end)
@@ -74,6 +77,13 @@ function App() {
     const length = data.length;
     const seedIndex = seed['location']
     let features;
+
+    let targets= {
+      'target_danceability': data.map((d) => d.danceability),
+      'target_energy': data.map((d) => d.energy),
+      'target_valence': data.map((d) => d.valence),
+      'target_instrumentalness': data.map((d) => d.instrumentalness)
+    }
 
     thisplaylist[seedIndex] = seed['id']
     getFeatures(seed['id'])
@@ -124,6 +134,7 @@ function App() {
 
       }
       promise.finally(() => {
+        generated=true;
         console.log("Done")
         console.log(thisplaylist)
       })
@@ -142,8 +153,12 @@ function App() {
 
     const newTrack = {
       id: "xx"+(data.length+1).toString(),
-      value: Math.max(data[data.length-1].value-5, 25)
+      danceability: Math.max(data[data.length-1].danceability-5, 25),
+      energy: Math.max(data[data.length-1].energy-5, 25),
+      instrumentalness: Math.max(data[data.length-1].instrumentalness-5, 25),
+      valence: Math.max(data[data.length-1].valence-5, 25)
     }
+    console.log(newTrack);
 
     setData([...data, newTrack])
   }
@@ -152,6 +167,74 @@ function App() {
     if (data.length == 1)return
     data.pop();
     setData([...data]);
+  }
+
+  function login(){
+    console.log('login');
+    const scope = 'playlist-modify-public'
+    const redirect = 'http%3A%2F%2Flocalhost%3A3000'
+    const client_id = 'f4d25f2bdfee4094a7d93f0ec7e4f264'
+    const url = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=code&redirect_uri=${redirect}&scope=${scope}`
+    window.location.assign(url);
+    
+  }
+
+  function savePlaylist(){
+    const TESTplaylistName = 'TESTplaylist';
+    if (!generated)return
+
+    return fetch('https://api.spotify.com/v1/users/jup118/playlists/', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${key}`,
+      },
+      body: JSON.stringify({name: "testnamehere"})
+    })
+    .then((res)=>{
+      if(res.ok)return res.json()
+      throw new Error('Request failed: Creating playlist!');
+    })
+    .then((jsonResponse) => {
+      const playlistId = jsonResponse.id
+      const uris = thisplaylist.join('')
+      console.log(playlistId)
+      return fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${uris}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${key}`,
+        },
+      })
+      .then((res) => {
+        if (res.ok) return res.json();
+        console.log(res);
+        // throw new Error('Request Failed: Adding songs to playlist');
+      })
+      .then((response) => {
+        console.log(response);
+      })
+    });
+
+
+    // axios({
+    //   method: 'POST',
+    //   url: 'https://api.spotify.com/v1/users/jup118/playlists/',
+    //     'Authorization': `Bearer ${key}`,
+    //   body: JSON.stringify({name: "testnamehere"})
+    // }
+    // )
+    // .then((res) =>{
+    //   console.log(res)
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // })
+      // headers: {
+      //   'Authorization': `Bearer ${key}`,
+      // },
+      // body: JSON.stringify({name: "zzzzzz"})
+      // })
+
+
   }
 
   return (
@@ -167,6 +250,7 @@ function App() {
               <button class="trackbutton" onClick={removeSong}> - </button>
             </div>
             <button onClick={generate}> generate </button>
+            <button onClick={savePlaylist}> Save Playlist </button>
 
           </Column>
           <Column id='chart-col'>
@@ -174,6 +258,7 @@ function App() {
           </Column>
           <Column id='right-col'>
             <h1> Col 3</h1>
+            <button onClick={login}> Login to Spotify </button> 
           </Column>
         </Row>
       </Container>
@@ -185,41 +270,48 @@ function App() {
 var songs = [
   {
     id: "xxx1",
-    value: 65
+    danceability: 65,
+    energy: 65,
+    valence: 65, 
+    instrumentalness: 65
   },
   {
     id: "xxx2",
-    value: 75
+    danceability: 75,
+    energy: 75,
+    valence: 75, 
+    instrumentalness: 75
   },
   {
     id: "xxx3",
-    value: 85
+    danceability: 85,
+    energy: 85,
+    valence: 85, 
+    instrumentalness: 85
   },
   {
     id: "xxx4",
-    value: 78
+    danceability: 85,
+    energy: 85,
+    valence: 85, 
+    instrumentalness: 85
   },
   {
     id: "xxx5",
-    value: 72
+    danceability: 72,
+    energy: 72,
+    valence: 72, 
+    instrumentalness: 72
   },
   {
     id: "xxx6",
-    value: 65
+    danceability: 65,
+    energy: 65,
+    valence: 65, 
+    instrumentalness: 65
   },
 ]
 
-let danceability = [.60, .65, .70, .92, .73, .65]
-let energy = [.50, .60, .65, .82, .65, .50]
-let valence = [.75, .60, .65, .75, .65, .65]
-let instrumentalness = [1.0, 0.0, 0.0, 1.0, 0.0, 1.0]
-
-let targets= {
-  'target_danceability': danceability,
-  'target_energy': energy,
-  'target_valence': valence,
-  'target_instrumentalness': instrumentalness
-}
 
 
 export default App;
