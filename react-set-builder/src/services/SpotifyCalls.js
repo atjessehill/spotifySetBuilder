@@ -1,6 +1,9 @@
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import querystring from 'querystring';
+import request from 'request';
+
+const { REACT_APP_SPOT_CLIENT, REACT_APP_SPOT_CLIENT_SECRET } = process.env;
 
 const cookies = new Cookies();
 
@@ -9,14 +12,74 @@ axios.interceptors.request.use(req => {
         console.log("cookie found")
         req.headers.Authorization = 'Bearer '+cookies.get('SPOT_USER_accessToken')
         return req;
-    } 
-}, (error) => {
-    if (401 == error.response.status){
-        console.log("This is a 401 error")
     }
+
+}, error => {
     return Promise.reject(error);
 }
 );
+
+axios.interceptors.response.use(res => {
+
+    return res
+}, (error) => {
+    console.log(error)
+    if (401 == error.response.status){
+        return refreshAuthToken()
+
+    }
+
+    return Promise.reject(error);
+})
+
+const refreshAuthToken = async() => {
+
+    // return await axios({
+    //     method: 'post',
+    //     url: 'https://accounts.spotify.com/api/token',
+    //     data:{
+    //         grant_type: 'refresh_token',
+    //         refresh_token: cookies.get('SPOT_USER_refreshToken')
+    //     },
+    //     headers:{
+    //         'Authorization': 'Basic '+ btoa(REACT_APP_SPOT_CLIENT+':'+REACT_APP_SPOT_CLIENT_SECRET),
+    //         'Content-Type': 'application/x-www-form-urlencoded'
+
+    //     }
+    // })
+    // .then((res) => {
+    //     console.log(res)
+    // })
+
+    let authOptions = {
+        url: 'https://accounts.spotify.com/api/token',
+        form: {
+            refresh_token: cookies.get('SPOT_USER_refreshToken'),
+            grant_type: 'refresh_token'
+        },
+        headers: {
+            'Authorization': 'Basic '+ btoa(REACT_APP_SPOT_CLIENT+':'+REACT_APP_SPOT_CLIENT_SECRET),
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        json: true
+    }
+
+    request.post(authOptions, (error, response, body) => {
+        // console.log(error);
+        // console.log(response);
+        // console.log(body);
+        if(response.statusCode == 200){
+            // console.log(response)
+            // console.log(error)
+            // console.log(body)
+            cookies.set('SPOT_USER_accessToken', body.access_token, {path: '/'});
+            cookies.set('SPOT_USER_refreshToken', body.refresh_token, {path: '/'});
+        }
+        // props.history.push('/')
+    })
+    
+
+}
 
 export const getFeatures = async(id) => {
     return await axios.get(`https://api.spotify.com/v1/audio-features/${id}`, {
@@ -31,13 +94,6 @@ export const requestRecs = async(seed_tracks, metricStr) => {
 }
 
 export const createPlaylist = async(playlistname) => {
-    // return fetch('https://api.spotify.com/v1/users/jup118/playlists/', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Authorization': `Bearer ${cookies.get('SPOT_USER_accessToken')}`
-    //     },
-    //     body: JSON.stringify({name: playlistname})
-    //   })
 
     return await axios({
         method: 'post',
@@ -52,7 +108,7 @@ export const createPlaylist = async(playlistname) => {
 }
 
 export const addSongstoPlaylist = async(id, uris) => {
-    // console.log(uris)
+    //TODO replace id with URI earlier 
     const fixedURI = 'spotify:track:'+uris.replaceAll(',', ',spotify:track:')
     console.log(fixedURI)
 

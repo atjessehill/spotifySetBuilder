@@ -11,6 +11,7 @@ import {getFeatures, requestRecs, login, createPlaylist, addSongstoPlaylist } fr
 
 function PlaylistBuilder() {
   const cookies = new Cookies();
+  let error = false;
 
   const [data, setData] = useState(songs)
   let generated = false;
@@ -65,14 +66,13 @@ function PlaylistBuilder() {
     const length = data.length;
     const seedIndex = seed['location']
     let features;
-
     let targets= {
       'target_danceability': data.map((d) => d.danceability),
       'target_energy': data.map((d) => d.energy),
       'target_valence': data.map((d) => d.valence),
       'target_instrumentalness': data.map((d) => d.instrumentalness)
     }
-
+    
     thisplaylist[seedIndex] = seed['id']
     getFeatures(seed['id'])
     .then((res) => {
@@ -127,7 +127,9 @@ function PlaylistBuilder() {
         console.log(thisplaylist)
       })
     })
-
+    .catch((err) => {
+      error = true;
+    })
     
   }
 
@@ -198,7 +200,15 @@ function PlaylistBuilder() {
           </Column>
           <Column id='right-col'>
             <h1> Col 3</h1>
-            <button onClick={login}> Login to Spotify </button> 
+            <button onClick={login}> Login to Spotify </button>
+            <div>
+            {error ?  <h3> 
+                Token refreshing. Try again 
+              </h3>: <h3> All good</h3>
+
+            }
+            </div>
+
           </Column>
         </Row>
       </Container>
