@@ -68,7 +68,7 @@ function PlaylistBuilder() {
   function generate(){
 
     const length = data.length;
-    const seedIndex = seed['location']
+    const seedIndex = SEED_LOC_MAIN-1;
     let features;
     let targets= {
       'target_danceability': data.map((d) => d.danceability),
@@ -77,7 +77,7 @@ function PlaylistBuilder() {
       'target_instrumentalness': data.map((d) => d.instrumentalness)
     }
     
-    thisplaylist[seedIndex] = seed['id']
+    thisplaylist[seedIndex] = SEED_URI_MAIN.split(':')[2];
     getFeatures(seed['id'])
     .then((res) => {
       features = res.data
@@ -166,10 +166,10 @@ function PlaylistBuilder() {
 
 
   function savePlaylist(){
-    const playlistname = 'TESTplaylist';
+
     // if (!generated)return
 
-  createPlaylist(playlistname)
+  createPlaylist(PLAYLIST_NAME_MAIN)
     .then((response) => {
       const playlistId = response.data.id
       const uris = thisplaylist.join(',')
