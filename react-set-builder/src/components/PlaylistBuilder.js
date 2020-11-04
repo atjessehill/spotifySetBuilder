@@ -211,7 +211,7 @@ function PlaylistBuilder() {
           <Column id='parameter-col'>
             <input type="text" id="name-input" placeholder="my special playlist" onChange={handleChange}></input>
             <input type="text" id="seed-id" placeholder="spotify:track:xxxxxxx" onChange={handleChange}></input>
-            <input type="number" id="seed-location" min="1" max={data.length} onChange={handleChange} ></input> 
+            <input type="number" id="seed-location" min="1" max={data.length} onChange={handleChange} value={1}></input> 
             <br/>
             <div id="num-track-display">
               <h5> {data.length} tracks</h5>
