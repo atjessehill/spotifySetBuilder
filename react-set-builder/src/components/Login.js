@@ -5,7 +5,7 @@ import querystring from 'querystring'
 import request from 'request';
 import Cookies from 'universal-cookie';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-
+import { login, profile } from '../services/SpotifyCalls';
 
 const { REACT_APP_SPOT_CLIENT, REACT_APP_SPOT_CLIENT_SECRET } = process.env;
 
@@ -41,8 +41,12 @@ function Login(props){
             if(response.statusCode == 200){
                 cookies.set('SPOT_USER_accessToken', body.access_token, {path: '/'});
                 cookies.set('SPOT_USER_refreshToken', body.refresh_token, {path: '/'});
+                profile()
+                .then(() => {
+                    props.history.push('/')
+
+                })
             }
-            props.history.push('/')
         })
 
 

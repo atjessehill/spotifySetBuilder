@@ -93,10 +93,10 @@ export const requestRecs = async(seed_tracks, metricStr) => {
 }
 
 export const createPlaylist = async(playlistname) => {
-
+    const userId = cookies.get('SPOT_USER_ID');
     return await axios({
         method: 'post',
-        url: 'https://api.spotify.com/v1/users/jup118/playlists/',
+        url: `https://api.spotify.com/v1/users/${userId}/playlists/`,
         data: {
             name: playlistname
         }
@@ -138,3 +138,16 @@ export const login = () => {
     window.location.assign(url);
     
   }
+
+export const profile = async() => {
+    return await axios({
+        method: 'get',
+        url: `https://api.spotify.com/v1/me`
+    })
+    .then((res) => {
+        cookies.set('SPOT_USER_ID', res.data.id, {path: '/'});
+    })
+    .catch((error) => {
+        console.log(error)
+    })
+}
