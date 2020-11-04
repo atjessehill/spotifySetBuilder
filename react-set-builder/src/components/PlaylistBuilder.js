@@ -8,9 +8,13 @@ import Lolipop from './Lolipop';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import {getFeatures, requestRecs, login, createPlaylist, addSongstoPlaylist } from '../services/SpotifyCalls';
+let PLAYLIST_NAME_MAIN;
+let SEED_LOC_MAIN;
+let SEED_URI_MAIN;
 
 function PlaylistBuilder() {
   const cookies = new Cookies();
+  
   let error = false;
 
   const [data, setData] = useState(songs)
@@ -180,11 +184,25 @@ function PlaylistBuilder() {
 
   }
 
+  function handleChange(event) {
+    const eventId = event.target.id
+    if (eventId === 'name-input')PLAYLIST_NAME_MAIN = event.target.value;
+    else if (eventId === 'seed-location')SEED_LOC_MAIN = event.target.value;
+    else if (eventId === 'seed-id')SEED_URI_MAIN = event.target.value
+    // else if(eventId === 'seed-id')
+
+    // if((eventId).equals('name-input'))pname = event.target.value;
+    // if('name-input'.equals(event.target.id))pname = event.target.value;
+
+  }
+
   return (
       <Container id='view-area'>
         <Row>
           <Column id='parameter-col'>
-            <input type="text" id="name-input" placeholder="my special playlist"></input>
+            <input type="text" id="name-input" placeholder="my special playlist" onChange={handleChange}></input>
+            <input type="text" id="seed-id" placeholder="spotify:track:xxxxxxx" onChange={handleChange}></input>
+            <input type="number" id="seed-location" min="1" max={data.length} onChange={handleChange} ></input> 
             <br/>
             <div id="num-track-display">
               <h5> {data.length} tracks</h5>
