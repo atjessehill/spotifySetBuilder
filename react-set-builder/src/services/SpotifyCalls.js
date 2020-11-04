@@ -9,7 +9,6 @@ const cookies = new Cookies();
 
 axios.interceptors.request.use(req => {
     if(cookies.get('SPOT_USER_accessToken')){
-        console.log("cookie found")
         req.headers.Authorization = 'Bearer '+cookies.get('SPOT_USER_accessToken')
         return req;
     }

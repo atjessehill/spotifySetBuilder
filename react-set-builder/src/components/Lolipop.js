@@ -43,7 +43,7 @@ function Lolipop({data}) {
           .padding(0.5);
     
         const yScale = scaleLinear()
-          .domain([0, 100])
+          .domain([0, 1])
           .range([dimensions.height, 0]);
     
         // const xAxis = axisBottom(xScale).ticks(data.length)
@@ -124,7 +124,8 @@ function Lolipop({data}) {
         }
     
         function dragged(event, d) {
-          d.danceability = clamp(d.danceability-event.dy, 10, 100)
+
+          d.danceability = clamp((d.danceability-event.dy/100), 0.1, 1)
           simulation.alpha(1).restart();
         }
     

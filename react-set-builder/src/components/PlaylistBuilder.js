@@ -8,9 +8,9 @@ import Lolipop from './Lolipop';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import {getFeatures, requestRecs, login, createPlaylist, addSongstoPlaylist } from '../services/SpotifyCalls';
-let PLAYLIST_NAME_MAIN;
-let SEED_LOC_MAIN;
-let SEED_URI_MAIN;
+let PLAYLIST_NAME_MAIN = 'TEST PLAYLIST FROM setBuilder';
+let SEED_LOC_MAIN = 2;
+let SEED_URI_MAIN = 'spotify:track:5tIhRlNkApQJoDA8zhOBUY';
 
 function PlaylistBuilder() {
   const cookies = new Cookies();
@@ -34,8 +34,6 @@ function PlaylistBuilder() {
 
 
   function getRecommendations(i, start,  end, k){
-    console.log("K is ")
-    console.log(k)
     return new Promise((resolve, reject) => {
 
       const seeds = thisplaylist.slice(start, end)
@@ -70,6 +68,7 @@ function PlaylistBuilder() {
     const length = data.length;
     const seedIndex = SEED_LOC_MAIN-1;
     let features;
+    console.log(data)
     let targets= {
       'target_danceability': data.map((d) => d.danceability),
       'target_energy': data.map((d) => d.energy),
@@ -81,19 +80,28 @@ function PlaylistBuilder() {
     getFeatures(seed['id'])
     .then((res) => {
       features = res.data
+      console.log("FEATURES:")
+      console.log(features);
+      console.log(targets)
       for (let metric in targets){
 
         if (metric == 'target_instrumentalness') continue
-        const offset = features[metric.split('_')[1]] - targets[metric][seedIndex]
-        
+        // console.log(features[metric.split('_')[1]]);
+        // console.log((targets[metric][seedIndex])/100);
+        // divide by 100? 
+        const offset = (features[metric.split('_')[1]]) - (targets[metric][seedIndex])
+        console.log(metric +" offset =" +offset)
+
+        // console.log("OFFSET: "+offset);
         // Prevent huge fluctuation in value, especially above 1
         targets[metric] = (offset > 0) ? targets[metric].map((val) => {
-          return val+offset
-        }) : targets[metric].map((val) => {
           return val-offset
+        }) : targets[metric].map((val) => {
+          return val+offset
         })
-      }
 
+      }
+      console.log(targets)
     })
     .then(() => {
 
@@ -147,12 +155,11 @@ function PlaylistBuilder() {
 
     const newTrack = {
       id: "xx"+(data.length+1).toString(),
-      danceability: Math.max(data[data.length-1].danceability-5, 25),
-      energy: Math.max(data[data.length-1].energy-5, 25),
-      instrumentalness: Math.max(data[data.length-1].instrumentalness-5, 25),
-      valence: Math.max(data[data.length-1].valence-5, 25)
+      danceability: Math.max(data[data.length-1].danceability-.05, 0.25),
+      energy: Math.max(data[data.length-1].energy-0.05, 0.25),
+      instrumentalness: Math.max(data[data.length-1].instrumentalness-0.05, 0.25),
+      valence: Math.max(data[data.length-1].valence-0.05, 0.25)
     }
-    console.log(newTrack);
 
     setData([...data, newTrack])
   }
@@ -173,11 +180,10 @@ function PlaylistBuilder() {
     .then((response) => {
       const playlistId = response.data.id
       const uris = thisplaylist.join(',')
-      console.log(uris)
       addSongstoPlaylist(playlistId, uris)
-      .then((res) => {
+      // .then((res) => {
         // TODO show confirmation that a user is done
-      })
+      // })
 
     });
 
@@ -196,6 +202,9 @@ function PlaylistBuilder() {
 
   }
 
+  function display(){
+    console.log(data)
+  }
   return (
       <Container id='view-area'>
         <Row>
@@ -217,7 +226,6 @@ function PlaylistBuilder() {
             <Lolipop data={data} />
           </Column>
           <Column id='right-col'>
-            <h1> Col 3</h1>
             <button onClick={login}> Login to Spotify </button>
             <div>
             {error ?  <h3> 
@@ -226,6 +234,8 @@ function PlaylistBuilder() {
 
             }
             </div>
+            <button onClick={display}> Test </button>
+
 
           </Column>
         </Row>
@@ -238,45 +248,45 @@ function PlaylistBuilder() {
 var songs = [
   {
     id: "xxx1",
-    danceability: 65,
-    energy: 65,
-    valence: 65, 
-    instrumentalness: 65
+    danceability: .65,
+    energy: .65,
+    valence: .65, 
+    instrumentalness: .65
   },
   {
     id: "xxx2",
-    danceability: 75,
-    energy: 75,
-    valence: 75, 
-    instrumentalness: 75
+    danceability: .75,
+    energy: .75,
+    valence: .75, 
+    instrumentalness: .75
   },
   {
     id: "xxx3",
-    danceability: 85,
-    energy: 85,
-    valence: 85, 
-    instrumentalness: 85
+    danceability: .85,
+    energy: .85,
+    valence: .85, 
+    instrumentalness: .85
   },
   {
     id: "xxx4",
-    danceability: 85,
-    energy: 85,
-    valence: 85, 
-    instrumentalness: 85
+    danceability: .85,
+    energy: .85,
+    valence: .85, 
+    instrumentalness: .85
   },
   {
     id: "xxx5",
-    danceability: 72,
-    energy: 72,
-    valence: 72, 
-    instrumentalness: 72
+    danceability: .72,
+    energy: .72,
+    valence: .72, 
+    instrumentalness: .72
   },
   {
     id: "xxx6",
-    danceability: 65,
-    energy: 65,
-    valence: 65, 
-    instrumentalness: 65
+    danceability: .65,
+    energy: .65,
+    valence: .65, 
+    instrumentalness: .65
   },
 ]
 
