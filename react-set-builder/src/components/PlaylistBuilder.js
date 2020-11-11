@@ -9,6 +9,7 @@ import LineGraph from './LineGraph';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import {getFeatures, requestRecs, login, createPlaylist, addSongstoPlaylist } from '../services/SpotifyCalls';
+import Datagen from '../services/Datagen';
 
 let PLAYLIST_NAME_MAIN = 'TEST PLAYLIST FROM setBuilder';
 let SEED_LOC_MAIN = 2;
@@ -225,7 +226,7 @@ function PlaylistBuilder() {
 
           </Column>
           <Column id='chart-col'>
-            <LineGraph data={data} />
+            <LineGraph data={Datagen()} />
           </Column>
           <Column id='right-col'>
             <button onClick={login}> Login to Spotify </button>

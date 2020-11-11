@@ -15,7 +15,7 @@ const Datagen = () => {
         point.x = i;
         point.y = y;
 
-        data.push(point);
+        data.push(y);
     }
 
     return data;
