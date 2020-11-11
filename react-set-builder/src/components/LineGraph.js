@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {select, scaleLinear, line, curveCardinal, drag, getContext} from "d3";
+import {select, scaleLinear, line, curveCardinal, drag, getContext, forceSimulation, forceManyBody} from "d3";
 import '../App.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -80,43 +80,25 @@ function LineGraph({data}) {
     
         function dragged(event, d){
           const index = Math.round(xScale.invert(event.x))
-          data[index] = data[index] - event.dy
-          console.log(data);
-
-          // select(this)
-          //   .attr("fixed", true)
+          data[index] = clamp(data[index] - event.dy, 0, 100);
+          
+          svg
+          .selectAll("path")
+          .data([data])
+          .join("path")
+          .attr("d", value => myLine(value))
+          .attr("fill", "none")
+          .attr("stroke", "steelblue")
+          .attr("stroke-width", 5)
         }
     
+
+
         function dragEnd(event, d) {
 
         }
 
-        // var rects = svg.selectAll('.bar')
-        //   .data(data)
-        //   .attr('height', 25)
-        //   .attr('width', 10)
-        //   .attr("class", "bar")
-        //   .attr('fill', 'red')
-        //   .style("transform", "scale(1, -1)")
-        //   .attr("x", (value, index) => xScale(index))
-        //   .attr("y", -150)
-        //   .attr("width", 1)
-        //   .attr("height", value => yScale(value))
-        //   .enter();
-          
-        // const xScale = scaleLinear()
-        //   .domain([1, 100])
-        //   .range([0, dimensions.width])
-        // //   .padding(0.5);
-    
-        // const yScale = scaleLinear()
-        //   .domain([0, 100])
-        //   .range([dimensions.height, 0]);
-       
-        // var bisect = bisector((d) => {
-        //     return d.x
-        // }).left;
-
+        console.log("here");
         svg
             .selectAll("path")
             .data([data])
