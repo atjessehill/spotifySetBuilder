@@ -5,9 +5,11 @@ import Row from 'react-bootstrap/Row';
 // import Column from 'react-bootstrap/CardColumns';
 import Column from 'react-bootstrap/Col';
 import Lolipop from './Lolipop';
+import LineGraph from './LineGraph';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import {getFeatures, requestRecs, login, createPlaylist, addSongstoPlaylist } from '../services/SpotifyCalls';
+
 let PLAYLIST_NAME_MAIN = 'TEST PLAYLIST FROM setBuilder';
 let SEED_LOC_MAIN = 2;
 let SEED_URI_MAIN = 'spotify:track:5tIhRlNkApQJoDA8zhOBUY';
@@ -223,7 +225,7 @@ function PlaylistBuilder() {
 
           </Column>
           <Column id='chart-col'>
-            <Lolipop data={data} />
+            <LineGraph data={data} />
           </Column>
           <Column id='right-col'>
             <button onClick={login}> Login to Spotify </button>
