@@ -2,6 +2,7 @@ import axios from 'axios';
 import Cookies from 'universal-cookie';
 import querystring from 'querystring';
 import request from 'request';
+import createAuthRefreshInterceptor from 'axios-auth-refresh';
 
 const { REACT_APP_SPOT_CLIENT, REACT_APP_SPOT_CLIENT_SECRET } = process.env;
 
@@ -32,7 +33,7 @@ axios.interceptors.response.use(res => {
 })
 
 const refreshAuthToken = async() => {
-
+    console.log("trying to refresh token");
     // return await axios({
     //     method: 'post',
     //     url: 'https://accounts.spotify.com/api/token',
@@ -50,34 +51,42 @@ const refreshAuthToken = async() => {
     //     console.log(res)
     // })
 
-    let authOptions = {
-        url: 'https://accounts.spotify.com/api/token',
-        form: {
-            refresh_token: cookies.get('SPOT_USER_refreshToken'),
-            grant_type: 'refresh_token'
-        },
-        headers: {
-            'Authorization': 'Basic '+ btoa(REACT_APP_SPOT_CLIENT+':'+REACT_APP_SPOT_CLIENT_SECRET),
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        json: true
-    }
+    // let authOptions = {
+    //     url: 'https://accounts.spotify.com/api/token',
+    //     form: {
+    //         refresh_token: cookies.get('SPOT_USER_refreshToken'),
+    //         grant_type: 'refresh_token'
+    //     },
+    //     headers: {
+    //         'Authorization': 'Basic '+ btoa(REACT_APP_SPOT_CLIENT+':'+REACT_APP_SPOT_CLIENT_SECRET),
+    //         'Content-Type': 'application/x-www-form-urlencoded'
+    //     },
+    //     json: true
+    // }
 
-    request.post(authOptions, (error, response, body) => {
-        // console.log(error);
-        // console.log(response);
-        // console.log(body);
-        if(response.statusCode == 200){
-            // console.log(response)
-            // console.log(error)
-            // console.log(body)
-            cookies.set('SPOT_USER_accessToken', body.access_token, {path: '/'});
-            cookies.set('SPOT_USER_refreshToken', body.refresh_token, {path: '/'});
-        }
-        // props.history.push('/')
-    })
+    // request.post(authOptions, (error, response, body) => {
+    //     // console.log(error);
+    //     // console.log(response);
+    //     // console.log(body);
+    //     if(response.statusCode == 200){
+    //         // console.log(response)
+    //         // console.log(error)
+    //         // console.log(body)
+    //         cookies.set('SPOT_USER_accessToken', body.access_token, {path: '/'});
+    //         cookies.set('SPOT_USER_refreshToken', body.refresh_token, {path: '/'});
+    //     }
+    //     // props.history.push('/')
+    // })
+
+    
     
 
+}
+
+export const search = async(q) => {
+    const query = uris.replaceAll(' ', '+')
+
+    return await axios.get(`https://api.spotify.com/v1/search?query=${query}`)
 }
 
 export const getFeatures = async(id) => {
