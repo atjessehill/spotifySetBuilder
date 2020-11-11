@@ -12,7 +12,6 @@ const { REACT_APP_SPOT_CLIENT, REACT_APP_SPOT_CLIENT_SECRET } = process.env;
 function Login(props){
   
     useEffect(() => {
-
         const cookies = new Cookies();
         const search = props.location.search;
         const params = new URLSearchParams(search);
