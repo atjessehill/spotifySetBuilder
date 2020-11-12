@@ -7,14 +7,14 @@ import Column from 'react-bootstrap/Col';
 import Lolipop from './Lolipop';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
-import {getFeatures, requestRecs, login, createPlaylist, addSongstoPlaylist } from '../services/SpotifyCalls';
+import {getFeatures, requestRecs, login, createPlaylist, addSongstoPlaylist, search } from '../services/SpotifyCalls';
 let PLAYLIST_NAME_MAIN = 'TEST PLAYLIST FROM setBuilder';
 let SEED_LOC_MAIN = 2;
 let SEED_URI_MAIN = 'spotify:track:5tIhRlNkApQJoDA8zhOBUY';
 
 function PlaylistBuilder() {
   const cookies = new Cookies();
-  
+  let searchItems;
   let error = false;
 
   const [data, setData] = useState(songs)
@@ -194,23 +194,32 @@ function PlaylistBuilder() {
     const eventId = event.target.id
     if (eventId === 'name-input')PLAYLIST_NAME_MAIN = event.target.value;
     else if (eventId === 'seed-location')SEED_LOC_MAIN = event.target.value;
-    else if (eventId === 'seed-id')SEED_URI_MAIN = event.target.value
-    // else if(eventId === 'seed-id')
-
-    // if((eventId).equals('name-input'))pname = event.target.value;
-    // if('name-input'.equals(event.target.id))pname = event.target.value;
+    else if (eventId === 'seed-id')SEED_URI_MAIN = event.target.value;
+    
+    // search(event.target.value)
+    //   .then((res) => {
+    //     searchItems = res.map((d) => <option key={d.name}>{d.name}</option>);
+    //   })
+    //   console.log(searchItems);
+    
 
   }
 
   function display(){
     console.log(data)
   }
+
   return (
       <Container id='view-area'>
         <Row>
           <Column id='parameter-col'>
             <input type="text" id="name-input" placeholder="my special playlist" onChange={handleChange}></input>
             <input type="text" id="seed-id" placeholder="spotify:track:xxxxxxx" onChange={handleChange}></input>
+            <div class="dropdown">
+              <select>
+                {searchItems}
+              </select>
+            </div>
             <input type="number" id="seed-location" min="1" max={data.length} onChange={handleChange} value={1}></input> 
             <br/>
             <div id="num-track-display">

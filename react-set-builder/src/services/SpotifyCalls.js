@@ -84,9 +84,12 @@ const refreshAuthToken = async() => {
 }
 
 export const search = async(q) => {
-    const query = uris.replaceAll(' ', '+')
+    const query = q.replaceAll(' ', '+')
 
-    return await axios.get(`https://api.spotify.com/v1/search?query=${query}`)
+    return await axios.get(`https://api.spotify.com/v1/search?query=${query}&type=track`)
+        .then((res) => {
+            return res.data.tracks.items
+        })
 }
 
 export const getFeatures = async(id) => {
