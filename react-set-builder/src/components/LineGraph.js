@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {select, scaleLinear, line, curveCardinal, drag, getContext, forceSimulation, forceManyBody} from "d3";
+import {select, scaleLinear, line, curveCardinal, curveCardinalOpen, drag, getContext, forceSimulation, forceManyBody} from "d3";
 import '../App.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -30,6 +30,9 @@ function LineGraph({data}) {
     const svgRef = useRef();
     const wrapperRef = useRef();
     const dimensions = useResizeObserver(wrapperRef);
+    let moveIndex;
+    let dragCounter = 0;
+    
 
     useEffect(() => {
         const svg = select(svgRef.current)
@@ -43,6 +46,7 @@ function LineGraph({data}) {
           
         svg.call(
           drag()
+          .on('start', click)
           .on('drag', dragged)
           .on('end', dragEnd)
         )
@@ -64,7 +68,7 @@ function LineGraph({data}) {
         const myLine = line()
             .x((value, index) => xScale(index))
             .y(value => yScale(value))
-            .curve(curveCardinal)
+            // .curve(curveCardinalOpen)
 
         function dragSubject(){
           let subject;
@@ -73,15 +77,58 @@ function LineGraph({data}) {
         }
 
         function click(event, d){
-          console.log("click")
+          moveIndex = Math.round(xScale.invert(event.x));
           select(this)
             .attr("fixed", true);
         }
+
+        function between(num, x1, x2){
+          if (num>=x1 && num<x2){
+            return true;
+          }
+          return false;
+        }
     
         function dragged(event, d){
+          dragCounter+=1;
+          console.log(dragCounter);
+          let modifyRange = 6; //dragCounter % 10; //5
+          if(between(dragCounter, 0, 30))modifyRange = 2;
+          else if(between(dragCounter, 30, 60))modifyRange = 3;
+          else if(between(dragCounter, 60, 90))modifyRange = 4;
+          else if(between(dragCounter, 90, 120))modifyRange = 5;
+
+          // console.log(Math.abs(event.dy));
+          if(event.dy == 0) return;
           const index = Math.round(xScale.invert(event.x))
-          data[index] = clamp(data[index] - event.dy, 0, 100);
-          
+          const val = clamp(data[moveIndex] - event.dy, 0, 100);
+          if (val == 0) return;
+          moveIndex = index;
+          data[moveIndex] = val;
+         
+          for(let i=1; i<=modifyRange; i++){
+            let change = val-i;
+            let changeIndex = moveIndex+i;
+
+            if (changeIndex<=99){
+              console.log("Changing "+data[moveIndex+i]+ " to "+change)
+
+              data[moveIndex+i] = clamp(change, 0, 100);;
+            }
+            // let change = (event.dy > 0) ? val+i:val-i;//Math.abs(data[i]-val);
+
+
+            // console.log(change)
+            // if (change < 1){
+            //   data[i] = (event.dy > 0) ? val+i : val-i;
+            // }
+          }
+          for(let i=modifyRange; i>=1; i--){
+
+            let change = val-i;
+            data[moveIndex-i] = clamp(change, 0, 100);
+          }
+
           svg
           .selectAll("path")
           .data([data])
@@ -95,7 +142,8 @@ function LineGraph({data}) {
 
 
         function dragEnd(event, d) {
-
+          console.log(dragCounter);
+          dragCounter = 0;
         }
 
         console.log("here");
