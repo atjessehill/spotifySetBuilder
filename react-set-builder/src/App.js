@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import Home from './components/Home'
+import Playlist from './components/Playlist';
 import PlaylistBuilder from './components/PlaylistBuilder';
 import Login from './components/Login';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
@@ -10,7 +12,8 @@ class App extends Component{
             <div>
             <Switch>
                 <Route path="/login" component={Login}/>
-
+                <Route path="/home" component={Home}/>
+                <Route path="/playlist" component={Playlist}/>
                 <Route path="" component={PlaylistBuilder} exact/>
 
                 </Switch>
