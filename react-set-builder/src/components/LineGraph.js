@@ -44,12 +44,29 @@ function LineGraph({data}) {
         //   .on("start", dragStart)
         //   .on("drag", dragged)
           
+        const rect = svg.append('rect')
+          .attr('x', 0)
+          .attr('y', 0)
+          .attr('width', dimensions.width)
+          .attr('height', dimensions.height)
+          .attr('color', 'red');
+
         svg.call(
           drag()
           .on('start', click)
           .on('drag', dragged)
           .on('end', dragEnd)
         )
+
+        // svg.call(
+        //   drag()
+        //   .on('start', click)
+        //   .on('drag', dragged)
+        //   .on('end', dragEnd)
+        // )
+
+
+
 
         // const context = svg.node.getContext('2d')
         // var d = drag()
@@ -69,6 +86,10 @@ function LineGraph({data}) {
             .x((value, index) => xScale(index))
             .y(value => yScale(value))
             // .curve(curveCardinalOpen)
+
+        const myLine2 = line()
+          .x((value, index) => xScale(index))
+          .y(value => yScale(value))
 
         function dragSubject(){
           let subject;
@@ -90,8 +111,26 @@ function LineGraph({data}) {
         }
     
         function dragged(event, d){
+          
+          const index1 = clamp(Math.round(xScale.invert(event.x)), 0, 100)
+          const newY = 100-clamp(event.y, 0, 100);
+          console.log(newY)
+          // const val1 = clamp(data[index1] - event.dy, 0, 100);
+          // console.log("Changing index" +index1 + " from " + data[index1] + " to "+ val1)
+          data[index1] = newY;
+          
+          svg
+          .selectAll("path")
+          .data([data])
+          .join("path")
+          .attr("d", value => myLine(value))
+          .attr("fill", "none")
+          .attr("stroke", "steelblue")
+          .attr("stroke-width", 5)
+
+          return
+
           dragCounter+=1;
-          console.log(dragCounter);
           let modifyRange = 6; //dragCounter % 10; //5
           if(between(dragCounter, 0, 30))modifyRange = 2;
           else if(between(dragCounter, 30, 60))modifyRange = 3;
@@ -107,27 +146,22 @@ function LineGraph({data}) {
           data[moveIndex] = val;
          
           for(let i=1; i<=modifyRange; i++){
-            let change = val-i;
+            let change = val-(0.5*i);
             let changeIndex = moveIndex+i;
 
             if (changeIndex<=99){
-              console.log("Changing "+data[moveIndex+i]+ " to "+change)
 
               data[moveIndex+i] = clamp(change, 0, 100);;
             }
-            // let change = (event.dy > 0) ? val+i:val-i;//Math.abs(data[i]-val);
 
-
-            // console.log(change)
-            // if (change < 1){
-            //   data[i] = (event.dy > 0) ? val+i : val-i;
-            // }
           }
           for(let i=modifyRange; i>=1; i--){
 
-            let change = val-i;
+            let change = val-(0.5*i);
             data[moveIndex-i] = clamp(change, 0, 100);
           }
+
+
 
           svg
           .selectAll("path")
@@ -146,7 +180,6 @@ function LineGraph({data}) {
           dragCounter = 0;
         }
 
-        console.log("here");
         svg
             .selectAll("path")
             .data([data])
@@ -155,9 +188,7 @@ function LineGraph({data}) {
             .attr("fill", "none")
             .attr("stroke", "steelblue")
             .attr("stroke-width", 5)
-    
-
-          
+              
         function clampheight(x, lo){
             return x
         }
@@ -166,12 +197,16 @@ function LineGraph({data}) {
         }
 
 
+
     
         }, [data, dimensions])
-    
+
+        function handleMouseDown(mouseEvent){
+          console.log("mousedown");
+        }
         return (
-            <div ref={wrapperRef} style={{marginBottom: "2rem", marginTop: "2rem"}}>
-                <svg ref={svgRef}>
+            <div ref={wrapperRef}  style={{marginBottom: "2rem", marginTop: "2rem"}}>
+                <svg ref={svgRef} onMouseDown={LineGraph.handleMouseDown}>
                     <g className="x-axis"/>
                     <g className="y-axis"/>
                 </svg>
