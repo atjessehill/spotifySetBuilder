@@ -1,10 +1,14 @@
 # spotifySetBuilder
 Useful links
 
+
+
 TODO:
 ** Automatically redo 401'd request after refreshed auth tokens
 https://stackoverflow.com/questions/51563821/axios-interceptors-retry-original-request-and-access-original-promise
 
+Create line/wave graph
+https://programmer.help/blogs/using-d3js-region-generator-to-realize-simple-wave-graph.html
 
 Graphs:
 https://github.com/muratkemaldar/using-react-hooks-with-d3/blob/08-breaking-bad/src/GaugeChart.js
@@ -12,3 +16,4 @@ https://github.com/muratkemaldar/using-react-hooks-with-d3/blob/08-breaking-bad/
 https://dev.to/taowen/make-react-svg-component-draggable-2kc
 
 https://observablehq.com/@d3/sticky-force-layout?collection=@d3/d3-drag
+
