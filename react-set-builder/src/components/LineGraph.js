@@ -39,11 +39,7 @@ function LineGraph({data}) {
 
         if (!dimensions) return;       
 
-
-        // const drg = drag()
-        //   .on("start", dragStart)
-        //   .on("drag", dragged)
-          
+         
         const rect = svg.append('rect')
           .attr('x', 0)
           .attr('y', 0)
@@ -63,13 +59,13 @@ function LineGraph({data}) {
             .range([0, dimensions.width])
         
         const yScale = scaleLinear()
-            .domain([1, 100])
+            .domain([0.1, 1.0])
             .range([dimensions.height, 0])
 
         const myLine = line()
             .x((value, index) => xScale(index))
             .y(value => yScale(value))
-            // .curve(curveCardinalOpen)
+            .curve(curveCardinalOpen)
 
         const myLine2 = line()
           .x((value, index) => xScale(index))
@@ -97,7 +93,7 @@ function LineGraph({data}) {
         function dragged(event, d){
           
           const index1 = clamp(Math.round(xScale.invert(event.x)), 0, 100);
-          const newY = 100-clamp(event.y, 0, 100);
+          const newY = 1.0-clamp(event.y/100, 0.0, 1.0);
           console.log(newY)
           // const val1 = clamp(data[index1] - event.dy, 0, 100);
           // console.log("Changing index" +index1 + " from " + data[index1] + " to "+ val1)
@@ -110,7 +106,7 @@ function LineGraph({data}) {
           .attr("d", value => myLine(value))
           .attr("fill", "none")
           .attr("stroke", "steelblue")
-          .attr("stroke-width", 5)
+          .attr("stroke-width", 2)
 
           return
 

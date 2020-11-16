@@ -15,7 +15,7 @@ const Datagen = () => {
         point.x = i;
         point.y = y/100;
 
-        data.push(y);
+        data.push(y/100);
     }
 
     return data;
