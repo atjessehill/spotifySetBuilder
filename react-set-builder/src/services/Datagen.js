@@ -13,7 +13,7 @@ const Datagen = () => {
             y = 101-i;
         }
         point.x = i;
-        point.y = y;
+        point.y = y/100;
 
         data.push(y);
     }

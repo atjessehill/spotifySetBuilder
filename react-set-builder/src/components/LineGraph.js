@@ -77,7 +77,7 @@ function LineGraph({data}) {
         const xScale = scaleLinear()
             .domain([0, data.length-1])
             .range([0, dimensions.width])
-
+        
         const yScale = scaleLinear()
             .domain([1, 100])
             .range([dimensions.height, 0])
