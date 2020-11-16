@@ -15,6 +15,7 @@ let PLAYLIST_NAME_MAIN = 'TEST PLAYLIST FROM setBuilder';
 let SEED_LOC_MAIN = 2;
 let SEED_URI_MAIN = 'spotify:track:5tIhRlNkApQJoDA8zhOBUY';
 let FEATURE_TYPE = 'target_danceability'
+let PLAYLIST_LENGTH = 6;
 
 function PlaylistBuilder() {
   const cookies = new Cookies();
@@ -95,17 +96,50 @@ function PlaylistBuilder() {
           seedIndex = i
         }
       }
-      console.log("Closest "+ closestVal+" at index "+closestIndex);
       const offset = adjusted_data[seedIndex]-features[songFeature];
 
-      console.log("OFFSET IS " +offset);
       adjusted_data = adjusted_data.map((d) => {
         return (offset >= 0) ? d+offset:d-offset
       })
+      thisplaylist[seedIndex] = SEED_URI_MAIN.split(':')[2];
+
+      // TODO SAMPLE POINTS
       
       
       // clamp(d+(Math.abs(adjusted_data[closestIndex]-features[songFeature])), 0, 1))
       // console.log(adjusted_data)
+    })
+    .then(() => {
+      let promise = Promise.resolve()
+
+      for(let i=seedIndex+1; i<adjusted_data.length; i++){
+        const k = {}
+        k[FEATURE_TYPE] = adjusted_data[i]
+        const end = seedIndex + Math.min(i-seedIndex, 5);
+        promise = addToChain(promise, i, seedIndex, end, k);
+
+      }
+
+      for(let i=seedIndex-1; i>-1; i--){
+        const k = {}
+        k[FEATURE_TYPE] = adjusted_data[i];
+        let x = thisplaylist.length-i
+        x = (x >=5) ? 5 : x
+        const start = i+1;
+        const end = i+x+1
+
+        promise = addToChain(promise, i, start, end, k)
+        
+      }
+
+      promise.finally(() => {
+        generated=true;
+        console.log("Done")
+        console.log(thisplaylist)
+      })
+    })
+    .catch((err) => {
+      error = true;
     })
 
     
@@ -122,29 +156,6 @@ function PlaylistBuilder() {
     // thisplaylist[seedIndex] = SEED_URI_MAIN.split(':')[2];
     // getFeatures(seed['id'])
     // .then((res) => {
-    //   features = res.data
-    //   console.log("FEATURES:")
-    //   console.log(features);
-    //   console.log(targets)
-    //   for (let metric in targets){
-
-    //     if (metric == 'target_instrumentalness') continue
-    //     // console.log(features[metric.split('_')[1]]);
-    //     // console.log((targets[metric][seedIndex])/100);
-    //     // divide by 100? 
-    //     const offset = (features[metric.split('_')[1]]) - (targets[metric][seedIndex])
-    //     console.log(metric +" offset =" +offset)
-
-    //     // console.log("OFFSET: "+offset);
-    //     // Prevent huge fluctuation in value, especially above 1
-    //     targets[metric] = (offset > 0) ? targets[metric].map((val) => {
-    //       return val-offset
-    //     }) : targets[metric].map((val) => {
-    //       return val+offset
-    //     })
-
-    //   }
-    //   console.log(targets)
     // })
     // .then(() => {
 
@@ -162,29 +173,8 @@ function PlaylistBuilder() {
 
     //   }
 
-    //   for(let i=seedIndex-1; i>-1; i--){
-    //     const k = {}
-    //     for(let metric in targets){
-    //       k[metric] = targets[metric][i]
-    //     }
-    //     let x = thisplaylist.length-i
-    //     x = (x >=5) ? 5 : x
-    //     const start = i+1;
-    //     const end = i+x+1
 
-    //     promise = addToChain(promise, i, start, end, k)
-        
 
-    //   }
-    //   promise.finally(() => {
-    //     generated=true;
-    //     console.log("Done")
-    //     console.log(thisplaylist)
-    //   })
-    // })
-    // .catch((err) => {
-    //   error = true;
-    // })
     
   }
 
