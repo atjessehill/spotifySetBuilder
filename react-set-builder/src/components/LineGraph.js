@@ -58,22 +58,6 @@ function LineGraph({data}) {
           .on('end', dragEnd)
         )
 
-        // svg.call(
-        //   drag()
-        //   .on('start', click)
-        //   .on('drag', dragged)
-        //   .on('end', dragEnd)
-        // )
-
-
-
-
-        // const context = svg.node.getContext('2d')
-        // var d = drag()
-        //   // .origin((d) => d)
-        //   .on('start', dragged)
-        //   .on('drag', dragged)
-
         const xScale = scaleLinear()
             .domain([0, data.length-1])
             .range([0, dimensions.width])

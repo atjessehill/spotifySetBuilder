@@ -24,13 +24,7 @@ function PlaylistBuilder() {
 
   const [data, setData] = useState(Datagen())
   let generated = false;
-  const seed = {
-    'location': 2,
-    'id': '0dDG6oBNPPkQHKE8UC5Mc1'
-  }
-  
-  let key = 'BQBsQKUZ3NGnyPlcyuY1lgFDkcmuYpZV0ecw54n9g1vaXPWtRJ4U6daNgDqGOPV0notpgauQwNvJxvopHh8wDeBIk0X5MD9ggsfKoD50Cokxg15inOUzeXzO76stzvyuZGb0hNz1kfWMC5WBMCfZr0b1pNaagycbG1UY1w4tcj199wfDtC9UO4LVo3IQv_kMWvRr6vbmdI6XQAVWmIWo9dvozRijtZ3-PKfBaI2gLZzdNITatv0'
-  
+
   let thisplaylist = new Array(data.length).fill(0)
 
   // data.forEach(d => {
@@ -172,6 +166,13 @@ function PlaylistBuilder() {
 
   }
 
+  function getRandom(){
+    // FOR DEVELOPMENT PURPOSES ONLY, SELECT N Random points from the adjusted_data array
+
+
+  }
+
+
   function handleChange(event) {
     const eventId = event.target.id
     if (eventId === 'name-input')PLAYLIST_NAME_MAIN = event.target.value;
@@ -212,52 +213,5 @@ function PlaylistBuilder() {
       </Container>
   );
 }
-
-
-
-var songs = [
-  {
-    id: "xxx1",
-    danceability: .65,
-    energy: .65,
-    valence: .65, 
-    instrumentalness: .65
-  },
-  {
-    id: "xxx2",
-    danceability: .75,
-    energy: .75,
-    valence: .75, 
-    instrumentalness: .75
-  },
-  {
-    id: "xxx3",
-    danceability: .85,
-    energy: .85,
-    valence: .85, 
-    instrumentalness: .85
-  },
-  {
-    id: "xxx4",
-    danceability: .85,
-    energy: .85,
-    valence: .85, 
-    instrumentalness: .85
-  },
-  {
-    id: "xxx5",
-    danceability: .72,
-    energy: .72,
-    valence: .72, 
-    instrumentalness: .72
-  },
-  {
-    id: "xxx6",
-    danceability: .65,
-    energy: .65,
-    valence: .65, 
-    instrumentalness: .65
-  },
-]
 
 export default PlaylistBuilder;
