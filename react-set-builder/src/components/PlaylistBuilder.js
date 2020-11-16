@@ -20,7 +20,7 @@ function PlaylistBuilder() {
   
   let error = false;
 
-  const [data, setData] = useState(songs)
+  const [data, setData] = useState(Datagen())
   let generated = false;
   const seed = {
     'location': 2,
@@ -31,9 +31,9 @@ function PlaylistBuilder() {
   
   let thisplaylist = new Array(data.length).fill(0)
 
-  data.forEach(d => {
-    d.id = d.id
-  })
+  // data.forEach(d => {
+  //   d.id = d.id
+  // })
 
 
   function getRecommendations(i, start,  end, k){
@@ -226,7 +226,7 @@ function PlaylistBuilder() {
 
           </Column>
           <Column id='chart-col'>
-            <LineGraph data={Datagen()} />
+            <LineGraph data={data} />
           </Column>
           <Column id='right-col'>
             <button onClick={login}> Login to Spotify </button>

@@ -112,7 +112,7 @@ function LineGraph({data}) {
     
         function dragged(event, d){
           
-          const index1 = clamp(Math.round(xScale.invert(event.x)), 0, 100)
+          const index1 = clamp(Math.round(xScale.invert(event.x)), 0, 100);
           const newY = 100-clamp(event.y, 0, 100);
           console.log(newY)
           // const val1 = clamp(data[index1] - event.dy, 0, 100);
