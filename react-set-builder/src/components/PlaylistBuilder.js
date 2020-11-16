@@ -71,16 +71,15 @@ function PlaylistBuilder() {
     const length = data.length;
     let adjusted_data = data.map((d) => d/100);
     let features;
-
+    let seedIndex;
+    console.log(adjusted_data);
     // thisplaylist[seedIndex] = SEED_URI_MAIN.split(':')[2];
     getFeatures(SEED_URI_MAIN.split(':')[2])
     .then((res) => {
       const songFeature = FEATURE_TYPE.split('_')[1]
       const features = res.data
-      let seedIndex;
       console.log(res);
       console.log(features[songFeature])
-      let closestIndex;
       let closestVal = 100;
       // const closest = data.reduce((a, b) => {
       //   return Math.abs(b - features[songFeature]) < Math.abs(a - features[songFeature]) ? b:a;
@@ -93,12 +92,24 @@ function PlaylistBuilder() {
 
         if (diff < closestVal){
           closestVal = diff;
-          closestIndex = i
+          seedIndex = i
         }
       }
-      console.log("Closest is "+ adjusted_data[closestIndex] + " at index "+closestIndex)
+      console.log("Closest "+ closestVal+" at index "+closestIndex);
+      const offset = adjusted_data[seedIndex]-features[songFeature];
 
+      console.log("OFFSET IS " +offset);
+      adjusted_data = adjusted_data.map((d) => {
+        return (offset >= 0) ? d+offset:d-offset
+      })
+      
+      
+      // clamp(d+(Math.abs(adjusted_data[closestIndex]-features[songFeature])), 0, 1))
+      // console.log(adjusted_data)
     })
+
+    
+
     return
 
     // let targets= {
@@ -175,6 +186,10 @@ function PlaylistBuilder() {
     //   error = true;
     // })
     
+  }
+
+  function clamp(x, lo, hi){
+    return x < lo ? lo : x > hi ? hi : x;
   }
 
   function addToChain(chain, i, start, end, k){
