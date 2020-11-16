@@ -69,7 +69,6 @@ function PlaylistBuilder() {
   }
 
   function generate(){
-    const length = data.length;
     let adjusted_data = data.map((d) => d/100);
     let features;
     let seedIndex;
@@ -86,7 +85,7 @@ function PlaylistBuilder() {
       //   return Math.abs(b - features[songFeature]) < Math.abs(a - features[songFeature]) ? b:a;
       // })
 
-      for(let i=0; i<data.length; i++){
+      for(let i=0; i<adjusted_data.length; i++){
 
         let diff = Math.abs(adjusted_data[i]-features[songFeature]);
         // console.log(i + ':' +diff + ' :'+closestVal);
@@ -143,39 +142,6 @@ function PlaylistBuilder() {
     })
 
     
-
-    return
-
-    // let targets= {
-    //   'target_danceability': data.map((d) => d.danceability),
-    //   'target_energy': data.map((d) => d.energy),
-    //   'target_valence': data.map((d) => d.valence),
-    //   'target_instrumentalness': data.map((d) => d.instrumentalness)
-    // }
-    
-    // thisplaylist[seedIndex] = SEED_URI_MAIN.split(':')[2];
-    // getFeatures(seed['id'])
-    // .then((res) => {
-    // })
-    // .then(() => {
-
-    //   let promise = Promise.resolve()
-
-    //   for(let i=seedIndex+1; i<length; i++){
-    //     const k = {}
-    //     for(let metric in targets){
-    //       k[metric] = targets[metric][i]
-    //     }
-    //     const end = seedIndex + Math.min(i-seedIndex, 5)
-
-    //     promise = addToChain(promise, i, seedIndex, end, k)
-       
-
-    //   }
-
-
-
-    
   }
 
   function clamp(x, lo, hi){
@@ -187,27 +153,6 @@ function PlaylistBuilder() {
       return getRecommendations(i, start, end, k);
     })
   }
-
-  function addSong(){
-
-    const newTrack = {
-      id: "xx"+(data.length+1).toString(),
-      danceability: Math.max(data[data.length-1].danceability-.05, 0.25),
-      energy: Math.max(data[data.length-1].energy-0.05, 0.25),
-      instrumentalness: Math.max(data[data.length-1].instrumentalness-0.05, 0.25),
-      valence: Math.max(data[data.length-1].valence-0.05, 0.25)
-    }
-
-    setData([...data, newTrack])
-  }
-
-  function removeSong(){
-    if (data.length == 1)return
-    data.pop();
-    setData([...data]);
-  }
-
-
 
   function savePlaylist(){
 
@@ -239,25 +184,15 @@ function PlaylistBuilder() {
 
   }
 
-  function display(){
-    console.log(data)
-  }
   return (
       <Container id='view-area'>
         <Row>
           <Column id='parameter-col'>
             <input type="text" id="name-input" placeholder="my special playlist" onChange={handleChange}></input>
             <input type="text" id="seed-id" placeholder="spotify:track:xxxxxxx" onChange={handleChange}></input>
-            <input type="number" id="seed-location" min="1" max={data.length} onChange={handleChange}></input> 
             <br/>
-            <div id="num-track-display">
-              <h5> {data.length} tracks</h5>
-              <button class="trackbutton" onClick={addSong}> + </button>
-              <button class="trackbutton" onClick={removeSong}> - </button>
-            </div>
             <button onClick={generate}> generate </button>
             <button onClick={savePlaylist}> Save Playlist </button>
-
           </Column>
           <Column id='chart-col'>
             <LineGraph data={data} />
@@ -271,8 +206,6 @@ function PlaylistBuilder() {
 
             }
             </div>
-            <button onClick={display}> Test </button>
-
 
           </Column>
         </Row>
