@@ -63,10 +63,8 @@ function PlaylistBuilder() {
   }
 
   function generate(){
-    let adjusted_data = data.map((d) => d/100);
     let features;
     let seedIndex;
-    console.log(adjusted_data);
     // thisplaylist[seedIndex] = SEED_URI_MAIN.split(':')[2];
     getFeatures(SEED_URI_MAIN.split(':')[2])
     .then((res) => {
@@ -79,9 +77,9 @@ function PlaylistBuilder() {
       //   return Math.abs(b - features[songFeature]) < Math.abs(a - features[songFeature]) ? b:a;
       // })
 
-      for(let i=0; i<adjusted_data.length; i++){
+      for(let i=0; i<data.length; i++){
 
-        let diff = Math.abs(adjusted_data[i]-features[songFeature]);
+        let diff = Math.abs(data[i]-features[songFeature]);
         // console.log(i + ':' +diff + ' :'+closestVal);
 
         if (diff < closestVal){
@@ -89,25 +87,22 @@ function PlaylistBuilder() {
           seedIndex = i
         }
       }
-      const offset = adjusted_data[seedIndex]-features[songFeature];
+      const offset = data[seedIndex]-features[songFeature];
 
-      adjusted_data = adjusted_data.map((d) => {
+      data = data.map((d) => {
         return (offset >= 0) ? d+offset:d-offset
       })
       thisplaylist[seedIndex] = SEED_URI_MAIN.split(':')[2];
 
       // TODO SAMPLE POINTS
       
-      
-      // clamp(d+(Math.abs(adjusted_data[closestIndex]-features[songFeature])), 0, 1))
-      // console.log(adjusted_data)
     })
     .then(() => {
       let promise = Promise.resolve()
 
-      for(let i=seedIndex+1; i<adjusted_data.length; i++){
+      for(let i=seedIndex+1; i<data.length; i++){
         const k = {}
-        k[FEATURE_TYPE] = adjusted_data[i]
+        k[FEATURE_TYPE] = data[i]
         const end = seedIndex + Math.min(i-seedIndex, 5);
         promise = addToChain(promise, i, seedIndex, end, k);
 
@@ -115,7 +110,7 @@ function PlaylistBuilder() {
 
       for(let i=seedIndex-1; i>-1; i--){
         const k = {}
-        k[FEATURE_TYPE] = adjusted_data[i];
+        k[FEATURE_TYPE] = data[i];
         let x = thisplaylist.length-i
         x = (x >=5) ? 5 : x
         const start = i+1;
@@ -167,7 +162,7 @@ function PlaylistBuilder() {
   }
 
   function getRandom(){
-    // FOR DEVELOPMENT PURPOSES ONLY, SELECT N Random points from the adjusted_data array
+    // FOR DEVELOPMENT PURPOSES ONLY, SELECT N Random points from the data array
 
 
   }
