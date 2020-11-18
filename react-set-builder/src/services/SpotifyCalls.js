@@ -12,12 +12,10 @@ const cookies = new Cookies();
 axios.interceptors.request.use(req => {
     // console.log("Refreshing is" + refreshing);
     if(cookies.get('SPOT_USER_accessToken')){
-        console.log("Attaching header");
         req.headers.Authorization = 'Bearer '+cookies.get('SPOT_USER_accessToken')
         return req;
     }
     else{
-        console.log("no header attached");
         return req;
     }
 

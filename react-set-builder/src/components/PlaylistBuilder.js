@@ -17,6 +17,7 @@ let SEED_LOC_MAIN = 2;
 let SEED_URI_MAIN = 'spotify:track:5tIhRlNkApQJoDA8zhOBUY';
 let FEATURE_TYPE = 'target_danceability'
 let PLAYLIST_LENGTH = 6;
+let THIS_PLAYLIST;
 
 function PlaylistBuilder(props) {
 
@@ -27,17 +28,10 @@ function PlaylistBuilder(props) {
   const [data, setData] = useState(Datagen())
   let generated = false;
 
-  let thisplaylist = new Array(data.length).fill(0)
-
-  // data.forEach(d => {
-  //   d.id = d.id
-  // })
-
-
   function getRecommendations(i, start,  end, k){
     return new Promise((resolve, reject) => {
 
-      const seeds = thisplaylist.slice(start, end)
+      const seeds = THIS_PLAYLIST.slice(start, end)
       let seed_tracks = "seed_tracks="+seeds.join(',')
       let metricList = [];
       for (let metric in k){
@@ -51,8 +45,8 @@ function PlaylistBuilder(props) {
         if (recs.length == 0)console.log("Could not find recommendations"); // TODO add rejection and error checking
 
         for (let track in recs){
-          if(!thisplaylist.includes(recs[track].id)){
-            thisplaylist[i] = recs[track].id;
+          if(!THIS_PLAYLIST.includes(recs[track].id)){
+            THIS_PLAYLIST[i] = recs[track].id;
           }
         }
         resolve();
@@ -64,8 +58,12 @@ function PlaylistBuilder(props) {
 
   }
 
-  function getIndex(adjusted_data){
+  function getIndex(adjusted_data, index){
     // Return an array of indexes to indicate which indexes to sample from
+
+    return [1, 10, 15, index, 30, 50]
+
+
     let max = [];
     let min = [];
     // if(adjusted_data[0] > adjusted_data[1])max.push(0)
@@ -85,14 +83,17 @@ function PlaylistBuilder(props) {
 
     console.log(max);
     console.log(min);
+
   }
 
   function generate(){
 
     let features;
     let seedIndex;
-    // thisplaylist[seedIndex] = SEED_URI_MAIN.split(':')[2];
-    console.log(Variance(data))
+    let sampleIndex;
+    let adjusted_data;
+    THIS_PLAYLIST = new Array(PLAYLIST_LENGTH).fill(0);
+
     getFeatures(SEED_URI_MAIN.split(':')[2])
     .then((res) => {
       const songFeature = FEATURE_TYPE.split('_')[1]
@@ -100,10 +101,6 @@ function PlaylistBuilder(props) {
       console.log(res);
       console.log(features[songFeature])
       let closestVal = 100;
-      // const closest = data.reduce((a, b) => {
-      //   return Math.abs(b - features[songFeature]) < Math.abs(a - features[songFeature]) ? b:a;
-      // })
-      let adjusted_data;
 
       for(let i=0; i<data.length; i++){
 
@@ -120,53 +117,65 @@ function PlaylistBuilder(props) {
       adjusted_data = data.map((d) => {
         return (offset >= 0) ? d+offset:d-offset
       })
-      thisplaylist[seedIndex] = SEED_URI_MAIN.split(':')[2];
 
-      Variance(adjusted_data);
-      return 
+
+      // Determine two numbers, the # of points
+
+      sampleIndex = getIndex(adjusted_data, seedIndex)
+
+      for(let i=0; i<sampleIndex.length; i++){
+        if(seedIndex === sampleIndex[i])seedIndex=i;
+      }
+
+      console.log(sampleIndex);
+      console.log(seedIndex);
+      THIS_PLAYLIST[seedIndex] = SEED_URI_MAIN.split(':')[2];
+
+
+      // let pts = getIndex(adjusted_data, seedIndex).map((d) => {
+      //   return adjusted_data[d]
+      // })    
 
       // TODO SAMPLE POINTS
 
         
 
     })
-    // .then(() => {
-    //   let promise = Promise.resolve()
+    .then(() => {
+      let promise = Promise.resolve()
 
-    //   for(let i=seedIndex+1; i<data.length; i++){
-    //     const k = {}
-    //     k[FEATURE_TYPE] = data[i]
-    //     const end = seedIndex + Math.min(i-seedIndex, 5);
-    //     promise = addToChain(promise, i, seedIndex, end, k);
+      for(let i=seedIndex+1; i<sampleIndex.length; i++){
+        const k = {}
+        k[FEATURE_TYPE] = adjusted_data[sampleIndex[i]]
+        const end = seedIndex + Math.min(i-seedIndex, 5);
+        promise = addToChain(promise, i, seedIndex, end, k);
 
-    //   }
+      }
 
-    //   for(let i=seedIndex-1; i>-1; i--){
-    //     const k = {}
-    //     k[FEATURE_TYPE] = data[i];
-    //     let x = thisplaylist.length-i
-    //     x = (x >=5) ? 5 : x
-    //     const start = i+1;
-    //     const end = i+x+1
+      for(let i=seedIndex-1; i>-1; i--){
+        const k = {}
+        k[FEATURE_TYPE] = adjusted_data[sampleIndex[i]];
+        let x = THIS_PLAYLIST.length-i
+        x = (x >=5) ? 5 : x
+        const start = i+1;
+        const end = i+x+1
 
-    //     promise = addToChain(promise, i, start, end, k)
+
+        promise = addToChain(promise, i, start, end, k)
         
-    //   }
+      }
 
-    //   promise.finally(() => {
-    //     generated=true;
-    //     console.log("Done")
-    //     console.log(thisplaylist)
-        // console.log(thisplaylist);
-        // props.history.push({
-        //   pathname: '/playlist',
-        //   state: {
-        //     playlist: thisplaylist
-        //   }
-        // })
+      promise.finally(() => {
+        generated=true;
+        props.history.push({
+          pathname: '/playlist',
+          state: {
+            playlist: THIS_PLAYLIST
+          }
+        })
 
-    //   })
-    // })
+      })
+    })
     .catch((err) => {
       error = true;
     })
