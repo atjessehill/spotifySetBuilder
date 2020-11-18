@@ -10,6 +10,7 @@ import axios from 'axios';
 import Cookies from 'universal-cookie';
 import {getFeatures, requestRecs, login, createPlaylist, addSongstoPlaylist, search } from '../services/SpotifyCalls';
 import Datagen from '../services/Datagen';
+import {Variance} from '../services/Helper';
 
 let PLAYLIST_NAME_MAIN = 'TEST PLAYLIST FROM setBuilder';
 let SEED_LOC_MAIN = 2;
@@ -91,6 +92,7 @@ function PlaylistBuilder(props) {
     let features;
     let seedIndex;
     // thisplaylist[seedIndex] = SEED_URI_MAIN.split(':')[2];
+    console.log(Variance(data))
     getFeatures(SEED_URI_MAIN.split(':')[2])
     .then((res) => {
       const songFeature = FEATURE_TYPE.split('_')[1]
@@ -120,14 +122,11 @@ function PlaylistBuilder(props) {
       })
       thisplaylist[seedIndex] = SEED_URI_MAIN.split(':')[2];
 
+      Variance(adjusted_data);
+      return 
+
       // TODO SAMPLE POINTS
-      console.log(thisplaylist);
-      props.history.push({
-        pathname: '/playlist',
-        state: {
-          playlist: thisplaylist
-        }
-      })
+
         
 
     })
@@ -158,11 +157,19 @@ function PlaylistBuilder(props) {
     //     generated=true;
     //     console.log("Done")
     //     console.log(thisplaylist)
+        // console.log(thisplaylist);
+        // props.history.push({
+        //   pathname: '/playlist',
+        //   state: {
+        //     playlist: thisplaylist
+        //   }
+        // })
+
     //   })
     // })
-    // .catch((err) => {
-    //   error = true;
-    // })
+    .catch((err) => {
+      error = true;
+    })
 
     
   }
