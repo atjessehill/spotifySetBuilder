@@ -19,7 +19,6 @@ let PLAYLIST_LENGTH = 6;
 
 function PlaylistBuilder(props) {
 
-  console.log(props.testData);
   const cookies = new Cookies();
   let searchItems;
   let error = false;
@@ -123,6 +122,14 @@ function PlaylistBuilder(props) {
 
       // TODO SAMPLE POINTS
       console.log(thisplaylist);
+      props.history.push({
+        pathname: '/playlist',
+        state: {
+          playlist: thisplaylist
+        }
+      })
+        
+
     })
     // .then(() => {
     //   let promise = Promise.resolve()

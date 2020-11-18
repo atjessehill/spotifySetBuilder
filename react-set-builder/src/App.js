@@ -16,7 +16,7 @@ class App extends Component{
                 <Route path="/login" component={Login}/>
                 <Route path="/home" component={Home}/>
                 <Route path="/playlist" component={Playlist}/>
-                <Route path="" render={(props) => (<PlaylistBuilder {...props} testData={testData}/>)} exact/>
+                <Route path="" component={PlaylistBuilder} exact/>
 
                 </Switch>
             </div>
