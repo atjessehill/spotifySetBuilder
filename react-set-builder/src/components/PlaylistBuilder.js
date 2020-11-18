@@ -177,24 +177,6 @@ function PlaylistBuilder(props) {
     })
   }
 
-  function savePlaylist(){
-
-    // if (!generated)return
-
-  createPlaylist(PLAYLIST_NAME_MAIN)
-    .then((response) => {
-      const playlistId = response.data.id
-      const uris = thisplaylist.join(',')
-      addSongstoPlaylist(playlistId, uris)
-      // .then((res) => {
-        // TODO show confirmation that a user is done
-      // })
-
-    });
-
-
-  }
-
   function getRandom(arr, n, index){
     // FOR DEVELOPMENT PURPOSES ONLY, SELECT first N points from the data array
     return arr.slice(index, index+n)
@@ -221,11 +203,9 @@ function PlaylistBuilder(props) {
       <Container id='view-area'>
         <Row>
           <Column id='parameter-col'>
-            <input type="text" id="name-input" placeholder="my special playlist" onChange={handleChange}></input>
             <input type="text" id="seed-id" placeholder="spotify:track:xxxxxxx" onChange={handleChange}></input>
             <br/>
             <button onClick={generate}> generate </button>
-            <button onClick={savePlaylist}> Save Playlist </button>
           </Column>
           <Column id='chart-col'>
             <LineGraph data={data} />
