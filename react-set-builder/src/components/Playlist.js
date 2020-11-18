@@ -1,11 +1,13 @@
 import React from 'react';
+import {tracks} from '../services/SpotifyCalls';
 
 class Playlist extends React.Component {
 
     constructor(props){
         super(props);
         this.state = {
-            playlist_name: 'noshuffle playlist'
+            playlist_name: 'noshuffle playlist',
+            tracklist: []
         }
 
         this.savePlaylist = this.savePlaylist.bind(this);
@@ -33,6 +35,15 @@ class Playlist extends React.Component {
 
     componentDidMount(){
         console.log(this.props.history.location.state.playlist)
+
+        tracks(this.props.history.location.state.playlist)
+        .then((res) => {
+            this.setState({tracklist: res});
+            console.log(this.state.tracklist);
+
+        })
+
+
         // for each item in this list, get the song descriptors
     }
 
@@ -41,13 +52,33 @@ class Playlist extends React.Component {
         // if (eventId === 'name-input')PLAYLIST_NAME_MAIN = event.target.value;    
     }
 
+    parseArtist(data){
+        let artistStr = "";
+        data.map((d) => {
+            artistStr = artistStr+d.name+' '
+        })
+        return artistStr
+        
+    }
+
+
     render(){
+        const songs = this.state.tracklist;
         return (
         <div>
             <h1>Playlist Page</h1>
             <input type="text" id="name-input" placeholder="my special playlist" onChange={this.handleChange}></input>
             <button onClick={this.savePlaylist}> Save Playlist </button>
+            <div class="song-list">
 
+                {songs.map((d) => {
+                    return (<div> 
+                        {d.name} - {this.parseArtist(d.artists)}
+                        {/* <img src={d.album.images[0]}> </img> */}
+                    </div>)
+                })}
+                {/* {this.state.tracklist} */}
+            </div>
         </div>
         );
     }

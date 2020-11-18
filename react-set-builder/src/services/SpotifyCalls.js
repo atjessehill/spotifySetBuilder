@@ -214,3 +214,14 @@ export const profile = async() => {
         console.log(error)
     })
 }
+
+export const tracks = async(ids) => {
+    const idStr = ids.join(',')
+    return await axios({
+        method: 'get',
+        url: `https://api.spotify.com/v1/tracks/?ids=${idStr}`,
+    })
+    .then((res) => {
+        return res.data.tracks
+    })
+}
