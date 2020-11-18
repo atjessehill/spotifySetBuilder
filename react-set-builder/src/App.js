@@ -5,6 +5,8 @@ import PlaylistBuilder from './components/PlaylistBuilder';
 import Login from './components/Login';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
+let testData = [1, 2, 3, 4];
+
 class App extends Component{
     render(){
         return (
@@ -14,7 +16,7 @@ class App extends Component{
                 <Route path="/login" component={Login}/>
                 <Route path="/home" component={Home}/>
                 <Route path="/playlist" component={Playlist}/>
-                <Route path="" component={PlaylistBuilder} exact/>
+                <Route path="" render={(props) => (<PlaylistBuilder {...props} testData={testData}/>)} exact/>
 
                 </Switch>
             </div>
