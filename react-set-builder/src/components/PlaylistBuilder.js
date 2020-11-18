@@ -8,13 +8,9 @@ import Lolipop from './Lolipop';
 import LineGraph from './LineGraph';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
-<<<<<<< HEAD
 import {getFeatures, requestRecs, login, createPlaylist, addSongstoPlaylist, search } from '../services/SpotifyCalls';
-=======
-import {getFeatures, requestRecs, login, createPlaylist, addSongstoPlaylist } from '../services/SpotifyCalls';
 import Datagen from '../services/Datagen';
 
->>>>>>> linegraph
 let PLAYLIST_NAME_MAIN = 'TEST PLAYLIST FROM setBuilder';
 let SEED_LOC_MAIN = 2;
 let SEED_URI_MAIN = 'spotify:track:5tIhRlNkApQJoDA8zhOBUY';
