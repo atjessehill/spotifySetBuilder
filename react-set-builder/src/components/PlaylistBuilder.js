@@ -17,7 +17,9 @@ let SEED_URI_MAIN = 'spotify:track:5tIhRlNkApQJoDA8zhOBUY';
 let FEATURE_TYPE = 'target_danceability'
 let PLAYLIST_LENGTH = 6;
 
-function PlaylistBuilder() {
+function PlaylistBuilder(props) {
+
+  console.log(props.testData);
   const cookies = new Cookies();
   
   let error = false;
@@ -62,7 +64,31 @@ function PlaylistBuilder() {
 
   }
 
+  function getIndex(adjusted_data){
+    // Return an array of indexes to indicate which indexes to sample from
+    let max = [];
+    let min = [];
+    // if(adjusted_data[0] > adjusted_data[1])max.push(0)
+    // else if(adjusted_data[0] < adjusted_data[1])min.push(1);
+    console.log(adjusted_data)
+
+    for(let i=0; i<adjusted_data.length; i++){
+      if(adjusted_data[i] === adjusted_data[i+1]){
+        adjusted_data[i+1] = adjusted_data[i+1]+0.00001
+      }
+    }
+
+    for(let i=1; i<adjusted_data.length; i++){
+      if(adjusted_data[i-1] > adjusted_data[i] && adjusted_data[i] < adjusted_data[i+1])max.push(i)
+      else if(adjusted_data[i-1] < adjusted_data[i] && adjusted_data[i] > adjusted_data[i+1])min.push(i)
+    }
+
+    console.log(max);
+    console.log(min);
+  }
+
   function generate(){
+
     let features;
     let seedIndex;
     // thisplaylist[seedIndex] = SEED_URI_MAIN.split(':')[2];
@@ -76,6 +102,7 @@ function PlaylistBuilder() {
       // const closest = data.reduce((a, b) => {
       //   return Math.abs(b - features[songFeature]) < Math.abs(a - features[songFeature]) ? b:a;
       // })
+      let adjusted_data;
 
       for(let i=0; i<data.length; i++){
 
@@ -89,46 +116,46 @@ function PlaylistBuilder() {
       }
       const offset = data[seedIndex]-features[songFeature];
 
-      data = data.map((d) => {
+      adjusted_data = data.map((d) => {
         return (offset >= 0) ? d+offset:d-offset
       })
       thisplaylist[seedIndex] = SEED_URI_MAIN.split(':')[2];
 
       // TODO SAMPLE POINTS
-      
+      console.log(thisplaylist);
     })
-    .then(() => {
-      let promise = Promise.resolve()
+    // .then(() => {
+    //   let promise = Promise.resolve()
 
-      for(let i=seedIndex+1; i<data.length; i++){
-        const k = {}
-        k[FEATURE_TYPE] = data[i]
-        const end = seedIndex + Math.min(i-seedIndex, 5);
-        promise = addToChain(promise, i, seedIndex, end, k);
+    //   for(let i=seedIndex+1; i<data.length; i++){
+    //     const k = {}
+    //     k[FEATURE_TYPE] = data[i]
+    //     const end = seedIndex + Math.min(i-seedIndex, 5);
+    //     promise = addToChain(promise, i, seedIndex, end, k);
 
-      }
+    //   }
 
-      for(let i=seedIndex-1; i>-1; i--){
-        const k = {}
-        k[FEATURE_TYPE] = data[i];
-        let x = thisplaylist.length-i
-        x = (x >=5) ? 5 : x
-        const start = i+1;
-        const end = i+x+1
+    //   for(let i=seedIndex-1; i>-1; i--){
+    //     const k = {}
+    //     k[FEATURE_TYPE] = data[i];
+    //     let x = thisplaylist.length-i
+    //     x = (x >=5) ? 5 : x
+    //     const start = i+1;
+    //     const end = i+x+1
 
-        promise = addToChain(promise, i, start, end, k)
+    //     promise = addToChain(promise, i, start, end, k)
         
-      }
+    //   }
 
-      promise.finally(() => {
-        generated=true;
-        console.log("Done")
-        console.log(thisplaylist)
-      })
-    })
-    .catch((err) => {
-      error = true;
-    })
+    //   promise.finally(() => {
+    //     generated=true;
+    //     console.log("Done")
+    //     console.log(thisplaylist)
+    //   })
+    // })
+    // .catch((err) => {
+    //   error = true;
+    // })
 
     
   }
@@ -161,9 +188,9 @@ function PlaylistBuilder() {
 
   }
 
-  function getRandom(){
-    // FOR DEVELOPMENT PURPOSES ONLY, SELECT N Random points from the data array
-
+  function getRandom(arr, n, index){
+    // FOR DEVELOPMENT PURPOSES ONLY, SELECT first N points from the data array
+    return arr.slice(index, index+n)
 
   }
 

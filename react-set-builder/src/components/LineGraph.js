@@ -26,7 +26,6 @@ const useResizeObserver = (ref) => {
   };
 
 function LineGraph({data}) {
-    console.log(data);
     const svgRef = useRef();
     const wrapperRef = useRef();
     const dimensions = useResizeObserver(wrapperRef);
