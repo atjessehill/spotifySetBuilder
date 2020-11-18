@@ -7,10 +7,17 @@ import createAuthRefreshInterceptor from 'axios-auth-refresh';
 const { REACT_APP_SPOT_CLIENT, REACT_APP_SPOT_CLIENT_SECRET } = process.env;
 
 const cookies = new Cookies();
+// let refreshing = false;
 
 axios.interceptors.request.use(req => {
+    // console.log("Refreshing is" + refreshing);
     if(cookies.get('SPOT_USER_accessToken')){
+        console.log("Attaching header");
         req.headers.Authorization = 'Bearer '+cookies.get('SPOT_USER_accessToken')
+        return req;
+    }
+    else{
+        console.log("no header attached");
         return req;
     }
 
@@ -19,20 +26,59 @@ axios.interceptors.request.use(req => {
 }
 );
 
-axios.interceptors.response.use(res => {
+// axios.interceptors.response.use(res => {
 
-    return res
-}, (error) => {
-    console.log(error)
-    if (401 == error.response.status){
-        return refreshAuthToken()
+//     return res
+// }, (error) => {
+//     console.log(error)
+//     if (401 == error.response.status || 400 == error.response.status){
+//         return refreshAuthLogic()
 
-    }
+//     }
 
-    return Promise.reject(error);
-})
+//     return Promise.reject(error);
+// })
 
-const refreshAuthToken = async() => {
+const startRefreshAuth = failedRequest => {
+    // refreshing = true;
+    console.log("Starting refresh")
+    cookies.remove('SPOT_USER_accessToken');
+    return refreshAuthLogic(failedRequest);
+}
+
+
+const refreshAuthLogic = failedRequest => {
+    return axios({
+        method: 'post',
+        url: 'https://accounts.spotify.com/api/token',
+        data: querystring.stringify(
+            {
+                'grant_type': 'refresh_token',
+                'refresh_token': cookies.get('SPOT_USER_refreshToken')
+            }
+        ),
+        headers:{
+            'Authorization': 'Basic '+ btoa(REACT_APP_SPOT_CLIENT+':'+REACT_APP_SPOT_CLIENT_SECRET),
+            'Content-Type': 'application/x-www-form-urlencoded'
+
+        },
+    })
+    .then(res => {
+        const access_token = res.data.access_token;
+        cookies.set('SPOT_USER_accessToken', access_token, {path: '/'});
+        failedRequest.response.config.headers.Authorization = 'Bearer '+access_token;
+        // refreshing=false;
+        return Promise.resolve();
+    })
+    .catch(error => {
+        // refreshing=false;
+        console.log(error);
+    })
+}
+
+
+
+const refreshAuthToken = async(failedRequest) => {
     console.log("trying to refresh token");
     // return await axios({
     //     method: 'post',
@@ -51,37 +97,44 @@ const refreshAuthToken = async() => {
     //     console.log(res)
     // })
 
-    // let authOptions = {
-    //     url: 'https://accounts.spotify.com/api/token',
-    //     form: {
-    //         refresh_token: cookies.get('SPOT_USER_refreshToken'),
-    //         grant_type: 'refresh_token'
-    //     },
-    //     headers: {
-    //         'Authorization': 'Basic '+ btoa(REACT_APP_SPOT_CLIENT+':'+REACT_APP_SPOT_CLIENT_SECRET),
-    //         'Content-Type': 'application/x-www-form-urlencoded'
-    //     },
-    //     json: true
-    // }
+    let authOptions = {
+        url: 'https://accounts.spotify.com/api/token',
+        form: {
+            refresh_token: cookies.get('SPOT_USER_refreshToken'),
+            grant_type: 'refresh_token'
+        },
+        headers: {
+            'Authorization': 'Basic '+ btoa(REACT_APP_SPOT_CLIENT+':'+REACT_APP_SPOT_CLIENT_SECRET),
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        json: true
+    }
 
-    // request.post(authOptions, (error, response, body) => {
-    //     // console.log(error);
-    //     // console.log(response);
-    //     // console.log(body);
-    //     if(response.statusCode == 200){
-    //         // console.log(response)
-    //         // console.log(error)
-    //         // console.log(body)
-    //         cookies.set('SPOT_USER_accessToken', body.access_token, {path: '/'});
-    //         cookies.set('SPOT_USER_refreshToken', body.refresh_token, {path: '/'});
-    //     }
-    //     // props.history.push('/')
-    // })
+    console.log(authOptions);
+
+    await request.post(authOptions, (error, response, body) => {
+        // console.log(error);
+        // console.log(response);
+        // console.log(body);
+        if(response.statusCode == 200){
+            return body;
+            console.log(body);
+            // console.log(response)
+            // console.log(error)
+            // console.log(body)
+            // cookies.set('SPOT_USER_accessToken', body.access_token, {path: '/'});
+            // cookies.set('SPOT_USER_refreshToken', body.refresh_token, {path: '/'});
+        }
+        // props.history.push('/')
+    })
 
     
     
 
 }
+
+createAuthRefreshInterceptor(axios, startRefreshAuth);
+
 
 export const search = async(q) => {
     const query = q.replaceAll(' ', '+')
