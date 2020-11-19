@@ -93,7 +93,6 @@ function LineGraph({data}) {
           
           const index1 = clamp(Math.round(xScale.invert(event.x)), 0, 100);
           const newY = 1.0-clamp(event.y/100, 0.0, 1.0);
-          console.log(newY)
           // const val1 = clamp(data[index1] - event.dy, 0, 100);
           // console.log("Changing index" +index1 + " from " + data[index1] + " to "+ val1)
           data[index1] = newY;
@@ -155,7 +154,6 @@ function LineGraph({data}) {
 
 
         function dragEnd(event, d) {
-          console.log(dragCounter);
           dragCounter = 0;
         }
 

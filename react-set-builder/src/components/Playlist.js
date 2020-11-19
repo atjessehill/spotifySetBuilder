@@ -64,6 +64,10 @@ class Playlist extends React.Component {
 
     render(){
         const songs = this.state.tracklist;
+        const images = this.state.tracklist.map((d) => {
+            console.log(d.album.images[0]);
+            return <img key={d} src={d.album.images[2].url} alt="image"/>
+        })
         return (
         <div>
             <h1>Playlist Page</h1>
@@ -74,7 +78,9 @@ class Playlist extends React.Component {
                 {songs.map((d) => {
                     return (<div> 
                         {d.name} - {this.parseArtist(d.artists)}
-                        {/* <img src={d.album.images[0]}> </img> */}
+                        
+                        {/* {images} */}
+                        <img src={d.album.images[2].url}/> 
                     </div>)
                 })}
                 {/* {this.state.tracklist} */}

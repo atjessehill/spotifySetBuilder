@@ -10,7 +10,7 @@ import axios from 'axios';
 import Cookies from 'universal-cookie';
 import {getFeatures, requestRecs, login, createPlaylist, addSongstoPlaylist, search } from '../services/SpotifyCalls';
 import Datagen from '../services/Datagen';
-import {Variance} from '../services/Helper';
+import {Variance, Mean} from '../services/Helper';
 
 let PLAYLIST_NAME_MAIN = 'TEST PLAYLIST FROM setBuilder';
 let SEED_LOC_MAIN = 2;
@@ -61,32 +61,54 @@ function PlaylistBuilder(props) {
   function getIndex(adjusted_data, index){
     // Return an array of indexes to indicate which indexes to sample from
 
-    return [1, 10, 15, index, 30, 50]
+    // return [1, 10, 15, index, 30, 50]
 
-
-    let max = [];
-    let min = [];
-    // if(adjusted_data[0] > adjusted_data[1])max.push(0)
-    // else if(adjusted_data[0] < adjusted_data[1])min.push(1);
-    console.log(adjusted_data)
-
-    for(let i=0; i<adjusted_data.length; i++){
-      if(adjusted_data[i] === adjusted_data[i+1]){
-        adjusted_data[i+1] = adjusted_data[i+1]+0.00001
-      }
-    }
-
+    let slopes = {}
+    let limit = 0.1;
+    let newPoints = [];
+    let toRemove = [];
+    let updated_vals = [];
     for(let i=1; i<adjusted_data.length; i++){
-      if(adjusted_data[i-1] > adjusted_data[i] && adjusted_data[i] < adjusted_data[i+1])max.push(i)
-      else if(adjusted_data[i-1] < adjusted_data[i] && adjusted_data[i] > adjusted_data[i+1])min.push(i)
+      if(adjusted_data[i-1] - adjusted_data[i] === 0)slopes[i] = Number.MAX_VALUE;
+      else {
+        slopes[i] = adjusted_data[i-1] - adjusted_data[i]
+      }
+
+    }
+    newPoints.push(0);    
+
+    for(let i=Object.keys(slopes).length-2; i> 0; i--){
+      // console.log(Math.abs(slopes[i] - slopes[i+1]))
+      if(Math.abs(slopes[i] - slopes[i+1]) < limit){ 
+        toRemove.push(i);
+      }
+
     }
 
-    console.log(max);
-    console.log(min);
+    console.log(Object.keys(slopes).length);
 
+    for(let i=0; i<toRemove.length; i++){
+      delete slopes[toRemove[i]]
+    }
+    
+    for(const [key, value] of Object.entries(slopes)){
+      newPoints.push(Number(key));
+    }
+
+    newPoints.map((d) => {
+      updated_vals.push(adjusted_data[d])
+    })
+
+ 
+
+    console.log(newPoints);
+    console.log(updated_vals);
+    
   }
 
   function generate(){
+    getIndex(data, 25);
+    return
 
     let features;
     let seedIndex;
