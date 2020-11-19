@@ -10,7 +10,7 @@ import axios from 'axios';
 import Cookies from 'universal-cookie';
 import {getFeatures, requestRecs, login, createPlaylist, addSongstoPlaylist, search } from '../services/SpotifyCalls';
 import Datagen from '../services/Datagen';
-import {Variance, Mean} from '../services/Helper';
+import {Variance, Mean, stdDev, getRandInt, getRandArbitrary, getSubsets} from '../services/Helper';
 
 let PLAYLIST_NAME_MAIN = 'TEST PLAYLIST FROM setBuilder';
 let SEED_LOC_MAIN = 2;
@@ -58,13 +58,29 @@ function PlaylistBuilder(props) {
 
   }
 
-  function getIndex(adjusted_data, index){
+  function perpLine(y2, y1, x2, x1, m, n){
+
+    const top = Math.abs()
+    return 
+  }
+
+  function DouglasPeucker(arr, epsilon){
+    let dmax = 0;
+    let index = 0;
+    const end = arr.length;
+    for(let i=2; i<end; i++){
+
+    }
+    
+  }
+
+  function getIndex(adjusted_data, factor){
     // Return an array of indexes to indicate which indexes to sample from
 
     // return [1, 10, 15, index, 30, 50]
 
     let slopes = {}
-    let limit = 0.1;
+    let limit = Math.pow(Mean(adjusted_data),stdDev(adjusted_data))*factor// 0.1;
     let newPoints = [];
     let toRemove = [];
     let updated_vals = [];
@@ -102,12 +118,68 @@ function PlaylistBuilder(props) {
  
 
     console.log(newPoints);
+    updated_vals = [...new Set(updated_vals)]
     console.log(updated_vals);
-    
+
+    let min;
+    let max;
+    // let minI;
+    // let maxI;
+
+    // for(let i=0; i<updated_vals.length; i++){
+    //   if(updated_vals[i] == min)minI = updated_vals[i];
+    //   if(updated_vals[i] == max)maxI = updated_vals[i];
+    // }
+
+    // Case 1:
+    if(updated_vals.length == PLAYLIST_LENGTH)return updated_vals;
+    else if(updated_vals.length < PLAYLIST_LENGTH){
+      let missing = PLAYLIST_LENGTH - updated_vals.length;
+      console.log("MISSING "+missing);
+
+      for(let i=0; i<missing; i++){
+        console.log("UPdated vals length is " + updated_vals.length)
+        let randIndex = getRandInt(1, updated_vals.length);
+        
+        if(updated_vals[randIndex] > updated_vals[randIndex-1]){
+          max = updated_vals[randIndex];
+          min = updated_vals[randIndex-1];
+        }else if(updated_vals[randIndex] < updated_vals[randIndex-1]){
+          max = updated_vals[randIndex-1];
+          min = updated_vals[randIndex];
+        }
+        else if(updated_vals[randIndex] == updated_vals[randIndex-1]){
+          max = updated_vals[randIndex];
+          min = updated_vals[randIndex-1]-0.005;
+        }
+
+        let firstArr = updated_vals.slice(0, randIndex)
+        let lastArr = updated_vals.slice(randIndex, updated_vals.length);
+        let randNum = getRandArbitrary(min, max);
+
+        firstArr.push(randNum);
+        firstArr.push(...lastArr);
+        updated_vals = firstArr;     
+
+      }
+
+    }else if(updated_vals.length > PLAYLIST_LENGTH){
+      let tocut = updated_vals.length - PLAYLIST_LENGTH;
+
+      let mod = 0;
+      if(tocut % 2 != 0)mod=1; 
+      
+      let firstArr = updated_vals.slice(tocut/2+mod, updated_vals.length/2);
+      let lastArr = updated_vals.slice(updated_vals.length/2, (updated_vals.length)-(tocut/2));
+      firstArr.push(...lastArr);
+      updated_vals = firstArr;
+    }
+
   }
 
   function generate(){
     getIndex(data, 25);
+    // DouglasPeucker(data, stdDev(data)+Mean(data))
     return
 
     let features;
