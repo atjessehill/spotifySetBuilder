@@ -175,13 +175,14 @@ function PlaylistBuilder(props) {
       updated_vals = firstArr;
     }
 
+    return updated_vals;
+
   }
 
   function generate(){
-    getIndex(data, 25);
+    let sampledPoints = getIndex(data, 25);
     // DouglasPeucker(data, stdDev(data)+Mean(data))
-    return
-
+    console.log(sampledPoints);
     let features;
     let seedIndex;
     let sampleIndex;
@@ -196,9 +197,9 @@ function PlaylistBuilder(props) {
       console.log(features[songFeature])
       let closestVal = 100;
 
-      for(let i=0; i<data.length; i++){
+      for(let i=0; i<sampledPoints.length; i++){
 
-        let diff = Math.abs(data[i]-features[songFeature]);
+        let diff = Math.abs(sampledPoints[i]-features[songFeature]);
         // console.log(i + ':' +diff + ' :'+closestVal);
 
         if (diff < closestVal){
@@ -206,9 +207,9 @@ function PlaylistBuilder(props) {
           seedIndex = i
         }
       }
-      const offset = data[seedIndex]-features[songFeature];
+      const offset = sampledPoints[seedIndex]-features[songFeature];
 
-      adjusted_data = data.map((d) => {
+      adjusted_data = sampledPoints.map((d) => {
         return (offset >= 0) ? d+offset:d-offset
       })
 
@@ -224,7 +225,7 @@ function PlaylistBuilder(props) {
       console.log(sampleIndex);
       console.log(seedIndex);
       THIS_PLAYLIST[seedIndex] = SEED_URI_MAIN.split(':')[2];
-
+      console.log(adjusted_data);
 
       // let pts = getIndex(adjusted_data, seedIndex).map((d) => {
       //   return adjusted_data[d]
@@ -238,9 +239,9 @@ function PlaylistBuilder(props) {
     .then(() => {
       let promise = Promise.resolve()
 
-      for(let i=seedIndex+1; i<sampleIndex.length; i++){
+      for(let i=seedIndex+1; i<sampledPoints.length; i++){
         const k = {}
-        k[FEATURE_TYPE] = adjusted_data[sampleIndex[i]]
+        k[FEATURE_TYPE] = sampledPoints[i]
         const end = seedIndex + Math.min(i-seedIndex, 5);
         promise = addToChain(promise, i, seedIndex, end, k);
 
@@ -248,7 +249,7 @@ function PlaylistBuilder(props) {
 
       for(let i=seedIndex-1; i>-1; i--){
         const k = {}
-        k[FEATURE_TYPE] = adjusted_data[sampleIndex[i]];
+        k[FEATURE_TYPE] = sampledPoints[i];
         let x = THIS_PLAYLIST.length-i
         x = (x >=5) ? 5 : x
         const start = i+1;
