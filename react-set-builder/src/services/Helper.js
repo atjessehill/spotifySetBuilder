@@ -7,10 +7,6 @@ export const Variance = (arr) => {
     return variance;
 }
 
-const sum = (arr) => {
-    
-}
-
 const reducer = (accumulator, currentValue) => accumulator+currentValue;
 
 export const Mean = (arr) => {

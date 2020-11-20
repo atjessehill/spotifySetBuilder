@@ -1,19 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState} from 'react';
 import '../App.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 // import Column from 'react-bootstrap/CardColumns';
 import Column from 'react-bootstrap/Col';
-import Lolipop from './Lolipop';
 import LineGraph from './LineGraph';
-import axios from 'axios';
-import Cookies from 'universal-cookie';
-import {getFeatures, requestRecs, login, createPlaylist, addSongstoPlaylist, search } from '../services/SpotifyCalls';
+import {getFeatures, requestRecs, login, search } from '../services/SpotifyCalls';
 import Datagen from '../services/Datagen';
-import {Variance, Mean, stdDev, getRandInt, getRandArbitrary, getSubsets} from '../services/Helper';
+import {Variance, Mean, stdDev, getRandInt, getRandArbitrary} from '../services/Helper';
 
-let PLAYLIST_NAME_MAIN = 'TEST PLAYLIST FROM setBuilder';
-let SEED_LOC_MAIN = 2;
 let SEED_URI_MAIN = 'spotify:track:5tIhRlNkApQJoDA8zhOBUY';
 let FEATURE_TYPE = 'target_danceability'
 let PLAYLIST_LENGTH = 6;
@@ -21,12 +16,9 @@ let THIS_PLAYLIST;
 
 function PlaylistBuilder(props) {
 
-  const cookies = new Cookies();
-  let searchItems;
   let error = false;
 
-  const [data, setData] = useState(Datagen())
-  let generated = false;
+  const [data] = useState(Datagen())
 
   function getRecommendations(i, start,  end, k){
     return new Promise((resolve, reject) => {
@@ -42,7 +34,7 @@ function PlaylistBuilder(props) {
       requestRecs(seed_tracks, metricStr)
       .then((res) => {
         let recs = res.data.tracks;
-        if (recs.length == 0)console.log("Could not find recommendations"); // TODO add rejection and error checking
+        if (recs.length === 0)console.log("Could not find recommendations"); // TODO add rejection and error checking
 
         for (let track in recs){
           if(!THIS_PLAYLIST.includes(recs[track].id)){
@@ -58,21 +50,21 @@ function PlaylistBuilder(props) {
 
   }
 
-  function perpLine(y2, y1, x2, x1, m, n){
+  // function perpLine(y2, y1, x2, x1, m, n){
 
-    const top = Math.abs()
-    return 
-  }
+  //   const top = Math.abs()
+  //   return 
+  // }
 
-  function DouglasPeucker(arr, epsilon){
-    let dmax = 0;
-    let index = 0;
-    const end = arr.length;
-    for(let i=2; i<end; i++){
+  // function DouglasPeucker(arr, epsilon){
+  //   let dmax = 0;
+  //   let index = 0;
+  //   const end = arr.length;
+  //   for(let i=2; i<end; i++){
 
-    }
+  //   }
     
-  }
+  // }
 
   function getIndex(adjusted_data, factor){
     // Return an array of indexes to indicate which indexes to sample from
@@ -112,7 +104,7 @@ function PlaylistBuilder(props) {
     }
 
     newPoints.map((d) => {
-      updated_vals.push(adjusted_data[d])
+      return updated_vals.push(adjusted_data[d])
     })
 
  
@@ -132,7 +124,7 @@ function PlaylistBuilder(props) {
     // }
 
     // Case 1:
-    if(updated_vals.length == PLAYLIST_LENGTH)return updated_vals;
+    if(updated_vals.length === PLAYLIST_LENGTH)return updated_vals;
     else if(updated_vals.length < PLAYLIST_LENGTH){
       let missing = PLAYLIST_LENGTH - updated_vals.length;
       console.log("MISSING "+missing);
@@ -148,7 +140,7 @@ function PlaylistBuilder(props) {
           max = updated_vals[randIndex-1];
           min = updated_vals[randIndex];
         }
-        else if(updated_vals[randIndex] == updated_vals[randIndex-1]){
+        else if(updated_vals[randIndex] === updated_vals[randIndex-1]){
           max = updated_vals[randIndex];
           min = updated_vals[randIndex-1]-0.005;
         }
@@ -167,7 +159,7 @@ function PlaylistBuilder(props) {
       let tocut = updated_vals.length - PLAYLIST_LENGTH;
 
       let mod = 0;
-      if(tocut % 2 != 0)mod=1; 
+      if(tocut % 2 !== 0)mod=1; 
       
       let firstArr = updated_vals.slice(tocut/2+mod, updated_vals.length/2);
       let lastArr = updated_vals.slice(updated_vals.length/2, (updated_vals.length)-(tocut/2));
@@ -183,7 +175,6 @@ function PlaylistBuilder(props) {
     let sampledPoints = getIndex(data, 25);
     // DouglasPeucker(data, stdDev(data)+Mean(data))
     console.log(sampledPoints);
-    let features;
     let seedIndex;
     let sampleIndex;
     let adjusted_data;
@@ -261,7 +252,6 @@ function PlaylistBuilder(props) {
       }
 
       promise.finally(() => {
-        generated=true;
         props.history.push({
           pathname: '/playlist',
           state: {
@@ -278,28 +268,17 @@ function PlaylistBuilder(props) {
     
   }
 
-  function clamp(x, lo, hi){
-    return x < lo ? lo : x > hi ? hi : x;
-  }
-
   function addToChain(chain, i, start, end, k){
     return chain.then(() => {
       return getRecommendations(i, start, end, k);
     })
   }
 
-  function getRandom(arr, n, index){
-    // FOR DEVELOPMENT PURPOSES ONLY, SELECT first N points from the data array
-    return arr.slice(index, index+n)
-
-  }
-
-
   function handleChange(event) {
     const eventId = event.target.id
-    if (eventId === 'name-input')PLAYLIST_NAME_MAIN = event.target.value;
-    else if (eventId === 'seed-location')SEED_LOC_MAIN = event.target.value;
-    else if (eventId === 'seed-id')SEED_URI_MAIN = event.target.value;
+    // if (eventId === 'name-input')PLAYLIST_NAME_MAIN = event.target.value;
+    // else if (eventId === 'seed-location')SEED_LOC_MAIN = event.target.value;
+    if (eventId === 'seed-id')SEED_URI_MAIN = event.target.value;
     
     // search(event.target.value)
     //   .then((res) => {

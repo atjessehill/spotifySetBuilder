@@ -1,5 +1,5 @@
 import React from 'react';
-import {tracks} from '../services/SpotifyCalls';
+import {tracks, addSongstoPlaylist, createPlaylist} from '../services/SpotifyCalls';
 
 class Playlist extends React.Component {
 
@@ -18,17 +18,22 @@ class Playlist extends React.Component {
 
         // if (!generated)return
         console.log(this.state);
+        const ids = this.state.tracklist.map((d) => {
+            return d.id;
+        })
 
-    //   createPlaylist(this.state.playlist_name)
-    //     .then((response) => {
-    //       const playlistId = response.data.id
-    //       const uris = thisplaylist.join(',')
-    //       addSongstoPlaylist(playlistId, uris)
-    //       // .then((res) => {
-    //         // TODO show confirmation that a user is done
-    //       // })
+        
+      createPlaylist(this.state.playlist_name)
+        
+      .then((response) => {
+          const playlistId = response.data.id
+          const uris = ids.join(',')
+          addSongstoPlaylist(playlistId, uris)
+          .then((res) => {
+            // TODO show confirmation that a user is done
+          })
     
-    //     });
+        });
     
     
       }
@@ -49,13 +54,13 @@ class Playlist extends React.Component {
 
     handleChange(event) {
         const eventId = event.target.id
-        // if (eventId === 'name-input')PLAYLIST_NAME_MAIN = event.target.value;    
+        if (eventId === 'name-input')return;    
     }
 
     parseArtist(data){
         let artistStr = "";
         data.map((d) => {
-            artistStr = artistStr+d.name+' '
+            return artistStr = artistStr+d.name+' '
         })
         return artistStr
         
@@ -64,10 +69,6 @@ class Playlist extends React.Component {
 
     render(){
         const songs = this.state.tracklist;
-        const images = this.state.tracklist.map((d) => {
-            console.log(d.album.images[0]);
-            return <img key={d} src={d.album.images[2].url} alt="image"/>
-        })
         return (
         <div>
             <h1>Playlist Page</h1>
