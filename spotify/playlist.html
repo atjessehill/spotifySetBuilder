@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Custom Playlist</title>
+	<link rel="stylesheet" type="text/css" href="style-desktop.css">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+</head>
+<body>
+
+	<div id="playlist-background-setup" class="album-art">
+		<div id="background-tint-3"></div>
+	</div>
+
+	<div id="content-area">
+
+		<script type="module" src="header-footer.js"></script>
+
+		<div id="top-bar"></div>
+
+		<div id="playlist-area">
+
+			<div id="playlist-left">
+				<img src="assets/albumart/sample-image4.jpg" class="album-art playlist-album-art-tile">
+
+				<p class="input-headers" style="margin-top: 30px;">Playlist name:</p>
+
+				<input type="paragraph" name="playlistName" placeholder="Enter playlist name..." id="playlist-name-id" class="set-playlist-name">
+
+				<p class="sub-text" style="margin-top: 0px;">Genre: <span id="genre-text-id" class="spotify">Rock</span></p>
+
+				<p class="light-text" style="margin-top: 0px;">By <span id="artist-name-id">Ronak Laungani</span></p>
+
+				<div style="margin-top: 20px;">
+					<button class="button-fill orange-bg" onclick="window.open('generate.html', '_self')">Add playlist to Spotify <img src="assets/icons/right-circle-white.svg" class="button-icons-on-right"></button>
+				</div>
+
+				<div><button class="button-line orange"><img src="assets/icons/plus-circle-orange.svg" class="button-icons"> Share<div class="button-bg orange-bg"></div></button></div>
+
+			</div>
+
+			<div id="playlist-right">
+
+				<div>
+					<div class="input-headers float-to-left" style="margin-top: 0px;"><span id="playlist-no-of-tracks">12</span> songs for <span id="playlist-metric">Dancibility</span></div>
+					<div class="text-button float-to-right orange"><i class="las la-play"></i> PLAY ALL</div>
+				</div>
+
+				<div class="custom-playlist-scroll-box">
+
+				<div id="custom-playlist-block">
+
+
+					<script type="module" src="fill-custom-playlist.js"></script>
+
+					<!-- <table id="custom-playlist-mainTable"> -->
+
+					<!-- <tr>
+
+					<td>
+
+					<table class="custom-playlist-innerTable">
+
+						<tr>
+
+							<td rowspan="2" class="custom-playlist-innerTd1"><img class="custom-playlist-thumbnail" src="assets/albumart/sample-image4.jpg"></td>
+
+							<td class="title-text custom-playlist-innerTd2">I'm With You <span class="small-text"> - 02:22</span></td>
+
+							<td class="custom-playlist-innerTd3 float-to-right"><span class="text-button float-to-left grey2"><i class="las la-minus-circle"></i>REMOVE</span> | <span class="text-button float-to-right orange"><i class="las la-play"></i>PLAY</span></td>
+						</tr>
+						<tr>
+							<td class="sub-text custom-playlist-innerTd4">Avril Lavigne</td>
+							<td class="light-text float-to-right">Dancibility: 25%</td>
+						</tr>
+					</table>
+
+					</td>
+
+					</tr> -->
+					
+				</div>
+				</div>
+			</div>
+			
+		</div>
+
+
+		<div id="footer"></div>
+
+	</div>
+
+</body>
+</html>
