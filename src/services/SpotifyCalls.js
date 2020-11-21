@@ -140,9 +140,8 @@ export const addSongstoPlaylist = async(id, uris) => {
 export const login = () => {
     console.log('login');
     const scope = 'playlist-modify-public,playlist-modify-private,playlist-read-private,playlist-read-collaborative'
-    const redirect = 'http%3A%2F%2Flocalhost%3A3000%2Flogin'
-    const client_id = 'f4d25f2bdfee4094a7d93f0ec7e4f264'
-    const url = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=code&redirect_uri=${redirect}&scope=${scope}`
+    const redirect = 'https%3A%2F%2Fnoshuffle.herokuapp.com%2Flogin'
+    const url = `https://accounts.spotify.com/authorize?client_id=${REACT_APP_SPOT_CLIENT}&response_type=code&redirect_uri=${redirect}&scope=${scope}`
     window.location.assign(url);
     
   }

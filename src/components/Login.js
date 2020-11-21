@@ -12,7 +12,7 @@ function Login(props){
         const search = props.location.search;
         const params = new URLSearchParams(search);
         const authCode = params.get('code')
-        const redirect = 'http://localhost:3000/login'
+        const redirect = 'https://noshuffle.herokuapp.com/login'
         const clientId = REACT_APP_SPOT_CLIENT;
         const clientSecret = REACT_APP_SPOT_CLIENT_SECRET;
 
