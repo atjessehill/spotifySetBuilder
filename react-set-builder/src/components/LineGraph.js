@@ -107,12 +107,21 @@ function LineGraph({data}) {
         }, [data, dimensions])
 
         return (
-            <div ref={wrapperRef}  style={{marginBottom: "2rem", marginTop: "2rem"}}>
+
+          <div id="graph-block" class="metric-blocks">
+          <div>
+            <div class="numbered-disc orange-bg float-to-left">3</div><p class="title-text float-to-left">Playlist trajectory</p>
+          </div>
+          <div ref={wrapperRef}  style={{marginBottom: "2rem", marginTop: "2rem"}}>
                 <svg ref={svgRef} onMouseDown={LineGraph.handleMouseDown}>
                     <g className="x-axis"/>
                     <g className="y-axis"/>
                 </svg>
             </div>
+        </div>
+
+
+
         )
 
 }

@@ -5,6 +5,8 @@ import Row from 'react-bootstrap/Row';
 // import Column from 'react-bootstrap/CardColumns';
 import Column from 'react-bootstrap/Col';
 import LineGraph from './LineGraph';
+import Reference from './Reference';
+import Scroller from './Scroller';
 import {getFeatures, requestRecs, login, search } from '../services/SpotifyCalls';
 import Datagen from '../services/Datagen';
 import {Variance, Mean, stdDev, getRandInt, getRandArbitrary} from '../services/Helper';
@@ -290,29 +292,30 @@ function PlaylistBuilder(props) {
   }
 
   return (
-      <Container id='view-area'>
-        <Row>
-          <Column id='parameter-col'>
-            <input type="text" id="seed-id" placeholder="spotify:track:xxxxxxx" onChange={handleChange}></input>
-            <br/>
-            <button onClick={generate}> generate </button>
-          </Column>
-          <Column id='chart-col'>
-            <LineGraph data={data} />
-          </Column>
-          <Column id='right-col'>
-            <button onClick={login}> Login to Spotify </button>
-            <div>
-            {error ?  <h3> 
-                Token refreshing. Try again 
-              </h3>: <h3> All good</h3>
 
-            }
-            </div>
+      <div id="metrics-area">
+        
+        <div id="no-of-songs-block" className="metric-blocks" style={{"backgroundColor": "ffffff10"}}>
 
-          </Column>
-        </Row>
-      </Container>
+          <div>
+            <div className="numbered-disc orange-bg float-to-left">1</div><p className="title-text float-to-left">Number of songs</p>
+          </div>
+
+          <p className="input-headers align-text-center"><i className="las la-exchange-alt"></i> Slide to change</p>
+          <Scroller/>
+
+
+          <p className="reduntant-text grey1 stick-to-bottom" >Enter the number of songs you would like to have in your playlist. Minimum of 6, maximum of 99.</p>
+
+        </div>
+        <Reference/>
+
+        <LineGraph data={data}/>
+
+
+    </div>
+
+
   );
 }
 
