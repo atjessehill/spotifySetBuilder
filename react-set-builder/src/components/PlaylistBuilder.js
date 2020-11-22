@@ -1,9 +1,5 @@
 import React, { useState} from 'react';
 import '../App.css';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-// import Column from 'react-bootstrap/CardColumns';
-import Column from 'react-bootstrap/Col';
 import LineGraph from './LineGraph';
 import Reference from './Reference';
 import Scroller from './Scroller';
@@ -312,7 +308,7 @@ function PlaylistBuilder(props) {
         <LineGraph data={data}/>
 
         <div style={{"marginTop": "20px"}} className="float-to-right">
-				  <button className="button-fill orange-bg" onclick={console.log("generate")}>Generate playlist <img src="assets/icons/right-circle-white.svg" class="button-icons-on-right"/></button>
+				  <button className="button-fill orange-bg" onclick={console.log("generate")}>Generate playlist <img src="assets/icons/right-circle-white.svg" className="button-icons-on-right"/></button>
 		    </div>
 
     </div>
