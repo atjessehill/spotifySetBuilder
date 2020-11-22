@@ -292,7 +292,6 @@ function PlaylistBuilder(props) {
   }
 
   return (
-
       <div id="metrics-area">
         
         <div id="no-of-songs-block" className="metric-blocks" style={{"backgroundColor": "ffffff10"}}>
@@ -312,6 +311,9 @@ function PlaylistBuilder(props) {
 
         <LineGraph data={data}/>
 
+        <div style={{"marginTop": "20px"}} className="float-to-right">
+				  <button className="button-fill orange-bg" onclick={console.log("generate")}>Generate playlist <img src="assets/icons/right-circle-white.svg" class="button-icons-on-right"/></button>
+		    </div>
 
     </div>
 

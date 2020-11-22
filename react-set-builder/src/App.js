@@ -3,13 +3,25 @@ import Home from './components/Home'
 import Playlist from './components/Playlist';
 import PlaylistBuilder from './components/PlaylistBuilder';
 import Login from './components/Login';
+import Header from './components/Header';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
 class App extends Component{
+
+    // componentDidMount(){
+    //     const script = document.createElement("script");
+    //     script.src = "../spotify/header-footer.js";
+    //     // script.async = true;
+    //     document.body.appendChild(script);
+    // }
+
     render(){
-        return (
+        return (          
+           <div id="content-area">
+            {/* <Header/> */}
+
             <BrowserRouter>
-            <div>
+
             <Switch>
                 <Route path="/login" component={Login}/>
                 <Route path="/home" component={Home}/>
@@ -17,8 +29,11 @@ class App extends Component{
                 <Route path="" component={PlaylistBuilder} exact/>
 
                 </Switch>
-            </div>
             </BrowserRouter>
+            <div id="footer"></div>
+
+           </div>
+
 
         )
     }
