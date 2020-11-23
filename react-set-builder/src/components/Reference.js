@@ -1,5 +1,6 @@
 import React from 'react';
 import '../App.css';
+import { search } from '../services/SpotifyCalls';
 
 class Reference extends React.Component {
 
@@ -7,10 +8,10 @@ class Reference extends React.Component {
         console.log(props)
         super(props);
         this.state = {
-
+            songs: []
         }
         this.filterDropDown = this.filterDropDown.bind(this);
-
+        // this.selectThisSong = this.selectThisSong.bind(this);
     }
 
 
@@ -19,36 +20,38 @@ class Reference extends React.Component {
     
     }
 
+    selectThisSong(event){
+        // const id;
+        // const name
+        // const artist;
+        
+        const [target, id, name, artist ]= event.target.id.split(':')
+        
+        console.log(id);
+        console.log(name);
+        console.log(artist);
+
+    }
 
     filterDropDown(event){
 
         if (event.target.id != 'search-box-id')return
 
         let filter = event.target.value;
-        let txtValue;
-        let input = document.getElementById('search-box-id');
+
+        search(event.target.value)
+            .then(res => {
+                console.log(res)
+                this.setState({
+                    songs: res
+                })
+
+            })
+
         let mainTable = document.getElementById('dropdown-table');
-        let trs = mainTable.getElementsByTagName('tr');
 
         if(filter.length == 0)document.getElementById('dropdown-block-id').style.display = "none";
         document.getElementById("dropdown-block-id").style.display = "block";
-
-        for (let i = 0; i < trs.length; i+=3) {
-
-            let tds = trs[i].getElementsByClassName("songs-in-dropdown-list")[0];
-        
-            // console.log(trs[i].id);
-            // console.log(tds);
-        
-            if (tds) {
-              txtValue = tds.textContent || tds.innerText;
-              if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                trs[i].style.display = "";
-              } else {
-                trs[i].style.display = "none";
-              }
-            }
-          }
 
     }
 
@@ -56,6 +59,66 @@ class Reference extends React.Component {
 
     render(){
 
+        let songs = this.state.songs;
+        const songChoices = [];
+        console.log(songs.length);
+        if (songs.length != 0){
+            console.log("redoing this");
+            songs.map(s => {
+
+                const maintdID = `maintd:${s.id}:${s.name}:${s.artists[0].name}`;
+                const innerTr1ID = `innerTr1:${s.id}:${s.name}:${s.artists[0].name}`;
+                const rowSpanID = `rowSpan:${s.id}:${s.name}:${s.artists[0].name}`;
+                const songID = `songsindrlist:${s.id}:${s.name}:${s.artists[0].name}`;
+                const artistdrlist = `artistindrlist:${s.id}:${s.name}:${s.artists[0].name}`
+
+                const maintr = <tr 
+                    // key={s.id} 
+                    id={s.id}
+                    onClick={this.selectThisSong}
+                    className = "maintr"
+                    key={s.id}
+                > 
+                    <td id={maintdID} className = "maintd">
+                        <table className = "innerTable">
+                            <tbody>
+                                <tr id={innerTr1ID} className="innerTr1">
+                                    <td id={rowSpanID} rowSpan="2"></td>
+                                {/* <img src={s.album.images[2]} className = "list-thumbnail"/> */}
+
+                                    <td id={songID} className = "songs-in-dropdown-list">{s.name}</td>
+
+                                </tr>
+                                <tr> 
+                                    <td id={artistdrlist} className = "artists-in-dropdown-list"> {s.artists[0].name}</td>
+                                </tr>
+
+                            </tbody>
+
+
+
+                        </table>
+
+                    </td>
+                
+                </tr>
+
+                songChoices.push(maintr);
+                // maintr.append(maintd); //
+                // maintd.append(innerTable); 
+                // innerTable.append(tr1);
+                // tr1.append(td1);
+                // td1.append(thumbnailImg)
+                // tr1.append(td2);
+                // innerTable.append(tr2);
+                // tr2.append(td3);
+
+                // songChoices.push(maintr)
+
+            })
+            
+            console.log(songChoices);
+        }
 
         return (
             <div id="reference-song-block" className="metric-blocks">
@@ -77,7 +140,11 @@ class Reference extends React.Component {
 
                 <div id="dropdown-block-id" className="dropdown-block">
                     <table id="dropdown-table" className="dropdown-table">
-                        <script type="module" src="reference-song-list.js"></script>
+                        <tbody>
+                        {songChoices}
+
+                        </tbody>
+                        {/* <script type="module" src="reference-song-list.js"></script> */}
                     </table>
                 </div>
             </div>

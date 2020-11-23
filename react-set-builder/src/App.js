@@ -4,6 +4,7 @@ import Playlist from './components/Playlist';
 import PlaylistBuilder from './components/PlaylistBuilder';
 import Login from './components/Login';
 import Header from './components/Header';
+import {login } from './services/SpotifyCalls';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
 class App extends Component{
@@ -16,8 +17,11 @@ class App extends Component{
     // }
 
     render(){
-        return (          
+        return (    
+      
            <div id="content-area">
+            <button onClick={login}> Login to Spotify </button>
+
             {/* <Header/> */}
 
             <BrowserRouter>
