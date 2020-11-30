@@ -38,24 +38,29 @@ class App extends Component{
     }
 
     render(){
-        return (    
-      
-           <div id="content-area">
-            <Header access={this.state.access} userID={this.state.userID} handler={this.triggerLogin}/>
-            {/* <Header/> */}
+        return (
+            <div>
+                <div id="background-setup">
+                    <div id="background-tint-2"> </div>
+                </div>
 
-            <BrowserRouter>
+                <div id="content-area">
+                    <Header access={this.state.access} userID={this.state.userID} handler={this.triggerLogin}/>
+                    {/* <Header/> */}
 
-            <Switch>
-                <Route path="/login" component={Login}/>
-                <Route path="/home" component={Home}/>
-                <Route path="/playlist" component={Playlist}/>
-                <Route path="" component={PlaylistBuilder} exact/>
+                    <BrowserRouter>
 
-                </Switch>
-            </BrowserRouter>
-            <div id="footer"></div>
-            <Footer/>
+                    <Switch>
+                        <Route path="/login" component={Login}/>
+                        <Route path="/home" component={Home}/>
+                        <Route path="/playlist" component={Playlist}/>
+                        <Route path="" component={PlaylistBuilder} exact/>
+
+                        </Switch>
+                    </BrowserRouter>
+                    <div id="footer"></div>
+                    <Footer/>
+                </div>
            </div>
 
 
