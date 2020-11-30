@@ -6,8 +6,23 @@ import Login from './components/Login';
 import Header from './components/Header';
 import {login } from './services/SpotifyCalls';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 class App extends Component{
+
+    constructor(props){
+        super(props);
+
+        const cookies = new Cookies();
+
+        this.state = {
+            userID: cookies.get('SPOT_USER_ID'),
+            access: cookies.get('SPOT_USER_accessToken'),
+            refresh: cookies.get('SPOT_USER_refreshToken')
+        }
+        this.triggerLogin = this.triggerLogin.bind(this);
+        console.log(this.state);
+    }
 
     // componentDidMount(){
     //     const script = document.createElement("script");
@@ -16,11 +31,16 @@ class App extends Component{
     //     document.body.appendChild(script);
     // }
 
+    triggerLogin(){
+        login()
+        console.log("here");
+    }
+
     render(){
         return (    
       
            <div id="content-area">
-            <Header/>
+            <Header access={this.state.access} userID={this.state.userID} handler={this.triggerLogin}/>
             {/* <Header/> */}
 
             <BrowserRouter>

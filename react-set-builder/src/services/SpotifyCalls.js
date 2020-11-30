@@ -138,7 +138,6 @@ export const addSongstoPlaylist = async(id, uris) => {
 }
 
 export const login = () => {
-    console.log('login');
     const scope = 'playlist-modify-public,playlist-modify-private,playlist-read-private,playlist-read-collaborative'
     const redirect = 'http%3A%2F%2Flocalhost%3A3000%2Flogin'
     const client_id = 'f4d25f2bdfee4094a7d93f0ec7e4f264'

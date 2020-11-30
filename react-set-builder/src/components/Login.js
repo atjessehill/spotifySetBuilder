@@ -32,7 +32,6 @@ function Login(props){
         }
 
         request.post(authOptions, (error, response, body) => {
-
             if(response.statusCode === 200){
                 cookies.set('SPOT_USER_accessToken', body.access_token, {path: '/'});
                 cookies.set('SPOT_USER_refreshToken', body.refresh_token, {path: '/'});
