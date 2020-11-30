@@ -170,3 +170,13 @@ export const tracks = async(ids) => {
         return res.data.tracks
     })
 }
+
+export const artists = async(id) => {
+    return await axios({
+        method: 'get',
+        url: `https://api.spotify.com/v1/artists/${id}`
+    })
+    .then((res) => {
+        return res.data
+    })
+}
