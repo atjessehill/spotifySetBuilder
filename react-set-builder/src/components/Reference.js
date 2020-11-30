@@ -8,10 +8,11 @@ class Reference extends React.Component {
         console.log(props)
         super(props);
         this.state = {
-            songs: []
+            songs: [],
+            uri: this.props.reference
         }
         this.filterDropDown = this.filterDropDown.bind(this);
-        // this.selectThisSong = this.selectThisSong.bind(this);
+        this.selectThisSong = this.selectThisSong.bind(this);
     }
 
 
@@ -26,10 +27,15 @@ class Reference extends React.Component {
         // const artist;
         
         const [target, id, name, artist ]= event.target.id.split(':')
-        
-        console.log(id);
-        console.log(name);
-        console.log(artist);
+        // this.props.reference =
+        // this.setState({
+        //     uri:  'spotify:track:'+id
+        // })
+        // console.log(this.state.uri);
+        // console.log(id);
+        // console.log(name);
+        // console.log(artist);
+        this.props.handler('spotify:track:'+id);
 
     }
 
@@ -63,7 +69,6 @@ class Reference extends React.Component {
         const songChoices = [];
         console.log(songs.length);
         if (songs.length != 0){
-            console.log("redoing this");
             songs.map(s => {
 
                 const maintdID = `maintd:${s.id}:${s.name}:${s.artists[0].name}`;
@@ -117,7 +122,6 @@ class Reference extends React.Component {
 
             })
             
-            console.log(songChoices);
         }
 
         return (

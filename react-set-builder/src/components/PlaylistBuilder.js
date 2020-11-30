@@ -7,7 +7,6 @@ import {getFeatures, requestRecs, login, search } from '../services/SpotifyCalls
 import Datagen from '../services/Datagen';
 import {Variance, Mean, stdDev, getRandInt, getRandArbitrary} from '../services/Helper';
 
-let SEED_URI_MAIN = 'spotify:track:5tIhRlNkApQJoDA8zhOBUY';
 let FEATURE_TYPE = 'target_danceability'
 let PLAYLIST_LENGTH = 6;
 let THIS_PLAYLIST;
@@ -17,6 +16,7 @@ function PlaylistBuilder(props) {
   let error = false;
 
   const [data] = useState(Datagen())
+  let [SEED_URI_MAIN] = useState('SEED_URI_DEFAULT');
 
   function getRecommendations(i, start,  end, k){
     return new Promise((resolve, reject) => {
@@ -169,7 +169,14 @@ function PlaylistBuilder(props) {
 
   }
 
+  function uriChange(uri){
+    SEED_URI_MAIN = uri;
+    console.log(SEED_URI_MAIN);
+
+  }
+
   function generate(){
+
     let sampledPoints = getIndex(data, 25);
     // DouglasPeucker(data, stdDev(data)+Mean(data))
     console.log(sampledPoints);
@@ -303,12 +310,12 @@ function PlaylistBuilder(props) {
           <p className="reduntant-text grey1 stick-to-bottom" >Enter the number of songs you would like to have in your playlist. Minimum of 6, maximum of 99.</p>
 
         </div>
-        <Reference/>
+        <Reference handler={uriChange}/>
 
         <LineGraph data={data}/>
 
         <div style={{"marginTop": "20px"}} className="float-to-right">
-				  <button className="button-fill orange-bg" onclick={console.log("generate")}>Generate playlist <img src="assets/icons/right-circle-white.svg" className="button-icons-on-right"/></button>
+				  <button className="button-fill orange-bg" onClick={generate}>Generate playlist <img src="assets/icons/right-circle-white.svg" className="button-icons-on-right"/></button>
 		    </div>
 
     </div>
