@@ -163,7 +163,8 @@ class Reference extends React.Component {
                 <div className="numbered-disc orange-bg float-to-left">2</div><p className="title-text float-to-left">Select reference song</p>
             </div>
 
-            <p className="input-headers" style={{"marginTop": "130px"}}><i className="las la-search"></i> Search for a song</p>
+            <p className="input-headers" style={{"marginTop": "130px"}}>
+                <i className="las la-search"></i> Search for a song</p>
             {/* value={this.state.hasSelected ? selectedValue: ""} */}
             <div id="dropdown-group">
                 <input type="search" placeholder="Search for a song..." id="search-box-id" onChange={this.filterDropDown} className="reference-input-text"/> 
