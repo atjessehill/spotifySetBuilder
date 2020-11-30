@@ -25,8 +25,12 @@ class Reference extends React.Component {
         // const id;
         // const name
         // const artist;
-        
+        console.log(event.target);        
         const [target, id, name, artist ]= event.target.id.split(':')
+        this.props.handler({
+            type: "URI", 
+            value: 'spotify:track:'+id   
+           });
         // this.props.reference =
         // this.setState({
         //     uri:  'spotify:track:'+id
@@ -35,7 +39,6 @@ class Reference extends React.Component {
         // console.log(id);
         // console.log(name);
         // console.log(artist);
-        this.props.handler('spotify:track:'+id);
 
     }
 
@@ -71,6 +74,7 @@ class Reference extends React.Component {
         if (songs.length != 0){
             songs.map(s => {
 
+                const innerTableID = `innerTable:${s.id}:${s.name}:${s.artists[0].name}`;
                 const maintdID = `maintd:${s.id}:${s.name}:${s.artists[0].name}`;
                 const innerTr1ID = `innerTr1:${s.id}:${s.name}:${s.artists[0].name}`;
                 const rowSpanID = `rowSpan:${s.id}:${s.name}:${s.artists[0].name}`;
@@ -85,7 +89,7 @@ class Reference extends React.Component {
                     key={s.id}
                 > 
                     <td id={maintdID} className = "maintd">
-                        <table className = "innerTable">
+                        <table id={innerTableID} className = "innerTable">
                             <tbody>
                                 <tr id={innerTr1ID} className="innerTr1">
                                     <td id={rowSpanID} rowSpan="2"></td>
