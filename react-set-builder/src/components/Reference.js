@@ -9,7 +9,9 @@ class Reference extends React.Component {
         super(props);
         this.state = {
             songs: [],
-            uri: this.props.reference
+            hasSelected: false,
+            selectedSongName: "",
+            selectedArtistName: ""
         }
         this.filterDropDown = this.filterDropDown.bind(this);
         this.selectThisSong = this.selectThisSong.bind(this);
@@ -18,7 +20,7 @@ class Reference extends React.Component {
 
 
     componentDidMount(){
-    
+        document.getElementById('dropdown-block-id').style.display = "none";
     }
 
     selectThisSong(event){
@@ -31,6 +33,24 @@ class Reference extends React.Component {
             type: "URI", 
             value: 'spotify:track:'+id   
            });
+
+        this.setState((state) => {
+            return {
+                selectedSongName: name,
+                selectedArtistName: artist,
+                hasSelected: true
+            }
+
+            
+        }, () => {
+            console.log(this.state);
+            // document.getElementById("genre-text-id").innerHTML = "" + selectedGenre + "";
+
+            let fillSearchBox = document.getElementById("search-box-id");
+            fillSearchBox.value = "" + this.state.selectedSongName + " - " + this.state.selectedArtistName + "";
+              
+        })
+
         // this.props.reference =
         // this.setState({
         //     uri:  'spotify:track:'+id
@@ -47,12 +67,19 @@ class Reference extends React.Component {
         if (event.target.id != 'search-box-id')return
 
         let filter = event.target.value;
+        if (filter === ""){
+            console.log("here")
+            this.setState({
+                hasSelected: false
+            })
+            return
+        }
 
         search(event.target.value)
             .then(res => {
-                console.log(res)
                 this.setState({
-                    songs: res
+                    songs: res,
+                    hasSelected: false
                 })
 
             })
@@ -67,6 +94,11 @@ class Reference extends React.Component {
 
 
     render(){
+
+        let selectedValue  = "";
+        if (this.state.hasSelected){
+            selectedValue = this.state.selectedSongName + " - " + this.state.selectedArtistName;
+        }
 
         let songs = this.state.songs;
         const songChoices = [];
@@ -136,7 +168,7 @@ class Reference extends React.Component {
             </div>
 
             <p className="input-headers" style={{"marginTop": "130px"}}><i className="las la-search"></i> Search for a song</p>
-
+            {/* value={this.state.hasSelected ? selectedValue: ""} */}
             <div id="dropdown-group">
                 <input type="search" placeholder="Search for a song..." id="search-box-id" onChange={this.filterDropDown} className="reference-input-text"/> 
                 {/* onkeyup="filterDropDown()" */}
@@ -144,9 +176,12 @@ class Reference extends React.Component {
 
                 <p className="sub-text" style={{"marginTop": "20px"}}>Genre: <span id="genre-text-id" className="spotify"></span></p>
 
-                <script type="text/javascript" src="filter-reference-dropdown-list.js"></script>
+                {/* <script type="text/javascript" src="filter-reference-dropdown-list.js"></script> */}
 
-                <div id="dropdown-block-id" className="dropdown-block">
+                {this.state.hasSelected 
+                
+                }
+                <div id="dropdown-block-id" style={{display: this.state.hasSelected ? 'none': 'block'}}className="dropdown-block">
                     <table id="dropdown-table" className="dropdown-table">
                         <tbody>
                         {songChoices}

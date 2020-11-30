@@ -177,7 +177,7 @@ function PlaylistBuilder(props) {
   function generate(){
 
     const scroller = document.getElementById('scroller');
-		const PLAYLIST_LENGTH = ((((scroller.scrollLeft)/50)*1)+6);
+		PLAYLIST_LENGTH = ((((scroller.scrollLeft)/50)*1)+6);
 
     let sampledPoints = getIndex(data, 25);
     // DouglasPeucker(data, stdDev(data)+Mean(data))
