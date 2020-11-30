@@ -20,8 +20,7 @@ class App extends Component{
         return (    
       
            <div id="content-area">
-            <button onClick={login}> Login to Spotify </button>
-
+            <Header/>
             {/* <Header/> */}
 
             <BrowserRouter>
