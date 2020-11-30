@@ -232,7 +232,8 @@ body { background-color: #1a1a1a; }
 			font-size: 16px;
 			font-weight: 400;
 			letter-spacing: 0.34px;
-			margin: 6px 0px 10px 0px; }
+			margin: 6px 0px 10px 0px; 
+			padding-bottom: 40px}
 
 .small-text { font-family: ubuntu;
 			color: #17B350;

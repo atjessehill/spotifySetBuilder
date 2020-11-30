@@ -1,6 +1,6 @@
 import React from 'react';
 import '../App.css';
-import { search } from '../services/SpotifyCalls';
+import { search, artists } from '../services/SpotifyCalls';
 
 class Reference extends React.Component {
 
@@ -24,41 +24,38 @@ class Reference extends React.Component {
     }
 
     selectThisSong(event){
-        // const id;
-        // const name
-        // const artist;
-        console.log(event.target);        
-        const [target, id, name, artist ]= event.target.id.split(':')
-        this.props.handler({
-            type: "URI", 
-            value: 'spotify:track:'+id   
-           });
+    
+        const [target, id, name, artist, artistID ]= event.target.id.split(':')
+        let genre;
+        artists(artistID)
+        .then(res => {
 
-        this.setState((state) => {
-            return {
-                selectedSongName: name,
-                selectedArtistName: artist,
-                hasSelected: true
-            }
+            genre = res.genres[0]
+            this.props.handler({
+                type: "URI", 
+                value: 'spotify:track:'+id   
+               });
+    
+            this.setState((state) => {
+                return {
+                    selectedSongName: name,
+                    selectedArtistName: artist,
+                    hasSelected: true
+                }
+    
+                
+            }, () => {
+                document.getElementById("genre-text-id").innerHTML = genre;
+    
+                let fillSearchBox = document.getElementById("search-box-id");
+                fillSearchBox.value = "" + this.state.selectedSongName + " - " + this.state.selectedArtistName + "";
+                  
+            })
 
-            
-        }, () => {
-            console.log(this.state);
-            // document.getElementById("genre-text-id").innerHTML = "" + selectedGenre + "";
+        });
 
-            let fillSearchBox = document.getElementById("search-box-id");
-            fillSearchBox.value = "" + this.state.selectedSongName + " - " + this.state.selectedArtistName + "";
-              
-        })
 
-        // this.props.reference =
-        // this.setState({
-        //     uri:  'spotify:track:'+id
-        // })
-        // console.log(this.state.uri);
-        // console.log(id);
-        // console.log(name);
-        // console.log(artist);
+
 
     }
 
@@ -102,16 +99,15 @@ class Reference extends React.Component {
 
         let songs = this.state.songs;
         const songChoices = [];
-        console.log(songs.length);
         if (songs.length != 0){
             songs.map(s => {
 
-                const innerTableID = `innerTable:${s.id}:${s.name}:${s.artists[0].name}`;
-                const maintdID = `maintd:${s.id}:${s.name}:${s.artists[0].name}`;
-                const innerTr1ID = `innerTr1:${s.id}:${s.name}:${s.artists[0].name}`;
-                const rowSpanID = `rowSpan:${s.id}:${s.name}:${s.artists[0].name}`;
-                const songID = `songsindrlist:${s.id}:${s.name}:${s.artists[0].name}`;
-                const artistdrlist = `artistindrlist:${s.id}:${s.name}:${s.artists[0].name}`
+                const innerTableID = `innerTable:${s.id}:${s.name}:${s.artists[0].name}:${s.artists[0].id}`;
+                const maintdID = `maintd:${s.id}:${s.name}:${s.artists[0].name}:${s.artists[0].id}`;
+                const innerTr1ID = `innerTr1:${s.id}:${s.name}:${s.artists[0].name}:${s.artists[0].id}`;
+                const rowSpanID = `rowSpan:${s.id}:${s.name}:${s.artists[0].name}:${s.artists[0].id}`;
+                const songID = `songsindrlist:${s.id}:${s.name}:${s.artists[0].name}:${s.artists[0].id}`;
+                const artistdrlist = `artistindrlist:${s.id}:${s.name}:${s.artists[0].name}:${s.artists[0].id}`
 
                 const maintr = <tr 
                     // key={s.id} 
