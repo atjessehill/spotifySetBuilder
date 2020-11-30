@@ -169,13 +169,15 @@ function PlaylistBuilder(props) {
 
   }
 
-  function uriChange(uri){
-    SEED_URI_MAIN = uri;
-    console.log(SEED_URI_MAIN);
-
+  function handleChange(event){
+    if (event.type === "URI") SEED_URI_MAIN = event.value;
+    else if (event.type === "LENGTH") PLAYLIST_LENGTH = event.value;
   }
 
   function generate(){
+
+    const scroller = document.getElementById('scroller');
+		const PLAYLIST_LENGTH = ((((scroller.scrollLeft)/50)*1)+6);
 
     let sampledPoints = getIndex(data, 25);
     // DouglasPeucker(data, stdDev(data)+Mean(data))
@@ -279,21 +281,6 @@ function PlaylistBuilder(props) {
     })
   }
 
-  function handleChange(event) {
-    const eventId = event.target.id
-    // if (eventId === 'name-input')PLAYLIST_NAME_MAIN = event.target.value;
-    // else if (eventId === 'seed-location')SEED_LOC_MAIN = event.target.value;
-    if (eventId === 'seed-id')SEED_URI_MAIN = event.target.value;
-    
-    // search(event.target.value)
-    //   .then((res) => {
-    //     searchItems = res.map((d) => <option key={d.name}>{d.name}</option>);
-    //   })
-    //   console.log(searchItems);
-    
-
-  }
-
   return (
       <div id="metrics-area">
         
@@ -310,7 +297,7 @@ function PlaylistBuilder(props) {
           <p className="reduntant-text grey1 stick-to-bottom" >Enter the number of songs you would like to have in your playlist. Minimum of 6, maximum of 99.</p>
 
         </div>
-        <Reference handler={uriChange}/>
+        <Reference handler={handleChange}/>
 
         <LineGraph data={data}/>
 

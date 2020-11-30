@@ -12,19 +12,9 @@ class Scroller extends React.Component {
             widthOfOneColumn: 50,
             stepValue: 1
         }
-        this.getScrollLeft = this.getScrollLeft.bind(this);
 
     }
 
-
-    getScrollLeft(){
-		// const finalValue = ((((scroller.scrollLeft)/widthOfOneColumn)*stepValue)+startNumber);
-        // printvalue.innerHTML = "" + finalValue + "";
-        const scroller = document.getElementById('scroller');
-		const finalValue = ((((scroller.scrollLeft)/50)*1)+6);
-        console.log(finalValue);
-
-    }
 
     componentDidMount(){
     
@@ -57,7 +47,7 @@ class Scroller extends React.Component {
             </div>
             <div id="selectedValueIndicator"></div>
 
-            <button onClick={this.getScrollLeft}>Get Value</button>
+            {/* <button onClick={this.getScrollLeft}>Get Value</button> */}
 
             <p id="scrollValue"></p>
 
