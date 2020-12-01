@@ -1,4 +1,5 @@
 import React from 'react';
+import BannerText from './BannerText';
 
 class Home extends React.Component {
 
@@ -10,17 +11,7 @@ class Home extends React.Component {
 
             <div id="banner-area">
 
-            <div id="banner-text-area">
-            {/* <script type="module" src="banner-slideshow.js"></script> */}
-            <p id="banner-text">Create the <span id='text-to-fill'>perfect Spotify</span> Playlist</p>
-            <div class="slideshow-bullets">
-                <div class="bullets grey-bg-2" id="bullet-1"></div><div class="bullets grey-bg-2" id="bullet-2"></div><div class="bullets orange-bg" id="bullet-3"></div>
-            </div>
-            <p class="sub-text" style={{paddingTop: "50px"}}>Curate playlists with changing <span class="orange">Dancebility <i class="las la-chevron-circle-down"></i></span> with time</p>
-            <div style={{marginTop: "20px"}}>
-                    <button class="button-fill orange-bg" onclick="window.open('generate.html', '_self')">Get started <img src="assets/icons/right-circle-white.svg" class="button-icons-on-right"/></button>
-            </div>
-            </div>
+            <BannerText/>
 
             <div>
                 {/* Explainer video comes here. */}
