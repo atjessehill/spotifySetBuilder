@@ -141,16 +141,6 @@ class Reference extends React.Component {
                 </tr>
 
                 songChoices.push(maintr);
-                // maintr.append(maintd); //
-                // maintd.append(innerTable); 
-                // innerTable.append(tr1);
-                // tr1.append(td1);
-                // td1.append(thumbnailImg)
-                // tr1.append(td2);
-                // innerTable.append(tr2);
-                // tr2.append(td3);
-
-                // songChoices.push(maintr)
 
             })
             
