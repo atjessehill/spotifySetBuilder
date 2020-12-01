@@ -31,6 +31,7 @@ class Reference extends React.Component {
         .then(res => {
 
             genre = res.genres[0]
+            console.log(res.genres)
             this.props.handler({
                 type: "URI", 
                 value: 'spotify:track:'+id   
@@ -64,6 +65,7 @@ class Reference extends React.Component {
         if (event.target.id != 'search-box-id')return
 
         let filter = event.target.value;
+        console.log(filter);
         if (filter === ""){
             console.log("here")
             this.setState({

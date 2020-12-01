@@ -8,7 +8,7 @@ class Scroller extends React.Component {
         super(props);
         this.state = {
             startNumber: 6,
-            endNumber: 99,
+            endNumber: 25,
             widthOfOneColumn: 50,
             stepValue: 1
         }

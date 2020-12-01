@@ -284,6 +284,11 @@ function PlaylistBuilder(props) {
   }
 
   return (
+
+    <div>
+    <p className="heading-text" style={{marginTop: "40px"}}>Generate New Playlist for <span className="orange">Dancebility <i className="las la-chevron-circle-down"></i></span></p>
+
+
       <div id="metrics-area">
         
         <div id="no-of-songs-block" className="metric-blocks" style={{"backgroundColor": "ffffff10"}}>
@@ -292,7 +297,7 @@ function PlaylistBuilder(props) {
             <div className="numbered-disc orange-bg float-to-left">1</div><p className="title-text float-to-left">Number of songs</p>
           </div>
 
-          <p className="input-headers align-text-center"><i className="las la-exchange-alt"></i> Slide to change</p>
+          <p style={{marginTop: "100px"}} className="input-headers align-text-center"><i className="las la-exchange-alt"></i> Slide to change</p>
           <Scroller/>
 
 
@@ -303,10 +308,12 @@ function PlaylistBuilder(props) {
 
         <LineGraph data={data}/>
 
-        <div style={{"marginTop": "20px"}} className="float-to-right">
-				  <button className="button-fill orange-bg" onClick={generate}>Generate playlist <img src="assets/icons/right-circle-white.svg" className="button-icons-on-right"/></button>
-		    </div>
 
+
+    </div>
+      <div style={{"marginTop": "20px"}} className="float-to-right">
+            <button className="button-fill orange-bg" onClick={generate}>Generate playlist <img src="assets/icons/right-circle-white.svg" className="button-icons-on-right"/></button>
+      </div>
     </div>
 
 
