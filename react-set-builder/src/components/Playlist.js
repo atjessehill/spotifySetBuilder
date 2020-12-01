@@ -17,8 +17,8 @@ class Playlist extends React.Component {
 
     savePlaylist(){
 
+
         // if (!generated)return
-        console.log(this.state);
         const ids = this.state.tracklist.map((d) => {
             return d.id;
         })
@@ -56,9 +56,8 @@ class Playlist extends React.Component {
         // for each item in this list, get the song descriptors
     }
 
-    handleChange(event) {
-        const eventId = event.target.id
-        if (eventId === 'name-input')return;    
+    updateValue(playlist_name) {
+        this.setState({playlist_name});
     }
 
     parseArtist(data){
@@ -67,7 +66,6 @@ class Playlist extends React.Component {
             return artistStr = artistStr+d.name+' '
         })
         return artistStr
-        
     }
 
 
@@ -78,10 +76,8 @@ class Playlist extends React.Component {
         if(songs.length != 0){
             songs.map( s => {
 
-                console.log(s.uri + " "+this.state.uri);
                 if (s.uri == this.state.uri)
                 {
-                    console.log("found match")
                     uriImg = s.album.images[0].url;
 
                 }
@@ -130,16 +126,16 @@ class Playlist extends React.Component {
 			<div id="playlist-left">
 				<img src={uriImg} className="album-art playlist-album-art-tile"/>
 
-				<p className="input-headers" style={{marginTop: "30px"}}>Playlist name:</p>
+				{/* <p className="input-headers" style={{marginTop: "30px"}}>Playlist name:</p> */}
 
-				<input type="paragraph" name="playlistName" placeholder="Enter playlist name..." id="playlist-name-id" className="set-playlist-name"/>
+				<input type="paragraph" style={{marginTop: "30px"}} onChange={(input) => this.updateValue(input.target.value)} name="playlistName" placeholder="Enter playlist name..." id="playlist-name-id" className="set-playlist-name"/>
 
 				<p className="sub-text" style={{marginTop: "0px"}}>Genre: <span id="genre-text-id" className="spotify">{this.state.genre}</span></p>
 
 				<p className="light-text" style={{marginTop: "0px"}}>By <span id="artist-name-id">Ronak Laungani</span></p>
 
 				<div style={{marginTop: "20px"}}>
-					<button className="button-fill orange-bg" >Add playlist to Spotify <img src="../assets/icons/right-circle-white.svg" className="button-icons-on-right"/></button>
+					<button onClick={this.savePlaylist}className="button-fill orange-bg" >Add playlist to Spotify <img src="../assets/icons/right-circle-white.svg" className="button-icons-on-right"/></button>
 				</div>
 
 				<div>
