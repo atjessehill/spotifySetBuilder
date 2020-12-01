@@ -262,7 +262,9 @@ function PlaylistBuilder(props) {
         props.history.push({
           pathname: '/playlist',
           state: {
-            playlist: THIS_PLAYLIST
+            playlist: THIS_PLAYLIST,
+            genre: "CUSTOM_GENRE TODO",
+            uri: SEED_URI_MAIN
           }
         })
 
