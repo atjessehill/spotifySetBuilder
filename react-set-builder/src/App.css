@@ -58,7 +58,7 @@ body { background-color: #1a1a1a; }
 					background-position: 0% 30%;
 					z-index: -1; }
 
-#playlist-background-setup { background-image: url('/albumart/sample-image4.jpg');
+#playlist-background-setup {
 					position: absolute;
 					height: 600px;
 					width: 100%;
@@ -439,7 +439,7 @@ button { outline: none;
 .dropdown-block { display: none;
 					position: absolute;
 					background-color: rgba(26,26,26,1);
-					margin-top: -20px;
+					margin-top: -100px;
 					width: 300px;
 					padding: 0px;
 					z-index: +10;
