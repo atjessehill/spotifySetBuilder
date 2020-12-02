@@ -51,7 +51,6 @@ button {
 body { background-color: #1a1a1a; }
 
 #background-setup { 
-	/* background-image: url('/bg-imgs/groove.jpg'); */
 					position: absolute;
 					height: 600px;
 					width: 100%;

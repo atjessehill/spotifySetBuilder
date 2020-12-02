@@ -40,6 +40,9 @@ class App extends Component{
     render(){
         return (
             <div>
+            <div id="background-setup">
+            <div id="background-tint-2"> </div>
+            </div>
 
                 <div id="content-area">
                     <Header access={this.state.access} userID={this.state.userID} handler={this.triggerLogin}/>

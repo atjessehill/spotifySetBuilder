@@ -4,7 +4,7 @@ import BannerText from './BannerText';
 class Home extends React.Component {
 
     render(){
-
+        const url = '../../assets/bg-imgs/groove.jpg';
 
         return (
         <div>
