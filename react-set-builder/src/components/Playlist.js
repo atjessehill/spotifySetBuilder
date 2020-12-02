@@ -8,7 +8,7 @@ class Playlist extends React.Component {
         this.state = {
             playlist_name: 'noshuffle playlist',
             tracklist: [],
-            genre: ""
+            genre: "",
         }
 
         this.savePlaylist = this.savePlaylist.bind(this);
@@ -80,6 +80,7 @@ class Playlist extends React.Component {
                 {
                     uriImg = s.album.images[0].url;
 
+
                 }
                 
                 const maintr = <tr key={s.id}>
@@ -121,6 +122,12 @@ class Playlist extends React.Component {
         }
 
         return (
+            <div>
+            <div id="playlist-background-setup" className="album-art" style={{backgroundImage: `url(${uriImg})`}}>
+            <div id="background-tint-3"> </div>
+            </div>
+
+
             <div id="playlist-area">
 
 			<div id="playlist-left">
@@ -169,7 +176,7 @@ class Playlist extends React.Component {
 			</div>
 			
 		</div>
-
+        </div>
         );
     }
 }
