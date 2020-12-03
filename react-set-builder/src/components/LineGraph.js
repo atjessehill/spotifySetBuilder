@@ -36,7 +36,7 @@ function LineGraph({data}) {
           .attr('x', 0)
           .attr('y', 0)
           .attr('width', dimensions.width)
-          .attr('height', dimensions.height)
+          .attr('height', dimensions.height+20)
           .attr('color', 'red');
 
         svg.call(
@@ -112,12 +112,14 @@ function LineGraph({data}) {
           <div>
             <div class="numbered-disc orange-bg float-to-left">3</div><p class="title-text float-to-left">Playlist trajectory</p>
           </div>
-          <div ref={wrapperRef}  style={{marginBottom: "2rem", marginTop: "2rem"}}>
+          <div ref={wrapperRef}  style={{marginTop: "4rem"}}>
                 <svg ref={svgRef} onMouseDown={LineGraph.handleMouseDown}>
                     <g className="x-axis"/>
                     <g className="y-axis"/>
                 </svg>
             </div>
+            <p className="reduntant-text grey1 stick-to-bottom" style={{margin: "40px"}}>Click and drag the line to match how the danceability will evolve over time!</p>
+
         </div>
 
 
