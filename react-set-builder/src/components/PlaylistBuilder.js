@@ -263,7 +263,7 @@ function PlaylistBuilder(props) {
           pathname: '/playlist',
           state: {
             playlist: THIS_PLAYLIST,
-            genre: "CUSTOM_GENRE TODO",
+            genre: document.getElementById("genre-text-id").innerHTML,
             uri: SEED_URI_MAIN
           }
         })

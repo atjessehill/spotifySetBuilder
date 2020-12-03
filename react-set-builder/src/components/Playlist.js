@@ -139,7 +139,7 @@ class Playlist extends React.Component {
 
 				<p className="sub-text" style={{marginTop: "0px"}}>Genre: <span id="genre-text-id" className="spotify">{this.state.genre}</span></p>
 
-				<p className="light-text" style={{marginTop: "0px"}}>By <span id="artist-name-id">Ronak Laungani</span></p>
+				{/* <p className="light-text" style={{marginTop: "0px"}}>By <span id="artist-name-id">Ronak Laungani</span></p> */}
 
 				<div style={{marginTop: "20px"}}>
 					<button onClick={this.savePlaylist}className="button-fill orange-bg" >Add playlist to Spotify <img src="../assets/icons/right-circle-white.svg" className="button-icons-on-right"/></button>
