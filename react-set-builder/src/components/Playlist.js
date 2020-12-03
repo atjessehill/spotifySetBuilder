@@ -94,16 +94,15 @@ class Playlist extends React.Component {
                                 <td className="title-text custom-playlist-innerTd2">{s.name}</td>
                                 <td className="custom-playlist-innerTd3 float-to-right">
                                     <span className="text-button float-to-left grey2">
-                                        <i className="las la-minus-circle">
-                                            {/* ::before */}
+                                        {/* <i className="las la-minus-circle">
 
                                         </i>
-                                        REMOVE
+                                        REMOVE */}
                                     </span>
                                     <span className="text-button float-to-right orange">
-                                        <i className="las la-play">
+                                        {/* <i className="las la-play">
                                         </i>
-                                        PLAY
+                                        PLAY */}
                                     </span>
                                 </td>
                             </tr>
@@ -159,7 +158,7 @@ class Playlist extends React.Component {
 
 				<div>
 					<div className="input-headers float-to-left" style={{marginTop: "0px"}}><span id="playlist-no-of-tracks">{songChoices.length}</span> songs for <span id="playlist-metric">Dancibility</span></div>
-					<div className="text-button float-to-right orange"><i className="las la-play"></i> PLAY ALL</div>
+					{/* <div className="text-button float-to-right orange"><i className="las la-play"></i> PLAY ALL</div> */}
 				</div>
 
 				<div className="custom-playlist-scroll-box">
