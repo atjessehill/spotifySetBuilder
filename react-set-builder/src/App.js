@@ -52,9 +52,9 @@ class App extends Component{
 
                     <Switch>
                         <Route path="/login" component={Login}/>
-                        <Route path="/home" component={Home}/>
+                        <Route path="/generate" component={PlaylistBuilder}/>
                         <Route path="/playlist" component={Playlist}/>
-                        <Route path="" component={PlaylistBuilder} exact/>
+                        <Route path="" component={Home} exact/>
 
                         </Switch>
                     </BrowserRouter>
