@@ -1,6 +1,8 @@
 import React from 'react';
 import {login} from '../services/SpotifyCalls'
 import Cookies from 'universal-cookie';
+import {useHistory} from 'react-router-dom';
+import GenerateButton from './GenerateButton';
 
 class Header extends React.Component {
 
@@ -13,7 +15,16 @@ class Header extends React.Component {
             userID: props.userID
         }
         console.log(this.state);
+        this.handleGenerateClick = this.handleGenerateClick.bind(this);
 
+    }
+
+    handleGenerateClick(){
+
+        // props.push({
+        //     pathname: '/generate',
+        //   })
+  
     }
 
 
@@ -37,13 +48,7 @@ class Header extends React.Component {
                     </button>
                 </div>
 
-                <div className="float-to-right">
-                    <button className="button-line orange"> 
-                        <img className="button-icons" src="../assets/icons/plus-circle-orange.svg" />
-                         Generate new playlist
-                        <div className="button-bg orange-bg"></div>
-                    </button>
-                </div>
+                <GenerateButton/>
 
             </div>
             </div>

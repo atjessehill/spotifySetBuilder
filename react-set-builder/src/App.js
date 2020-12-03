@@ -45,10 +45,10 @@ class App extends Component{
             </div>
 
                 <div id="content-area">
-                    <Header access={this.state.access} userID={this.state.userID} handler={this.triggerLogin}/>
                     {/* <Header/> */}
 
                     <BrowserRouter>
+                    <Header access={this.state.access} userID={this.state.userID} handler={this.triggerLogin}/>
 
                     <Switch>
                         <Route path="/login" component={Login}/>
