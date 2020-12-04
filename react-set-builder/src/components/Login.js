@@ -3,7 +3,7 @@ import request from 'request';
 import Cookies from 'universal-cookie';
 import { profile } from '../services/SpotifyCalls';
 
-const { REACT_APP_SPOT_CLIENT, REACT_APP_SPOT_CLIENT_SECRET } = process.env;
+const { REACT_APP_SPOT_CLIENT, REACT_APP_SPOT_CLIENT_SECRET, REACT_APP_CALLBACK_PLAIN } = process.env;
 
 function Login(props){
   
@@ -12,7 +12,7 @@ function Login(props){
         const search = props.location.search;
         const params = new URLSearchParams(search);
         const authCode = params.get('code')
-        const redirect = 'http://localhost:3000/login'
+        const redirect = REACT_APP_CALLBACK_PLAIN
         const clientId = REACT_APP_SPOT_CLIENT;
         const clientSecret = REACT_APP_SPOT_CLIENT_SECRET;
 

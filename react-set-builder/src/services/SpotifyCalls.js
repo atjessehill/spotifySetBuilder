@@ -3,7 +3,7 @@ import Cookies from 'universal-cookie';
 import querystring from 'querystring';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
 
-const { REACT_APP_SPOT_CLIENT, REACT_APP_SPOT_CLIENT_SECRET } = process.env;
+const { REACT_APP_SPOT_CLIENT, REACT_APP_SPOT_CLIENT_SECRET, REACT_APP_CALLBACK_ENCODED } = process.env;
 
 const cookies = new Cookies();
 // let refreshing = false;
@@ -139,7 +139,7 @@ export const addSongstoPlaylist = async(id, uris) => {
 
 export const login = () => {
     const scope = 'playlist-modify-public,playlist-modify-private,playlist-read-private,playlist-read-collaborative'
-    const redirect = 'http%3A%2F%2Flocalhost%3A3000%2Flogin'
+    const redirect = REACT_APP_CALLBACK_ENCODED
     const client_id = 'f4d25f2bdfee4094a7d93f0ec7e4f264'
     const url = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=code&redirect_uri=${redirect}&scope=${scope}`
     window.location.assign(url);
