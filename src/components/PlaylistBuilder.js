@@ -312,7 +312,7 @@ function PlaylistBuilder(props) {
 
     </div>
       <div style={{"marginTop": "20px"}} className="float-to-right">
-            <button className="button-fill orange-bg" onClick={generate}>Generate playlist <img src="assets/icons/right-circle-white.svg" className="button-icons-on-right"/></button>
+            <button className="button-fill orange-bg" onClick={generate}>Generate playlist <img src="assets/icons/sparkles.svg" className="button-icons-on-right"/></button>
       </div>
     </div>
 

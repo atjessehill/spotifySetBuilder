@@ -32,11 +32,11 @@ class Header extends React.Component {
     render(){
         let spotifyText = "Connect to Spotify";
 
-        if(this.state.access && this.state.userID)spotifyText="Logged in as "+this.state.userID;
+        if(this.state.access && this.state.userID)spotifyText=this.state.userID;
 
         return (
             <div id="top-bar">
-            <img src="../assets/icons/logo.svg" alt="logo alt"/> 
+            <img src="../assets/icons/logo.svg" alt="logo alt" className="logo"/> 
     
     
             <div className="float-to-right">

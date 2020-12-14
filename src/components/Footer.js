@@ -18,7 +18,8 @@ class Footer extends React.Component {
                 <p className="sub-text"> 
                     {madeWith}
                     <i className="las la-heart"> </i>
-                    {by} 
+                    {by}
+                    <br className="mobileOnly"></br> 
                     <a href="https://www.linkedin.com/in/jessehillcs" className="text-links grey1">Jesse Hill </a>
                       & 
                     <a href="http://www.ronaklaungani.com" className="text-links grey1"> Ronak Laungani </a>
