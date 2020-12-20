@@ -8,6 +8,7 @@ import Footer from './components/Footer';
 import {login } from './services/SpotifyCalls';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import Cookies from 'universal-cookie';
+import Background from './components/Background';
 
 class App extends Component{
 
@@ -21,7 +22,11 @@ class App extends Component{
             access: cookies.get('SPOT_USER_accessToken'),
             refresh: cookies.get('SPOT_USER_refreshToken')
         }
+
+        this.refreshBackground = React.createRef();
+
         this.triggerLogin = this.triggerLogin.bind(this);
+        this.getbackgroundRef = this.getbackgroundRef.bind(this);
         console.log(this.state);
     }
 
@@ -37,13 +42,14 @@ class App extends Component{
         console.log("here");
     }
 
+    getbackgroundRef(){
+        return this.refreshBackground;
+    }
+
     render(){
         return (
             <div>
-            <div id="background-setup">
-            <div id="background-tint-2"> </div>
-            </div>
-
+                {/* <Background ref={this.refreshBackground}/>  */}
                 <div id="content-area">
                     {/* <Header/> */}
 
@@ -52,9 +58,13 @@ class App extends Component{
 
                     <Switch>
                         <Route path="/login" component={Login}/>
-                        <Route path="/generate" component={PlaylistBuilder}/>
-                        <Route path="/playlist" component={Playlist}/>
-                        <Route path="" component={Home} exact/>
+                        <Route path="/generate" render={(props) => (<PlaylistBuilder 
+                            {...props} 
+                            handler={this.refreshBackground} 
+                            refreshHandler={this.getbackgroundRef}
+                            />)}/>
+                        <Route path="/playlist" render={(props) => (<Playlist {...props} handler={this.refreshBackground}/>)}/>
+                        <Route path="" render={(props) => (<Home {...props} handler={this.refreshBackground}/>)} exact/>
 
                         </Switch>
                     </BrowserRouter>

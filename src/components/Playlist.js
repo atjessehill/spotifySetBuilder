@@ -40,7 +40,6 @@ class Playlist extends React.Component {
       }
 
     componentDidMount(){
-        console.log(this.props.history.location.state.playlist)
 
         tracks(this.props.history.location.state.playlist)
         .then((res) => {
