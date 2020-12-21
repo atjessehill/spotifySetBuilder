@@ -13,6 +13,7 @@ class Background extends React.Component {
     }
 
     changeBackground(from, img){
+        console.log(from)
         this.setState({from: from, img: img})
     }
 
@@ -32,6 +33,11 @@ class Background extends React.Component {
             if (this.state.from == "Home"){
                 background = <div id="background-setup" className="album-art" style={{backgroundImage: `url(../assets/bg-imgs/groove.jpg)`}}>
                 <div id="background-tint"> </div>
+                </div>            
+            }
+            if (this.state.from == "Generate"){
+                background = <div id="background-setup">
+                <div id="background-tint-2"> </div>
                 </div>            
             }
 

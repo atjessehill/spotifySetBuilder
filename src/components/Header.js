@@ -23,8 +23,7 @@ class Header extends React.Component {
 
         // props.push({
         //     pathname: '/generate',
-        //   })
-  
+        //   })  
     }
 
 
@@ -36,7 +35,7 @@ class Header extends React.Component {
 
         return (
             <div id="top-bar">
-            <img src="../assets/icons/logo.svg" alt="logo alt" className="logo"/> 
+            <img onClick={this.handleGenerateClick} src="../assets/icons/logo.svg" alt="logo alt" className="logo"/> 
     
     
             <div className="float-to-right">

@@ -18,7 +18,7 @@ class App extends Component{
         const cookies = new Cookies();
 
         this.state = {
-            userID: cookies.get('SPOT_USER_ID'),
+            userID: cookies.get('SPOT_DISPLAY_ID'),
             access: cookies.get('SPOT_USER_accessToken'),
             refresh: cookies.get('SPOT_USER_refreshToken')
         }
@@ -39,7 +39,6 @@ class App extends Component{
 
     triggerLogin(){
         login()
-        console.log("here");
     }
 
     getbackgroundRef(){

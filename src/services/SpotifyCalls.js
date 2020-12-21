@@ -152,6 +152,8 @@ export const profile = async() => {
         url: `https://api.spotify.com/v1/me`
     })
     .then((res) => {
+        console.log(res.data);
+        cookies.set('SPOT_DISPLAY_ID', res.data.display_name, {path: '/'});
         cookies.set('SPOT_USER_ID', res.data.id, {path: '/'});
     })
     .catch((error) => {
