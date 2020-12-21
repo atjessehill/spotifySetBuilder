@@ -3,6 +3,16 @@ import BannerText from './BannerText';
 
 class Home extends React.Component {
 
+    constructor(props){
+        super(props);
+        // this.props.current.changeBackground();
+        // console.log(props.handler.changeBackground);
+    }
+
+    componentDidMount(){
+        this.props.handler.current.changeBackground("Home")
+    }
+
     render(){
         const url = '../../assets/bg-imgs/groove.jpg';
 

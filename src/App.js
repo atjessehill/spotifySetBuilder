@@ -49,7 +49,7 @@ class App extends Component{
     render(){
         return (
             <div>
-                {/* <Background ref={this.refreshBackground}/>  */}
+                <Background ref={this.refreshBackground}/> 
                 <div id="content-area">
                     {/* <Header/> */}
 
@@ -58,7 +58,7 @@ class App extends Component{
 
                     <Switch>
                         <Route path="/login" component={Login}/>
-                        <Route path="/generate" render={(props) => (<PlaylistBuilder 
+                        <Route path="/generate" render={(props) => (<PlaylistBuilder
                             {...props} 
                             handler={this.refreshBackground} 
                             refreshHandler={this.getbackgroundRef}

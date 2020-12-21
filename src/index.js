@@ -7,9 +7,6 @@ import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
-    <div id="background-setup">
-      <div id="background-tint">  </div>
-    </div>
     <App />
   </React.StrictMode>,
   document.getElementById('root')
