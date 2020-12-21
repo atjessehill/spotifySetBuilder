@@ -370,10 +370,15 @@ body { background-color: #1a1a1a; }
 					
 					 }
 
-
+#scroller-package { height: 50px;
+						width: 210px;
+					margin: 10px auto 0px auto;
+					display: grid;
+					position: relative;
+					grid-template-columns: 30px 150px 30px; }
 
 #scroller {		height: 50px;
-        margin: 10px auto 0px auto;
+        /* margin: 10px auto 0px auto; */
         width: 150px;
 				border: none;
 				background-color: #00000030;
@@ -407,6 +412,24 @@ body { background-color: #1a1a1a; }
 						padding-top: 10px;
 						scroll-snap-align: center;
 						 }
+
+.scroll-bttns { height: 100%;
+							width: 30px;
+							border-radius: 20px;
+							font-size: 18px;
+							background-color: transparent;
+							border: none;
+							color: #999999;
+							cursor: pointer; }
+
+.scroll-bttns:hover { height: 100%;
+								width: 30px;
+								border-radius: 20px;
+								font-size: 18px;
+								background-color: #424242;
+								border: none;
+								color: #ffffff;
+								cursor: pointer; }
 
 
 #selectedValueIndicator { height: 50px;
@@ -929,10 +952,16 @@ button { outline: none;
 						
 						 }
 	
+#scroller-package { height: 50px;
+							width: 210px;
+						margin: 10px auto 0px auto;
+						display: grid;
+						position: relative;
+						grid-template-columns: 30px 150px 30px; }
 	
 	
 	#scroller {		height: 50px;
-			margin: 10px auto 0px auto;
+			/* margin: 10px auto 0px auto; */
 			width: 150px;
 					border: none;
 					background-color: #00000030;
@@ -966,6 +995,15 @@ button { outline: none;
 							padding-top: 10px;
 							scroll-snap-align: center;
 							 }
+
+.scroll-bttns { height: 100%;
+								width: 30px;
+								border-radius: 20px;
+								font-size: 18px;
+								background-color: transparent;
+								border: none;
+								color: #999999;
+								cursor: pointer; }
 	
 	
 	#selectedValueIndicator { height: 50px;
@@ -1486,10 +1524,17 @@ body { background-color: #1a1a1a; }
 					
 					 }
 
+#scroller-package { height: 50px;
+						width: 210px;
+					margin: 10px auto 0px auto;
+					display: grid;
+					position: relative;
+					grid-template-columns: 30px 150px 30px; }
+
 
 
 #scroller {		height: 50px;
-        margin: 10px auto 0px auto;
+        /* margin: 10px auto 0px auto; */
         width: 150px;
 				border: none;
 				background-color: #00000030;
@@ -1523,6 +1568,15 @@ body { background-color: #1a1a1a; }
 						padding-top: 10px;
 						scroll-snap-align: center;
 						 }
+
+.scroll-bttns { height: 100%;
+							width: 30px;
+							border-radius: 20px;
+							font-size: 18px;
+							background-color: transparent;
+							border: none;
+							color: #999999;
+							cursor: pointer; }
 
 
 #selectedValueIndicator { height: 50px;
