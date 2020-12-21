@@ -37,13 +37,21 @@ class Scroller extends React.Component {
             listItems.push(<p key={z} className="numberInScroller" style={chosenOpacity}>{z}</p>);
             z=z+stepValue;
         }
+        
 
         return (
             <div>
-            <div id="scroller">
-              <div id="scroller-block">
-                {listItems}
-              </div>
+
+            <div id="scroller-package">
+            <button class="scroll-bttns" id="goPrev"><i class="las la-angle-left"></i></button>
+
+                <div id="scroller">
+                    <div id="scroller-block">
+                        {listItems}
+                    </div>
+                </div>
+
+                <button class="scroll-bttns" id="goNext"><i class="las la-angle-right"></i></button>
             </div>
             <div id="selectedValueIndicator"></div>
 

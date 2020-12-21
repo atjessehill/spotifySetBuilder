@@ -13,7 +13,7 @@ const GenerateButton = (props) => {
         <div className="float-to-right">
         <button className="button-line orange" onClick={handleClick}> 
             <img className="button-icons" src="../assets/icons/plus-circle-orange.svg" />
-             Generate new playlist
+             <span className="desktopOnly" style={{float: "right"}}>Generate new playlist</span>
             <div className="button-bg orange-bg"></div>
         </button>
     </div>

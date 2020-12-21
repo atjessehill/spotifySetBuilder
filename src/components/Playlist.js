@@ -129,22 +129,33 @@ class Playlist extends React.Component {
             <div id="playlist-area">
 
 			<div id="playlist-left">
+
+            <div id="playlist-left-division">
+
 				<img src={uriImg} className="album-art playlist-album-art-tile"/>
 
-				{/* <p className="input-headers" style={{marginTop: "30px"}}>Playlist name:</p> */}
+                <div id="playlist-left-division-right">
 
-				<input type="paragraph" style={{marginTop: "30px"}} onChange={(input) => this.updateValue(input.target.value)} name="playlistName" placeholder="Enter playlist name..." id="playlist-name-id" className="set-playlist-name"/>
+				<p className="input-headers" style={{marginTop: "10px"}}>Playlist name:</p>
 
-				<p className="sub-text" style={{marginTop: "0px"}}>Genre: <span id="genre-text-id" className="spotify">{this.state.genre}</span></p>
+				<input type="paragraph" onChange={(input) => this.updateValue(input.target.value)} name="playlistName" placeholder="Enter playlist name..." id="playlist-name-id" className="set-playlist-name"/>
+
+				{/* <p className="sub-text" style={{marginTop: "0px"}}>Genre: <span id="genre-text-id" className="spotify">{this.state.genre}</span></p> */}
 
 				{/* <p className="light-text" style={{marginTop: "0px"}}>By <span id="artist-name-id">Ronak Laungani</span></p> */}
+            
+                </div>
+
+            </div>
+
+            <p className="sub-text" style={{marginTop: "0px"}}>Genre: <span id="genre-text-id" className="spotify">{this.state.genre}</span></p>
 
 				<div style={{marginTop: "20px"}}>
-					<button onClick={this.savePlaylist}className="button-fill orange-bg" >Add playlist to Spotify <img src="../assets/icons/right-circle-white.svg" className="button-icons-on-right"/></button>
+					<button onClick={this.savePlaylist} className="button-fill orange-bg add-to-spotify-bttn" >Add playlist to Spotify <img src="../assets/icons/right-circle-white.svg" className="button-icons-on-right"/></button>
 				</div>
 
 				<div>
-                    <button className="button-line orange"><img src="../assets/icons/plus-circle-orange.svg" className="button-icons"/> 
+                    <button className="button-line orange share-bttn"><img src="../assets/icons/share.svg" className="button-icons"/> 
                         Share
                         <div className="button-bg orange-bg">
                         </div>
@@ -174,6 +185,19 @@ class Playlist extends React.Component {
 			</div>
 			
 		</div>
+
+                <div style={{marginTop: "60px"}} className="mobileOnly">
+					<button onClick={this.savePlaylist} className="button-fill orange-bg add-to-spotify-bttn" >Add playlist to Spotify <img src="../assets/icons/right-circle-white.svg" className="button-icons-on-right"/></button>
+				</div>
+
+				<div className="mobileOnly">
+                    <button className="button-line orange share-bttn"><img src="../assets/icons/share.svg" className="button-icons"/> 
+                        Share
+                        <div className="button-bg orange-bg">
+                        </div>
+                    </button>
+                </div>
+
         </div>
         );
     }
