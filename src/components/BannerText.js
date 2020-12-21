@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react';
+import { useHistory } from 'react-router-dom';
 
-const BannerText = () => {
+const BannerText = (props) => {
     const [fillValue, setSeconds] = useState(0);
+    let history = useHistory();
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -25,6 +27,10 @@ const BannerText = () => {
         return () => clearInterval(interval);
     }, []);
 
+    function goToGenerate() {
+        history.push("/generate");
+    }
+
 
     return (
         <div id="banner-text-area">
@@ -35,7 +41,7 @@ const BannerText = () => {
             </div>
             <p class="sub-text" style={{paddingTop: "10px"}}>Curate playlists with changing <span class="orange">Dancebility <i class="las la-chevron-circle-down"></i></span> with time</p>
             <div style={{marginTop: "20px"}}>
-                    <button class="button-fill orange-bg" onclick="window.open('generate.html', '_self')">Get started <img src="assets/icons/right-circle-white.svg" class="button-icons-on-right"/></button>
+                    <button class="button-fill orange-bg" onClick={goToGenerate}>Get started <img src="assets/icons/right-circle-white.svg" class="button-icons-on-right"/></button>
             </div>
             </div>
     )
