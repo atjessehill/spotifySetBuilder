@@ -303,7 +303,7 @@ class PlaylistBuilderC extends React.Component {
           <Scroller/>
 
 
-          <p className="reduntant-text grey1 stick-to-bottom" style={{margin: "40px"}}>Enter the number of songs you would like to have in your playlist. Minimum of 6, maximum of 99.</p>
+          <p className="reduntant-text grey1 stick-to-bottom" style={{margin: "40px"}}>Enter the number of songs you would like to have in your playlist. Minimum of 6, maximum of 25.</p>
 
         </div>
         <Reference handler={this.handleChange}/>
