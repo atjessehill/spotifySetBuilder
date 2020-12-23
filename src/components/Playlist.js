@@ -40,8 +40,6 @@ class Playlist extends React.Component {
       }
 
     componentDidMount(){
-        console.log(this.props.history.location.state.playlist)
-
         tracks(this.props.history.location.state.playlist)
         .then((res) => {
             this.setState({
@@ -79,6 +77,7 @@ class Playlist extends React.Component {
                 if (s.uri == this.state.uri)
                 {
                     uriImg = s.album.images[0].url;
+                    this.props.handler.current.changeBackground("Playlist", uriImg)
 
 
                 }
@@ -122,9 +121,9 @@ class Playlist extends React.Component {
 
         return (
             <div>
-            <div id="playlist-background-setup" className="album-art" style={{backgroundImage: `url(${uriImg})`}}>
+            {/* <div id="playlist-background-setup" className="album-art" style={{backgroundImage: `url(${uriImg})`}}>
             <div id="background-tint-3"> </div>
-            </div>
+            </div> */}
 
 
             <div id="playlist-area">

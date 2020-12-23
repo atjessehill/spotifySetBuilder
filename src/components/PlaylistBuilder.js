@@ -11,17 +11,34 @@ let FEATURE_TYPE = 'target_danceability'
 let PLAYLIST_LENGTH = 6;
 let THIS_PLAYLIST;
 
-function PlaylistBuilder(props) {
+class PlaylistBuilderC extends React.Component {
 
-  let error = false;
+  constructor(props){
+    super(props);
+    const data = Datagen();
 
-  const [data] = useState(Datagen())
-  let [SEED_URI_MAIN] = useState('SEED_URI_DEFAULT');
+    this.state = {
+      data: data
+    }
+    this.handleChange = this.handleChange.bind(this);
+    this.generate = this.generate.bind(this);
+    this.getIndex = this.getIndex.bind(this);
+    this.addToChain = this.addToChain.bind(this);
+    this.getRecommendations = this.getRecommendations.bind(this);
+  }
 
-  function getRecommendations(i, start,  end, k){
+  componentDidMount(){
+      this.props.handler.current.changeBackground("Generate")
+  }
+
+  handleChange(event){
+    if (event.type === "URI") this.setState({SEED_URI_MAIN:event.value})
+  }
+
+  getRecommendations(i, start,  end, k){
     return new Promise((resolve, reject) => {
 
-      const seeds = THIS_PLAYLIST.slice(start, end)
+      const seeds = this.state.THIS_PLAYLIST.slice(start, end)
       let seed_tracks = "seed_tracks="+seeds.join(',')
       let metricList = [];
       for (let metric in k){
@@ -35,8 +52,11 @@ function PlaylistBuilder(props) {
         if (recs.length === 0)console.log("Could not find recommendations"); // TODO add rejection and error checking
 
         for (let track in recs){
-          if(!THIS_PLAYLIST.includes(recs[track].id)){
-            THIS_PLAYLIST[i] = recs[track].id;
+          if(!this.state.THIS_PLAYLIST.includes(recs[track].id)){
+            const update = this.state.THIS_PLAYLIST;
+            update[i] = recs[track].id;
+            this.setState({THIS_PLAYLIST: update});
+            // THIS_PLAYLIST[i] = recs[track].id;
           }
         }
         resolve();
@@ -48,23 +68,112 @@ function PlaylistBuilder(props) {
 
   }
 
-  // function perpLine(y2, y1, x2, x1, m, n){
+  generate(){
 
-  //   const top = Math.abs()
-  //   return 
-  // }
+    const scroller = document.getElementById('scroller');
+		this.setState({PLAYLIST_LENGTH: ((((scroller.scrollLeft)/50)*1)+6)})
 
-  // function DouglasPeucker(arr, epsilon){
-  //   let dmax = 0;
-  //   let index = 0;
-  //   const end = arr.length;
-  //   for(let i=2; i<end; i++){
+    let sampledPoints = this.getIndex(this.state.data, 25);
+    // DouglasPeucker(data, stdDev(data)+Mean(data))
+    console.log(sampledPoints);
+    let seedIndex;
+    let sampleIndex;
+    let adjusted_data;
+    this.setState({THIS_PLAYLIST: new Array(PLAYLIST_LENGTH).fill(0)})
 
-  //   }
+    getFeatures(this.state.SEED_URI_MAIN.split(':')[2])
+    .then((res) => {
+      const songFeature = FEATURE_TYPE.split('_')[1]
+      const features = res.data
+      console.log(res);
+      console.log(features[songFeature])
+      let closestVal = 100;
+
+      for(let i=0; i<sampledPoints.length; i++){
+
+        let diff = Math.abs(sampledPoints[i]-features[songFeature]);
+        // console.log(i + ':' +diff + ' :'+closestVal);
+
+        if (diff < closestVal){
+          closestVal = diff;
+          seedIndex = i
+        }
+      }
+      const offset = sampledPoints[seedIndex]-features[songFeature];
+
+      adjusted_data = sampledPoints.map((d) => {
+        return (offset >= 0) ? d+offset:d-offset
+      })
+
+
+      // Determine two numbers, the # of points
+
+      sampleIndex = this.getIndex(adjusted_data, seedIndex)
+
+      for(let i=0; i<sampleIndex.length; i++){
+        if(seedIndex === sampleIndex[i])seedIndex=i;
+      }
+
+      console.log(sampleIndex);
+      console.log(seedIndex);
+      const update = this.state.THIS_PLAYLIST;
+      update[seedIndex] = this.state.SEED_URI_MAIN.split(':')[2];
+      this.setState({THIS_PLAYLIST:update})
+      console.log(adjusted_data);
+
+      // let pts = getIndex(adjusted_data, seedIndex).map((d) => {
+      //   return adjusted_data[d]
+      // })    
+
+      // TODO SAMPLE POINTS
+
+        
+
+    })
+    .then(() => {
+      let promise = Promise.resolve()
+
+      for(let i=seedIndex+1; i<sampledPoints.length; i++){
+        const k = {}
+        k[FEATURE_TYPE] = sampledPoints[i]
+        const end = seedIndex + Math.min(i-seedIndex, 5);
+        promise = this.addToChain(promise, i, seedIndex, end, k);
+
+      }
+
+      for(let i=seedIndex-1; i>-1; i--){
+        const k = {}
+        k[FEATURE_TYPE] = sampledPoints[i];
+        let x = this.state.THIS_PLAYLIST.length-i
+        x = (x >=5) ? 5 : x
+        const start = i+1;
+        const end = i+x+1
+
+
+        promise = this.addToChain(promise, i, start, end, k)
+        
+      }
+
+      promise.finally(() => {
+        this.props.history.push({
+          pathname: '/playlist',
+          state: {
+            playlist: this.state.THIS_PLAYLIST,
+            genre: document.getElementById("genre-text-id").innerHTML,
+            uri: this.state.SEED_URI_MAIN
+          }
+        })
+
+      })
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+
     
-  // }
+  }
 
-  function getIndex(adjusted_data, factor){
+  getIndex(adjusted_data, factor){
     // Return an array of indexes to indicate which indexes to sample from
 
     // return [1, 10, 15, index, 30, 50]
@@ -169,122 +278,15 @@ function PlaylistBuilder(props) {
 
   }
 
-  function handleChange(event){
-    if (event.type === "URI") SEED_URI_MAIN = event.value;
-    else if (event.type === "LENGTH") PLAYLIST_LENGTH = event.value;
-  }
-
-  const scroller = document.getElementById('scroller');
-
-  function generate(){
-    PLAYLIST_LENGTH = ((((scroller.scrollLeft)/50)*1)+6);
-
-    let sampledPoints = getIndex(data, 25);
-    // DouglasPeucker(data, stdDev(data)+Mean(data))
-    console.log(sampledPoints);
-    let seedIndex;
-    let sampleIndex;
-    let adjusted_data;
-    THIS_PLAYLIST = new Array(PLAYLIST_LENGTH).fill(0);
-
-    getFeatures(SEED_URI_MAIN.split(':')[2])
-    .then((res) => {
-      const songFeature = FEATURE_TYPE.split('_')[1]
-      const features = res.data
-      console.log(res);
-      console.log(features[songFeature])
-      let closestVal = 100;
-
-      for(let i=0; i<sampledPoints.length; i++){
-
-        let diff = Math.abs(sampledPoints[i]-features[songFeature]);
-        // console.log(i + ':' +diff + ' :'+closestVal);
-
-        if (diff < closestVal){
-          closestVal = diff;
-          seedIndex = i
-        }
-      }
-      const offset = sampledPoints[seedIndex]-features[songFeature];
-
-      adjusted_data = sampledPoints.map((d) => {
-        return (offset >= 0) ? d+offset:d-offset
-      })
-
-
-      // Determine two numbers, the # of points
-
-      sampleIndex = getIndex(adjusted_data, seedIndex)
-
-      for(let i=0; i<sampleIndex.length; i++){
-        if(seedIndex === sampleIndex[i])seedIndex=i;
-      }
-
-      console.log(sampleIndex);
-      console.log(seedIndex);
-      THIS_PLAYLIST[seedIndex] = SEED_URI_MAIN.split(':')[2];
-      console.log(adjusted_data);
-
-      // let pts = getIndex(adjusted_data, seedIndex).map((d) => {
-      //   return adjusted_data[d]
-      // })    
-
-      // TODO SAMPLE POINTS
-
-        
-
-    })
-    .then(() => {
-      let promise = Promise.resolve()
-
-      for(let i=seedIndex+1; i<sampledPoints.length; i++){
-        const k = {}
-        k[FEATURE_TYPE] = sampledPoints[i]
-        const end = seedIndex + Math.min(i-seedIndex, 5);
-        promise = addToChain(promise, i, seedIndex, end, k);
-
-      }
-
-      for(let i=seedIndex-1; i>-1; i--){
-        const k = {}
-        k[FEATURE_TYPE] = sampledPoints[i];
-        let x = THIS_PLAYLIST.length-i
-        x = (x >=5) ? 5 : x
-        const start = i+1;
-        const end = i+x+1
-
-
-        promise = addToChain(promise, i, start, end, k)
-        
-      }
-
-      promise.finally(() => {
-        props.history.push({
-          pathname: '/playlist',
-          state: {
-            playlist: THIS_PLAYLIST,
-            genre: document.getElementById("genre-text-id").innerHTML,
-            uri: SEED_URI_MAIN
-          }
-        })
-
-      })
-    })
-    .catch((err) => {
-      error = true;
-    })
-
-    
-  }
-
-  function addToChain(chain, i, start, end, k){
+  addToChain(chain, i, start, end, k){
     return chain.then(() => {
-      return getRecommendations(i, start, end, k);
+      return this.getRecommendations(i, start, end, k);
     })
   }
 
-  return (
+  render() { 
 
+    return (
     <div>
     <p className="heading-text" style={{marginTop: "40px"}}>Generate New Playlist for <span className="orange">Dancebility <i className="las la-chevron-circle-down"></i></span></p>
 
@@ -301,23 +303,22 @@ function PlaylistBuilder(props) {
           <Scroller/>
 
 
-          <p className="reduntant-text grey1 stick-to-bottom" style={{margin: "40px"}}>Enter the number of songs you would like to have in your playlist. Minimum of 6, maximum of 99.</p>
+          <p className="reduntant-text grey1 stick-to-bottom" style={{margin: "40px"}}>Enter the number of songs you would like to have in your playlist. Minimum of 6, maximum of 25.</p>
 
         </div>
-        <Reference handler={handleChange}/>
+        <Reference handler={this.handleChange}/>
 
-        <LineGraph data={data}/>
+        <LineGraph data={this.state.data}/>
 
 
 
     </div>
       <div style={{"marginTop": "20px"}} className="float-to-right">
-            <button className="button-fill orange-bg" onClick={generate}>Generate playlist <img src="assets/icons/sparkles.svg" className="button-icons-on-right"/></button>
+            <button className="button-fill orange-bg" onClick={this.generate}>Generate playlist <img src="assets/icons/right-circle-white.svg" className="button-icons-on-right"/></button>
       </div>
     </div>
-
-
   );
-}
+}}
 
-export default PlaylistBuilder;
+// export default PlaylistBuilder;
+export default PlaylistBuilderC;

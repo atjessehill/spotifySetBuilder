@@ -13,8 +13,20 @@ class Scroller extends React.Component {
             stepValue: 1
         }
 
+        this.prev = this.prev.bind(this);
+        this.next = this.next.bind(this);
+
     }
 
+    prev(){
+        const scroller = document.getElementById("scroller");
+        scroller.scrollLeft-=50
+    }
+
+    next(){
+        const scroller = document.getElementById("scroller");
+        scroller.scrollLeft+=50
+    }
 
     componentDidMount(){
     
@@ -22,6 +34,7 @@ class Scroller extends React.Component {
 
 
     render(){
+        console.log(this.state.startNumber);
         let z = this.state.startNumber;
         const endNumber = this.state.endNumber;
         const stepValue = this.state.stepValue;
@@ -43,7 +56,7 @@ class Scroller extends React.Component {
             <div>
 
             <div id="scroller-package">
-            <button class="scroll-bttns" id="goPrev"><i class="las la-angle-left"></i></button>
+            <button class="scroll-bttns" id="goPrev" onClick={this.prev}><i class="las la-angle-left"></i></button>
 
                 <div id="scroller">
                     <div id="scroller-block">
@@ -51,7 +64,7 @@ class Scroller extends React.Component {
                     </div>
                 </div>
 
-                <button class="scroll-bttns" id="goNext"><i class="las la-angle-right"></i></button>
+                <button class="scroll-bttns" id="goNext" onClick={this.next}><i class="las la-angle-right"></i></button>
             </div>
             <div id="selectedValueIndicator"></div>
 
