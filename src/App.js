@@ -47,7 +47,7 @@ class App extends Component{
     render(){
         return (
             <div>
-                {this.state.popup ? <Popup togglePopup={this.showPopup}/> : null}
+                {this.state.popup ? <Popup togglePopup={this.showPopup} login={this.triggerLogin}/> : null}
 
                 <Background ref={this.refreshBackground}/> 
                 <div id="content-area">
