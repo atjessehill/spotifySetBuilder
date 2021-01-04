@@ -181,3 +181,11 @@ export const artists = async(id) => {
         return res.data
     })
 }
+
+export const isSignedIn = () => {
+
+    if(cookies.get('SPOT_USER_accessToken') && cookies.get('SPOT_USER_refreshToken') && cookies.get('SPOT_USER_ID'))return true
+
+    return false;
+
+}
