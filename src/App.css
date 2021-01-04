@@ -1,5 +1,5 @@
 svg {
-  background: #eee;
+  /* background: #eee; */
   overflow: visible;
   display: block;
   width: 100%;
@@ -1245,7 +1245,9 @@ button { outline: none;
 
 body { background-color: #1a1a1a; }
 
-.lottie-spotify-success { width: 300px; height: 300px; margin: 10px auto 0px auto; }
+.lottie-spotify-success { width: 300px; height: 300px; margin: 10px auto 0px auto; 
+
+}
 
 .pop-up-div { background-color: #00000090;
 				position: fixed;

@@ -9,6 +9,7 @@ import {login } from './services/SpotifyCalls';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import Background from './components/Background';
+import Popup from './components/Popup';
 
 class App extends Component{
 
@@ -24,10 +25,11 @@ class App extends Component{
         }
 
         this.refreshBackground = React.createRef();
+        this.popupRef = React.createRef();
 
         this.triggerLogin = this.triggerLogin.bind(this);
         this.getbackgroundRef = this.getbackgroundRef.bind(this);
-        console.log(this.state);
+        this.getpopupRef = this.getpopupRef.bind(this);
     }
 
     // componentDidMount(){
@@ -41,6 +43,10 @@ class App extends Component{
         login()
     }
 
+    getpopupRef(){
+        return this.popupRef;
+    }
+
     getbackgroundRef(){
         return this.refreshBackground;
     }
@@ -48,6 +54,7 @@ class App extends Component{
     render(){
         return (
             <div>
+                <Popup/>
                 <Background ref={this.refreshBackground}/> 
                 <div id="content-area">
                     {/* <Header/> */}
