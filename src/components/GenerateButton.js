@@ -14,7 +14,8 @@ const GenerateButton = (props) => {
             history.push("/generate");
         }
         else{
-            props.popuphandler()
+            console.log("here")
+            props.popuphandler(true)
         }
 
     }

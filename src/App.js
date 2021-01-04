@@ -10,6 +10,7 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import Background from './components/Background';
 import Popup from './components/Popup';
+import PopupB from './components/PopupB';
 
 class App extends Component{
 
@@ -22,7 +23,8 @@ class App extends Component{
             userID: cookies.get('SPOT_DISPLAY_ID'),
             access: cookies.get('SPOT_USER_accessToken'),
             refresh: cookies.get('SPOT_USER_refreshToken'),
-            popup: false
+            popup: false,
+            popupIndex: null
         }
 
         this.refreshBackground = React.createRef();
@@ -36,8 +38,11 @@ class App extends Component{
         login()
     }
 
-    showPopup(){
+    showPopup(isIndex){
+        console.log(isIndex)
+        console.log(this.state)
         this.setState({popup: !this.state.popup})
+        this.setState({popupIndex: isIndex})
     }
 
     getbackgroundRef(){
@@ -45,10 +50,28 @@ class App extends Component{
     }
 
     render(){
+        console.log(this.state)
+
+        let popup;
+        if (this.state.popup && this.state.popupIndex){
+            console.log("case 1")
+            popup = <Popup togglePopup={this.showPopup} login={this.triggerLogin}/>
+
+        }
+        else if (this.state.popup && !this.state.popupIndex){
+            console.log("case 2")
+            popup = <PopupB togglePopup={this.showPopup} login={this.triggerLogin}/>
+        }
+        // else {
+        //     popup = null
+        // }
+        console.log(popup);
+
         return (
             <div>
-                {this.state.popup ? <Popup togglePopup={this.showPopup} login={this.triggerLogin}/> : null}
 
+                {/* {this.state.popup ? <Popup togglePopup={this.showPopup} login={this.triggerLogin} isIndex={this.state.popupIndex}/> : null} */}
+                {popup}
                 <Background ref={this.refreshBackground}/> 
                 <div id="content-area">
                     {/* <Header/> */}
@@ -63,7 +86,7 @@ class App extends Component{
                             handler={this.refreshBackground} 
                             refreshHandler={this.getbackgroundRef}
                             />)}/>
-                        <Route path="/playlist" render={(props) => (<Playlist {...props} handler={this.refreshBackground}/>)}/>
+                        <Route path="/playlist" render={(props) => (<Playlist {...props} handler={this.refreshBackground} popuphandler={this.showPopup}/>)}/>
                         <Route path="" render={(props) => (<Home {...props} handler={this.refreshBackground}/>)} exact/>
 
                         </Switch>

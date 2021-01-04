@@ -6,6 +6,10 @@ const Popup = (props) =>   {
 
     const container = useRef(null);
     const [isVisible, setVisible] = useState(false);
+    console.log(props);
+    if(props.isIndex){
+        console.log(props.isIndex)
+    }
 
     useEffect(() => {
         lottie.loadAnimation({
@@ -13,7 +17,7 @@ const Popup = (props) =>   {
             renderer: 'svg',
             loop: true,
             autoplay: true,
-            animationData: require('../SpotifyRounded.json'),
+            animationData: require('../SpotifyRounded.json')
         })
     }, [])
     
