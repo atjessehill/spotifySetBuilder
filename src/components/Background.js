@@ -22,7 +22,7 @@ class Background extends React.Component {
         let background =                 <div id="background-setup" className="album-art">
         <div id="background-tint"> </div>
         </div>
-        console.log(this.state)
+
         if(this.state.from != null){
             if (this.state.from == "Playlist"){
                 background = <div id="playlist-background-setup" className="album-art" style={{backgroundImage: `url(${this.state.img})`}}>

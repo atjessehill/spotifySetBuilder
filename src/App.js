@@ -21,30 +21,23 @@ class App extends Component{
         this.state = {
             userID: cookies.get('SPOT_DISPLAY_ID'),
             access: cookies.get('SPOT_USER_accessToken'),
-            refresh: cookies.get('SPOT_USER_refreshToken')
+            refresh: cookies.get('SPOT_USER_refreshToken'),
+            popup: false
         }
 
         this.refreshBackground = React.createRef();
-        this.popupRef = React.createRef();
-
+        this.switchPopup = React.createRef();
         this.triggerLogin = this.triggerLogin.bind(this);
         this.getbackgroundRef = this.getbackgroundRef.bind(this);
-        this.getpopupRef = this.getpopupRef.bind(this);
+        this.showPopup = this.showPopup.bind(this);
     }
-
-    // componentDidMount(){
-    //     const script = document.createElement("script");
-    //     script.src = "../spotify/header-footer.js";
-    //     // script.async = true;
-    //     document.body.appendChild(script);
-    // }
 
     triggerLogin(){
         login()
     }
 
-    getpopupRef(){
-        return this.popupRef;
+    showPopup(){
+        this.setState({popup: !this.state.popup})
     }
 
     getbackgroundRef(){
@@ -54,13 +47,14 @@ class App extends Component{
     render(){
         return (
             <div>
-                <Popup/>
+                {this.state.popup ? <Popup togglePopup={this.showPopup}/> : null}
+
                 <Background ref={this.refreshBackground}/> 
                 <div id="content-area">
                     {/* <Header/> */}
 
                     <BrowserRouter>
-                    <Header access={this.state.access} userID={this.state.userID} handler={this.triggerLogin}/>
+                    <Header access={this.state.access} userID={this.state.userID} handler={this.triggerLogin} popuphandler={this.showPopup}/>
 
                     <Switch>
                         <Route path="/login" component={Login}/>

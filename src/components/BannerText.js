@@ -28,6 +28,10 @@ const BannerText = (props) => {
     }, []);
 
     function goToGenerate() {
+
+        // If all cookies are present history.push(/generate)
+        // else show popup
+
         history.push("/generate");
     }
 

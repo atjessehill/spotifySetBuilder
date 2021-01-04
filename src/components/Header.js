@@ -15,6 +15,7 @@ class Header extends React.Component {
             userID: props.userID
         }
         console.log(this.state);
+        console.log(props)
         this.handleGenerateClick = this.handleGenerateClick.bind(this);
 
     }
@@ -47,7 +48,7 @@ class Header extends React.Component {
                     </button>
                 </div>
 
-                <GenerateButton/>
+                <GenerateButton popuphandler={this.props.popuphandler}/>
 
             </div>
             </div>

@@ -1,12 +1,22 @@
 import React, {useState, useEffect} from 'react';
 import { useHistory } from 'react-router-dom';
+import {isSignedIn} from '../services/SpotifyCalls';
 
 const GenerateButton = (props) => {
     // const [fillValue, setSeconds] = useState(0);
     let history = useHistory();
 
     function handleClick(){
-        history.push("/generate");
+
+        // If all cookies are present history.push(/generate)
+        // else show popup
+        if(isSignedIn()){
+            history.push("/generate");
+        }
+        else{
+            props.popuphandler()
+        }
+
     }
 
     return (
