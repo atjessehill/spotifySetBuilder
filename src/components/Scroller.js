@@ -34,7 +34,6 @@ class Scroller extends React.Component {
 
 
     render(){
-        console.log(this.state.startNumber);
         let z = this.state.startNumber;
         const endNumber = this.state.endNumber;
         const stepValue = this.state.stepValue;

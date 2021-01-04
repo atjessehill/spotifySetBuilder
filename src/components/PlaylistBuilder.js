@@ -71,8 +71,11 @@ class PlaylistBuilderC extends React.Component {
   generate(){
 
     const scroller = document.getElementById('scroller');
-		this.setState({PLAYLIST_LENGTH: ((((scroller.scrollLeft)/50)*1)+6)})
+    console.log((scroller.scrollLeft/50*1)+6)
+    PLAYLIST_LENGTH = (scroller.scrollLeft/50*1)+6
 
+		this.setState({PLAYLIST_LENGTH: ((((scroller.scrollLeft)/50)*1)+6)})
+        
     let sampledPoints = this.getIndex(this.state.data, 25);
     // DouglasPeucker(data, stdDev(data)+Mean(data))
     console.log(sampledPoints);
