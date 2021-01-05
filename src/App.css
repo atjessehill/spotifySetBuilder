@@ -215,17 +215,6 @@ body { background-color: #1a1a1a; }
 									transition-duration: 0.4s;
 									 }
 
-
-.text-button { font-family: ubuntu;
-				text-transform: capitalize;
-				font-size: 16px;
-				letter-spacing: 1px;
-				cursor: pointer;
-				position: relative; }
-
-.text-button:hover { opacity: 80%;
-						 }
-
 .float-to-right { float: right; }
 
 .float-to-left { float: left; }
@@ -813,7 +802,6 @@ button { outline: none;
 	.button-line:hover .button-icons { filter: saturate(100%) brightness(1000%);
 										transition-duration: 0.4s;
 										 }
-	
 	
 	.text-button { font-family: ubuntu;
 					text-transform: capitalize;
