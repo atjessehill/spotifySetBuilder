@@ -87,7 +87,7 @@ class App extends Component{
                             refreshHandler={this.getbackgroundRef}
                             />)}/>
                         <Route path="/playlist" render={(props) => (<Playlist {...props} handler={this.refreshBackground} popuphandler={this.showPopup}/>)}/>
-                        <Route path="" render={(props) => (<Home {...props} handler={this.refreshBackground}/>)} exact/>
+                        <Route path="" render={(props) => (<Home {...props} handler={this.refreshBackground} popuphandler={this.showPopup}/>)} exact/>
 
                         </Switch>
                     </BrowserRouter>

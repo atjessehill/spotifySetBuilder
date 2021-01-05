@@ -21,7 +21,7 @@ class Home extends React.Component {
 
             <div id="banner-area">
 
-            <BannerText/>
+            <BannerText popuphandler={this.props.popuphandler}/>
 
             <div>
                 {/* Explainer video comes here. */}

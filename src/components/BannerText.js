@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { useHistory } from 'react-router-dom';
+import {isSignedIn} from '../services/SpotifyCalls';
 
 const BannerText = (props) => {
     const [fillValue, setSeconds] = useState(0);
@@ -31,8 +32,13 @@ const BannerText = (props) => {
 
         // If all cookies are present history.push(/generate)
         // else show popup
-
-        history.push("/generate");
+        if(isSignedIn()){
+            history.push("/generate");
+        }
+        else{
+            console.log("here")
+            props.popuphandler(true)
+        }
     }
 
 
