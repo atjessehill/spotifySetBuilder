@@ -223,7 +223,7 @@ body { background-color: #1a1a1a; }
 				cursor: pointer;
 				position: relative; }
 
-.text-button:hover { opacity: 5.0;
+.text-button:hover { opacity: 0.5;
 						 }
 
 .float-to-right { float: right; }
