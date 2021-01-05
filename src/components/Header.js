@@ -16,15 +16,19 @@ class Header extends React.Component {
         }
         console.log(this.state);
         console.log(props)
-        this.handleGenerateClick = this.handleGenerateClick.bind(this);
-
+        this.goHome = this.goHome.bind(this);
+        this.gotoLogin = this.gotoLogin.bind(this);
     }
 
-    handleGenerateClick(){
+    goHome(){
         this.props.history.push({
             pathname: "/",
         });
 
+    }
+
+    gotoLogin(){
+        this.props.handler(false);
     }
 
 
@@ -36,12 +40,12 @@ class Header extends React.Component {
 
         return (
             <div id="top-bar">
-            <img onClick={this.handleGenerateClick} src="../assets/icons/logo.svg" alt="logo alt" className="logo"/> 
+            <img onClick={this.goHome} src="../assets/icons/logo.svg" alt="logo alt" className="logo"/> 
     
     
             <div className="float-to-right">
                 <div className="float-to-right">
-                    <button className="spotify button-line" onClick={this.props.handler}> 
+                    <button className="spotify button-line" onClick={this.gotoLogin}> 
                         <img src="../assets/icons/spotify.png" className="button-icons"/>
                         {spotifyText}
                         <div className="button-bg spotify-bg"> </div>

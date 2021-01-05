@@ -11,10 +11,12 @@ const GenerateButton = (props) => {
         // If all cookies are present history.push(/generate)
         // else show popup
         if(isSignedIn()){
+            console.log("Signed in correctly")
             history.push("/generate");
         }
         else{
-            console.log("here")
+            console.log("Not signed in correctly")
+
             props.popuphandler(true)
         }
 

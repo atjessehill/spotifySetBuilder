@@ -24,7 +24,7 @@ class App extends Component{
             access: cookies.get('SPOT_USER_accessToken'),
             refresh: cookies.get('SPOT_USER_refreshToken'),
             popup: false,
-            popupIndex: null
+            popupIndex: null,
         }
 
         this.refreshBackground = React.createRef();
@@ -34,8 +34,8 @@ class App extends Component{
         this.showPopup = this.showPopup.bind(this);
     }
 
-    triggerLogin(){
-        login()
+    triggerLogin(toGenerate){
+        login(toGenerate)
     }
 
     showPopup(isIndex){
