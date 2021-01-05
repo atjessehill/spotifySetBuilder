@@ -1,7 +1,7 @@
 import React from 'react';
 import {login} from '../services/SpotifyCalls'
 import Cookies from 'universal-cookie';
-import {useHistory} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import GenerateButton from './GenerateButton';
 
 class Header extends React.Component {
@@ -21,10 +21,10 @@ class Header extends React.Component {
     }
 
     handleGenerateClick(){
+        this.props.history.push({
+            pathname: "/",
+        });
 
-        // props.push({
-        //     pathname: '/generate',
-        //   })  
     }
 
 
@@ -59,4 +59,4 @@ class Header extends React.Component {
     }
 }
 
-export default Header;
+export default withRouter(Header);
