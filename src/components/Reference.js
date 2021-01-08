@@ -24,8 +24,10 @@ class Reference extends React.Component {
     }
 
     selectThisSong(event){
-    
-        const [target, id, name, artist, artistID ]= event.target.id.split(':')
+        console.log(event);
+        console.log(event.target.id.split(';'));
+        const [target, id, name, artist, artistID ] = event.target.id.split(';')
+        console.log(name);
         let genre;
         artists(artistID)
         .then(res => {
@@ -65,9 +67,7 @@ class Reference extends React.Component {
         if (event.target.id != 'search-box-id')return
 
         let filter = event.target.value;
-        console.log(filter);
         if (filter === ""){
-            console.log("here")
             this.setState({
                 hasSelected: false
             })
@@ -107,12 +107,12 @@ class Reference extends React.Component {
         if (songs.length != 0){
             songs.map(s => {
 
-                const innerTableID = `innerTable:${s.id}:${s.name}:${s.artists[0].name}:${s.artists[0].id}`;
-                const maintdID = `maintd:${s.id}:${s.name}:${s.artists[0].name}:${s.artists[0].id}`;
-                const innerTr1ID = `innerTr1:${s.id}:${s.name}:${s.artists[0].name}:${s.artists[0].id}`;
-                const rowSpanID = `rowSpan:${s.id}:${s.name}:${s.artists[0].name}:${s.artists[0].id}`;
-                const songID = `songsindrlist:${s.id}:${s.name}:${s.artists[0].name}:${s.artists[0].id}`;
-                const artistdrlist = `artistindrlist:${s.id}:${s.name}:${s.artists[0].name}:${s.artists[0].id}`
+                const innerTableID = `innerTable;${s.id};${s.name};${s.artists[0].name};${s.artists[0].id}`;
+                const maintdID = `maintd;${s.id};${s.name};${s.artists[0].name};${s.artists[0].id}`;
+                const innerTr1ID = `innerTr1;${s.id};${s.name};${s.artists[0].name};${s.artists[0].id}`;
+                const rowSpanID = `rowSpan;${s.id};${s.name};${s.artists[0].name};${s.artists[0].id}`;
+                const songID = `songsindrlist;${s.id};${s.name};${s.artists[0].name};${s.artists[0].id}`;
+                const artistdrlist = `artistindrlist;${s.id};${s.name};${s.artists[0].name};${s.artists[0].id}`
 
                 const maintr = <tr 
                     // key={s.id} 

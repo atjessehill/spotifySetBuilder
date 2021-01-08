@@ -33,7 +33,6 @@ class PlaylistBuilderC extends React.Component {
   }
 
   handleChange(event){
-    console.log(event);
     if (event.type === "URI") this.setState({SEED_URI_MAIN:event.value, selected:true})
     if (event.type === "REMOVE") this.setState({selected:false})
 

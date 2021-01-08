@@ -14,7 +14,6 @@ const cookies = new Cookies();
 axios.interceptors.request.use(req => {
     // console.log("Refreshing is" + refreshing);
     if(cookies.get('SPOT_USER_accessToken')){
-        console.log("Adding header");
         req.headers.Authorization = 'Bearer '+cookies.get('SPOT_USER_accessToken')
         return req;
     }
@@ -192,6 +191,7 @@ export const tracks = async(ids) => {
 }
 
 export const artists = async(id) => {
+    console.log(id);
     return await axios({
         method: 'get',
         url: `https://api.spotify.com/v1/artists/${id}`
