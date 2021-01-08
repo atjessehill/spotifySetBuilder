@@ -72,6 +72,7 @@ class PlaylistBuilderC extends React.Component {
   }
 
   generate(){
+    this.props.popuphandler(false, true, false)
 
     const scroller = document.getElementById('scroller');
     console.log((scroller.scrollLeft/50*1)+6)
@@ -161,6 +162,7 @@ class PlaylistBuilderC extends React.Component {
       }
 
       promise.finally(() => {
+        this.props.popuphandler(false, false, false)
         this.props.history.push({
           pathname: '/playlist',
           state: {

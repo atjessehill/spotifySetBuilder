@@ -16,7 +16,7 @@ class Playlist extends React.Component {
     }
 
     savePlaylist(){
-        this.props.popuphandler(false);
+        this.props.popuphandler(false, false, true);
 
         // if (!generated)return
         const ids = this.state.tracklist.map((d) => {

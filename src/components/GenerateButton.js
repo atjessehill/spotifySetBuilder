@@ -17,7 +17,7 @@ const GenerateButton = (props) => {
         else{
             console.log("Not signed in correctly")
 
-            props.popuphandler(true)
+            props.popuphandler(true, false, false)
         }
 
     }

@@ -37,7 +37,7 @@ const BannerText = (props) => {
         }
         else{
             console.log("here")
-            props.popuphandler(true)
+            props.popuphandler(true, false, false)
         }
     }
 

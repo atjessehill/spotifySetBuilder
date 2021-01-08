@@ -24,7 +24,7 @@ class App extends Component{
             access: cookies.get('SPOT_USER_accessToken'),
             refresh: cookies.get('SPOT_USER_refreshToken'),
             popup: false,
-            popupIndex: null,
+            isIndex: null,
         }
 
         this.refreshBackground = React.createRef();
@@ -38,11 +38,9 @@ class App extends Component{
         login(toGenerate)
     }
 
-    showPopup(isIndex){
-        console.log(isIndex)
-        console.log(this.state)
+    showPopup(isIndex, isBuildingPlaylist, isPlaylist){
         this.setState({popup: !this.state.popup})
-        this.setState({popupIndex: isIndex})
+        this.setState({isIndex: isIndex, isBuildingPlaylist: isBuildingPlaylist, isPlaylist: isPlaylist})
     }
 
     getbackgroundRef(){
@@ -52,26 +50,29 @@ class App extends Component{
     render(){
         console.log(this.state)
 
-        let popup;
-        if (this.state.popup && this.state.popupIndex){
-            console.log("case 1")
-            popup = <Popup togglePopup={this.showPopup} login={this.triggerLogin}/>
+        // let popup;
+        // if (this.state.popup && this.state.popupIndex){
+        //     console.log("case 1")
+        //     popup = <Popup togglePopup={this.showPopup} login={this.triggerLogin} isAtHome={this.state.popupIndex} isBuildingPlaylist={this.state.isBuildingPlaylist}/>
 
-        }
-        else if (this.state.popup && !this.state.popupIndex){
-            console.log("case 2")
-            popup = <PopupB togglePopup={this.showPopup} login={this.triggerLogin}/>
-        }
+        // }
+        // else if (this.state.popup && !this.state.popupIndex){
+        //     console.log("case 2")
+        //     popup = <PopupB togglePopup={this.showPopup} login={this.triggerLogin}/>
+        // }
         // else {
         //     popup = null
         // }
-        console.log(popup);
 
         return (
             <div>
 
-                {/* {this.state.popup ? <Popup togglePopup={this.showPopup} login={this.triggerLogin} isIndex={this.state.popupIndex}/> : null} */}
-                {popup}
+                {this.state.popup ? <Popup togglePopup={this.showPopup} login={this.triggerLogin} 
+                    isIndex={this.state.isIndex} 
+                    isBuildingPlaylist={this.state.isBuildingPlaylist}
+                    isPlaylist={this.state.isPlaylist}
+                        
+                    /> : null}
                 <Background ref={this.refreshBackground}/> 
                 <div id="content-area">
                     {/* <Header/> */}
@@ -85,6 +86,7 @@ class App extends Component{
                             {...props} 
                             handler={this.refreshBackground} 
                             refreshHandler={this.getbackgroundRef}
+                            popuphandler={this.showPopup}
                             />)}/>
                         <Route path="/playlist" render={(props) => (<Playlist {...props} handler={this.refreshBackground} popuphandler={this.showPopup}/>)}/>
                         <Route path="" render={(props) => (<Home {...props} handler={this.refreshBackground} popuphandler={this.showPopup}/>)} exact/>
