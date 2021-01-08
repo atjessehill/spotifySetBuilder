@@ -48,21 +48,6 @@ class App extends Component{
     }
 
     render(){
-        console.log(this.state)
-
-        // let popup;
-        // if (this.state.popup && this.state.popupIndex){
-        //     console.log("case 1")
-        //     popup = <Popup togglePopup={this.showPopup} login={this.triggerLogin} isAtHome={this.state.popupIndex} isBuildingPlaylist={this.state.isBuildingPlaylist}/>
-
-        // }
-        // else if (this.state.popup && !this.state.popupIndex){
-        //     console.log("case 2")
-        //     popup = <PopupB togglePopup={this.showPopup} login={this.triggerLogin}/>
-        // }
-        // else {
-        //     popup = null
-        // }
 
         return (
             <div>
