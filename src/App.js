@@ -10,7 +10,6 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import Background from './components/Background';
 import Popup from './components/Popup';
-import PopupB from './components/PopupB';
 
 class App extends Component{
 
