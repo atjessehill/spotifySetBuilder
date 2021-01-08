@@ -18,7 +18,8 @@ class PlaylistBuilderC extends React.Component {
     const data = Datagen();
 
     this.state = {
-      data: data
+      data: data,
+      selected: false
     }
     this.handleChange = this.handleChange.bind(this);
     this.generate = this.generate.bind(this);
@@ -32,7 +33,10 @@ class PlaylistBuilderC extends React.Component {
   }
 
   handleChange(event){
-    if (event.type === "URI") this.setState({SEED_URI_MAIN:event.value})
+    console.log(event);
+    if (event.type === "URI") this.setState({SEED_URI_MAIN:event.value, selected:true})
+    if (event.type === "REMOVE") this.setState({selected:false})
+
   }
 
   getRecommendations(i, start,  end, k){
@@ -317,7 +321,11 @@ class PlaylistBuilderC extends React.Component {
 
     </div>
       <div style={{"marginTop": "20px"}} className="float-to-right">
+        {this.state.selected ? 
             <button className="button-fill orange-bg" onClick={this.generate}>Generate playlist <img src="assets/icons/right-circle-white.svg" className="button-icons-on-right"/></button>
+            :
+            null
+        }
       </div>
     </div>
   );

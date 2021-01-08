@@ -71,6 +71,9 @@ class Reference extends React.Component {
             this.setState({
                 hasSelected: false
             })
+            this.props.handler({
+                type: "REMOVE", 
+               });
             return
         }
 
