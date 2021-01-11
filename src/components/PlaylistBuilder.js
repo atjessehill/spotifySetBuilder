@@ -7,7 +7,7 @@ import {getFeatures, requestRecs, login, search } from '../services/SpotifyCalls
 import Datagen from '../services/Datagen';
 import {Variance, Mean, stdDev, getRandInt, getRandArbitrary, SimplifyLine} from '../services/Helper';
 
-let FEATURE_TYPE = 'target_danceability'
+let FEATURE_TYPE = 'target_energy'
 let PLAYLIST_LENGTH = 6;
 let THIS_PLAYLIST;
 
