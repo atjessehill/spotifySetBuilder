@@ -5,7 +5,7 @@ import Reference from './Reference';
 import Scroller from './Scroller';
 import {getFeatures, requestRecs, login, search } from '../services/SpotifyCalls';
 import Datagen from '../services/Datagen';
-import {Variance, Mean, stdDev, getRandInt, getRandArbitrary} from '../services/Helper';
+import {Variance, Mean, stdDev, getRandInt, getRandArbitrary, SimplifyLine} from '../services/Helper';
 
 let FEATURE_TYPE = 'target_danceability'
 let PLAYLIST_LENGTH = 6;
@@ -23,7 +23,6 @@ class PlaylistBuilderC extends React.Component {
     }
     this.handleChange = this.handleChange.bind(this);
     this.generate = this.generate.bind(this);
-    this.getIndex = this.getIndex.bind(this);
     this.addToChain = this.addToChain.bind(this);
     this.getRecommendations = this.getRecommendations.bind(this);
   }
@@ -75,32 +74,34 @@ class PlaylistBuilderC extends React.Component {
     this.props.popuphandler(false, true, false)
 
     const scroller = document.getElementById('scroller');
-    console.log((scroller.scrollLeft/50*1)+6)
+
     PLAYLIST_LENGTH = (scroller.scrollLeft/50*1)+6
 
 		this.setState({PLAYLIST_LENGTH: ((((scroller.scrollLeft)/50)*1)+6)})
         
-    let sampledPoints = this.getIndex(this.state.data, 25);
-    // DouglasPeucker(data, stdDev(data)+Mean(data))
-    console.log(sampledPoints);
+    let sampledPoints = SimplifyLine(this.state.data, PLAYLIST_LENGTH)
+    console.log(sampledPoints)
+
     let seedIndex;
     let sampleIndex;
     let adjusted_data;
     this.setState({THIS_PLAYLIST: new Array(PLAYLIST_LENGTH).fill(0)})
 
+    
     getFeatures(this.state.SEED_URI_MAIN.split(':')[2])
     .then((res) => {
       const songFeature = FEATURE_TYPE.split('_')[1]
       const features = res.data
-      console.log(res);
-      console.log(features[songFeature])
       let closestVal = 100;
+
+      /*
+      Adjust the line to your reference song.
+      */
 
       for(let i=0; i<sampledPoints.length; i++){
 
         let diff = Math.abs(sampledPoints[i]-features[songFeature]);
-        // console.log(i + ':' +diff + ' :'+closestVal);
-
+        
         if (diff < closestVal){
           closestVal = diff;
           seedIndex = i
@@ -113,27 +114,10 @@ class PlaylistBuilderC extends React.Component {
       })
 
 
-      // Determine two numbers, the # of points
-
-      sampleIndex = this.getIndex(adjusted_data, seedIndex)
-
-      for(let i=0; i<sampleIndex.length; i++){
-        if(seedIndex === sampleIndex[i])seedIndex=i;
-      }
-
-      console.log(sampleIndex);
-      console.log(seedIndex);
+      // Places the seed song in the final playlist
       const update = this.state.THIS_PLAYLIST;
       update[seedIndex] = this.state.SEED_URI_MAIN.split(':')[2];
       this.setState({THIS_PLAYLIST:update})
-      console.log(adjusted_data);
-
-      // let pts = getIndex(adjusted_data, seedIndex).map((d) => {
-      //   return adjusted_data[d]
-      // })    
-
-      // TODO SAMPLE POINTS
-
         
 
     })
@@ -179,111 +163,6 @@ class PlaylistBuilderC extends React.Component {
     })
 
     
-  }
-
-  getIndex(adjusted_data, factor){
-    // Return an array of indexes to indicate which indexes to sample from
-
-    // return [1, 10, 15, index, 30, 50]
-
-    let slopes = {}
-    let limit = Math.pow(Mean(adjusted_data),stdDev(adjusted_data))*factor// 0.1;
-    let newPoints = [];
-    let toRemove = [];
-    let updated_vals = [];
-    for(let i=1; i<adjusted_data.length; i++){
-      if(adjusted_data[i-1] - adjusted_data[i] === 0)slopes[i] = Number.MAX_VALUE;
-      else {
-        slopes[i] = adjusted_data[i-1] - adjusted_data[i]
-      }
-
-    }
-    newPoints.push(0);    
-
-    for(let i=Object.keys(slopes).length-2; i> 0; i--){
-      // console.log(Math.abs(slopes[i] - slopes[i+1]))
-      if(Math.abs(slopes[i] - slopes[i+1]) < limit){ 
-        toRemove.push(i);
-      }
-
-    }
-
-    console.log(Object.keys(slopes).length);
-
-    for(let i=0; i<toRemove.length; i++){
-      delete slopes[toRemove[i]]
-    }
-    
-    for(const [key, value] of Object.entries(slopes)){
-      newPoints.push(Number(key));
-    }
-
-    newPoints.map((d) => {
-      return updated_vals.push(adjusted_data[d])
-    })
-
- 
-
-    console.log(newPoints);
-    updated_vals = [...new Set(updated_vals)]
-    console.log(updated_vals);
-
-    let min;
-    let max;
-    // let minI;
-    // let maxI;
-
-    // for(let i=0; i<updated_vals.length; i++){
-    //   if(updated_vals[i] == min)minI = updated_vals[i];
-    //   if(updated_vals[i] == max)maxI = updated_vals[i];
-    // }
-
-    // Case 1:
-    if(updated_vals.length === PLAYLIST_LENGTH)return updated_vals;
-    else if(updated_vals.length < PLAYLIST_LENGTH){
-      let missing = PLAYLIST_LENGTH - updated_vals.length;
-      console.log("MISSING "+missing);
-
-      for(let i=0; i<missing; i++){
-        console.log("UPdated vals length is " + updated_vals.length)
-        let randIndex = getRandInt(1, updated_vals.length);
-        
-        if(updated_vals[randIndex] > updated_vals[randIndex-1]){
-          max = updated_vals[randIndex];
-          min = updated_vals[randIndex-1];
-        }else if(updated_vals[randIndex] < updated_vals[randIndex-1]){
-          max = updated_vals[randIndex-1];
-          min = updated_vals[randIndex];
-        }
-        else if(updated_vals[randIndex] === updated_vals[randIndex-1]){
-          max = updated_vals[randIndex];
-          min = updated_vals[randIndex-1]-0.005;
-        }
-
-        let firstArr = updated_vals.slice(0, randIndex)
-        let lastArr = updated_vals.slice(randIndex, updated_vals.length);
-        let randNum = getRandArbitrary(min, max);
-
-        firstArr.push(randNum);
-        firstArr.push(...lastArr);
-        updated_vals = firstArr;     
-
-      }
-
-    }else if(updated_vals.length > PLAYLIST_LENGTH){
-      let tocut = updated_vals.length - PLAYLIST_LENGTH;
-
-      let mod = 0;
-      if(tocut % 2 !== 0)mod=1; 
-      
-      let firstArr = updated_vals.slice(tocut/2+mod, updated_vals.length/2);
-      let lastArr = updated_vals.slice(updated_vals.length/2, (updated_vals.length)-(tocut/2));
-      firstArr.push(...lastArr);
-      updated_vals = firstArr;
-    }
-
-    return updated_vals;
-
   }
 
   addToChain(chain, i, start, end, k){

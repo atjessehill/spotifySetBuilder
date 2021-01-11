@@ -99,14 +99,15 @@ export const SimplifyLine = (arr, expected) => {
 
         
     }
-    console.log(points)
+
     const difference = Math.abs(points.length-expected);
     let index;
     for(let i=0; i<difference; i++){
-        index = getRandInt(0, points.length-1);
+        index = getRandInt(0, points.length-2);
 
         if(points.length < expected){
-            points = points.slice(0, index+1).concat(points[index]).concat(points.slice(index));
+            const newPoint = getRandArbitrary(points[index].y, points[index+1].y);
+            points = points.slice(0, index+1).concat({x: points[index].x, y:newPoint}).concat(points.slice(index));
         }
         if(points.length > expected){
             
@@ -115,5 +116,9 @@ export const SimplifyLine = (arr, expected) => {
         }
     }
 
+    let f = points.map(p => {
+        return p.y;
+    })
+    return f
 
 }
