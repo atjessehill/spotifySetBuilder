@@ -7,17 +7,12 @@ const Popup = (props) =>   {
     const container = useRef(null);
     const [isVisible, setVisible] = useState(false);
 
-    console.log(props);
-    if(props.isIndex){
-        console.log(props.isIndex)
-    }
 
     useEffect(() => {
 
         let testvar;
 
         if(props.isBuildingPlaylist){
-            console.log("here")
             testvar = require('../BuildingPlaylist.json')
 
         }
