@@ -6,6 +6,7 @@ import Scroller from './Scroller';
 import {getFeatures, requestRecs, login, search } from '../services/SpotifyCalls';
 import Datagen from '../services/Datagen';
 import {Variance, Mean, stdDev, getRandInt, getRandArbitrary, SimplifyLine} from '../services/Helper';
+import CycleLarge from './CycleLarge';
 
 let FEATURE_TYPE = 'target_energy'
 let PLAYLIST_LENGTH = 6;
@@ -15,16 +16,19 @@ class PlaylistBuilderC extends React.Component {
 
   constructor(props){
     super(props);
+    console.log(this.props.featureType);
     const data = Datagen();
 
     this.state = {
       data: data,
-      selected: false
+      selected: false,
+      FEATURE_TYPE: 'target_danceability'
     }
     this.handleChange = this.handleChange.bind(this);
     this.generate = this.generate.bind(this);
     this.addToChain = this.addToChain.bind(this);
     this.getRecommendations = this.getRecommendations.bind(this);
+    this.updateFeatureType = this.updateFeatureType.bind(this);
   }
 
   componentDidMount(){
@@ -71,6 +75,7 @@ class PlaylistBuilderC extends React.Component {
   }
 
   generate(){
+
     this.props.popuphandler(false, true, false)
 
     const scroller = document.getElementById('scroller');
@@ -170,13 +175,22 @@ class PlaylistBuilderC extends React.Component {
     })
   }
 
+  updateFeatureType(feature){
+    console.log("updating feature type to"+feature)
+
+    if(feature==="Energy"){
+      this.state.FEATURE_TYPE='target_energy'
+    }else if(feature==="Danceability"){
+      this.state.FEATURE_TYPE='target_danceability'
+    }
+
+  }
+
   render() { 
 
     return (
     <div>
-    <p className="heading-text" style={{marginTop: "40px"}}>Generate New Playlist for <span className="orange">Dancebility <i className="las la-chevron-circle-down"></i></span></p>
-
-
+      <CycleLarge updateFeatureType={this.updateFeatureType}/>
       <div id="metrics-area">
         
         <div id="no-of-songs-block" className="metric-blocks" style={{"backgroundColor": "ffffff10"}}>

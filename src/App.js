@@ -24,13 +24,14 @@ class App extends Component{
             refresh: cookies.get('SPOT_USER_refreshToken'),
             popup: false,
             isIndex: null,
+            featureType: "target_danceability"
         }
-
         this.refreshBackground = React.createRef();
         this.switchPopup = React.createRef();
         this.triggerLogin = this.triggerLogin.bind(this);
         this.getbackgroundRef = this.getbackgroundRef.bind(this);
         this.showPopup = this.showPopup.bind(this);
+        this.updateFeature = this.updateFeature.bind(this);
     }
 
     triggerLogin(toGenerate){
@@ -44,6 +45,11 @@ class App extends Component{
 
     getbackgroundRef(){
         return this.refreshBackground;
+    }
+
+    updateFeature(type){
+        // console.log(type);
+        this.state.featureType = type;
     }
 
     render(){
@@ -71,9 +77,15 @@ class App extends Component{
                             handler={this.refreshBackground} 
                             refreshHandler={this.getbackgroundRef}
                             popuphandler={this.showPopup}
+                            featureType={this.state.featureType}
                             />)}/>
                         <Route path="/playlist" render={(props) => (<Playlist {...props} handler={this.refreshBackground} popuphandler={this.showPopup}/>)}/>
-                        <Route path="" render={(props) => (<Home {...props} handler={this.refreshBackground} popuphandler={this.showPopup}/>)} exact/>
+                        <Route path="" render={(props) => (<Home 
+                            {...props} 
+                            handler={this.refreshBackground} 
+                            popuphandler={this.showPopup}
+                            updateFeature={this.updateFeature}
+                            />)} exact/>
 
                         </Switch>
                     </BrowserRouter>

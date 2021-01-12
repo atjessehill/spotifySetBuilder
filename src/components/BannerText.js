@@ -1,10 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import { useHistory } from 'react-router-dom';
 import {isSignedIn} from '../services/SpotifyCalls';
+import CycleSmall from './CycleSmall';
 
 const BannerText = (props) => {
     const [fillValue, setSeconds] = useState(0);
     let history = useHistory();
+    let [featureIndex, setFeature] = useState(0)
+    const features = ["Danceability", "Energy"]
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -49,9 +52,7 @@ const BannerText = (props) => {
             <div class="slideshow-bullets">
                 <div class="bullets grey-bg-2" id="bullet-1"></div><div class="bullets grey-bg-2" id="bullet-2"></div><div class="bullets orange-bg" id="bullet-3"></div>
             </div>
-            <p class="sub-text" style={{paddingTop: "10px"}}>Curate playlists with changing <span class="orange"> Dancebility <i class="las la-chevron-circle-down"></i></span> with time
-            
-            </p>
+            <CycleSmall updateFeature={props.updateFeature}></CycleSmall>
             <div style={{marginTop: "20px"}}>
                     <button class="button-fill orange-bg" onClick={goToGenerate}>Get started <img src="assets/icons/right-circle-white.svg" class="button-icons-on-right"/></button>
             </div>
