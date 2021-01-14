@@ -9,7 +9,8 @@ class Playlist extends React.Component {
             playlist_name: 'noshuffle playlist',
             tracklist: [],
             genre: "",
-            device_id: "none"
+            device_id: "none",
+            device_loaded: false
         }
 
 
@@ -49,6 +50,7 @@ class Playlist extends React.Component {
         //   let { device_id } = data;
             console.log("Let the music play on!");
             this.state.device_id = data.device_id;
+            this.setState({device_loaded: true})
         //   this.setState({ deviceId: device_id });
         });
         this.player.connect();
@@ -131,6 +133,7 @@ class Playlist extends React.Component {
 
 
     render(){
+        const colorPlay = this.state.device_loaded ? "text-button float-to-right orange":"text-button float-to-right grey1"
         const songs = this.state.tracklist;
         const songChoices = [];
         let uriImg = "";
@@ -161,7 +164,7 @@ class Playlist extends React.Component {
                                         </i>
                                         REMOVE */}
                                     </span>
-                                    <span className="text-button float-to-right orange" id={"parent:"+s.id} onClick={this.playSong}>
+                                    <span className={colorPlay} id={"parent:"+s.id} onClick={this.playSong}>
                                         <i className="las la-play" id={"child:"+s.id}  >
                                         </i>
                                         PLAY
@@ -181,6 +184,7 @@ class Playlist extends React.Component {
             songChoices.push(maintr);
             })
         }
+
 
         return (
             <div>
@@ -231,7 +235,7 @@ class Playlist extends React.Component {
 
 				<div>
 					<div className="input-headers float-to-left" style={{marginTop: "0px"}}><span id="playlist-no-of-tracks">{songChoices.length}</span> songs for <span id="playlist-metric">Dancibility</span></div>
-					<div className="text-button float-to-right orange" onClick={this.playAll}><i className="las la-play"></i> PLAY ALL</div>
+					<div className={colorPlay} onClick={this.playAll}><i className="las la-play"></i> PLAY ALL</div>
 				</div>
 
 				<div className="custom-playlist-scroll-box">
