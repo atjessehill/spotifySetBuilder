@@ -1,5 +1,5 @@
 import React from 'react';
-import {tracks, addSongstoPlaylist, createPlaylist} from '../services/SpotifyCalls';
+import {tracks, addSongstoPlaylist, createPlaylist, getPlayer} from '../services/SpotifyCalls';
 
 class Playlist extends React.Component {
 
@@ -11,11 +11,50 @@ class Playlist extends React.Component {
             genre: "",
         }
 
+
+
         this.savePlaylist = this.savePlaylist.bind(this);
-        
+        this.playerCheckInterval = null;
+        this.createEventHandlers = this.createEventHandlers.bind(this);
+    }
+
+    checkForPlayer(){
+        console.log("Checking");
+        if(window.Spotify !== null){
+            clearInterval(this.playerCheckInterval);
+            this.player = getPlayer();
+            this.createEventHandlers();
+        }
+
+    }
+
+    createEventHandlers(){
+        console.log(this.player);
+
+        this.player.addListener('initialization_error', e => console.log(e));
+        this.player.addListener('authentication_error', e=> {
+            console.error(e);
+        });
+        this.player.addListener('account_error', e => { console.error(e); });
+        this.player.addListener('playback_error', e => { console.error(e); });
+      
+        // Playback status updates
+        this.player.addListener('player_state_changed', state => { console.log(state); });
+      
+        // Ready
+        this.player.addListener('ready', data => {
+        //   let { device_id } = data;
+          console.log("Let the music play on!");
+          console.log(data)
+        //   this.setState({ deviceId: device_id });
+        });
+        this.player.connect();
+      
     }
 
     savePlaylist(){
+        console.log(this.player);
+        return
         this.props.popuphandler(false, false, true);
 
         // if (!generated)return
@@ -48,6 +87,9 @@ class Playlist extends React.Component {
                 uri: this.props.history.location.state.uri
             });
 
+        })
+        .then(() => {
+            this.playerCheckInterval = setInterval(() => this.checkForPlayer(), 1000);
         })
 
 
