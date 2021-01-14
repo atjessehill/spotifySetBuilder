@@ -141,7 +141,7 @@ export const addSongstoPlaylist = async(id, uris) => {
 
 export const login = (toGenerate) => {
 
-    const scope = 'playlist-modify-public,playlist-modify-private,playlist-read-private,playlist-read-collaborative,streaming,web-playback'
+    const scope = 'playlist-modify-public,playlist-modify-private,playlist-read-private,playlist-read-collaborative,streaming'
     const redirect = toGenerate ? REACT_APP_CALLBACK_ENCODED_GENERATE : REACT_APP_CALLBACK_ENCODED_HOME
     console.log(redirect)
     const client_id = 'f4d25f2bdfee4094a7d93f0ec7e4f264'
