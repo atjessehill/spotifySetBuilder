@@ -1,5 +1,5 @@
 import React from 'react';
-import {tracks, addSongstoPlaylist, createPlaylist, getPlayer} from '../services/SpotifyCalls';
+import {tracks, addSongstoPlaylist, createPlaylist, getPlayer, addToPlay} from '../services/SpotifyCalls';
 
 class Playlist extends React.Component {
 
@@ -9,6 +9,7 @@ class Playlist extends React.Component {
             playlist_name: 'noshuffle playlist',
             tracklist: [],
             genre: "",
+            device_id: "none"
         }
 
 
@@ -16,6 +17,8 @@ class Playlist extends React.Component {
         this.savePlaylist = this.savePlaylist.bind(this);
         this.playerCheckInterval = null;
         this.createEventHandlers = this.createEventHandlers.bind(this);
+        this.playSong = this.playSong.bind(this);
+        this.playAll = this.playAll.bind(this);
     }
 
     checkForPlayer(){
@@ -44,17 +47,35 @@ class Playlist extends React.Component {
         // Ready
         this.player.addListener('ready', data => {
         //   let { device_id } = data;
-          console.log("Let the music play on!");
-          console.log(data)
+            console.log("Let the music play on!");
+            this.state.device_id = data.device_id;
         //   this.setState({ deviceId: device_id });
         });
         this.player.connect();
       
     }
 
+    playSong(e){
+        const uid = e.target.id.split(':')[1];
+        addToPlay(this.state.device_id, ["spotify:track:"+uid])
+        this.player.resume().then(() => {
+            // console.log("Resumed");
+        })
+    }
+
+    playAll(){
+        const URIs = []
+        this.state.tracklist.map(s => {
+            URIs.push(s.uri);
+        })
+        addToPlay(this.state.device_id, URIs);
+        this.player.resume().then(() => {
+            // console.log("Resumed");
+        })
+        
+    }
+
     savePlaylist(){
-        console.log(this.player);
-        return
         this.props.popuphandler(false, false, true);
 
         // if (!generated)return
@@ -140,10 +161,10 @@ class Playlist extends React.Component {
                                         </i>
                                         REMOVE */}
                                     </span>
-                                    <span className="text-button float-to-right orange">
-                                        {/* <i className="las la-play">
+                                    <span className="text-button float-to-right orange" id={"parent:"+s.id} onClick={this.playSong}>
+                                        <i className="las la-play" id={"child:"+s.id}  >
                                         </i>
-                                        PLAY */}
+                                        PLAY
                                     </span>
                                 </td>
                             </tr>
@@ -210,7 +231,7 @@ class Playlist extends React.Component {
 
 				<div>
 					<div className="input-headers float-to-left" style={{marginTop: "0px"}}><span id="playlist-no-of-tracks">{songChoices.length}</span> songs for <span id="playlist-metric">Dancibility</span></div>
-					{/* <div className="text-button float-to-right orange"><i className="las la-play"></i> PLAY ALL</div> */}
+					<div className="text-button float-to-right orange" onClick={this.playAll}><i className="las la-play"></i> PLAY ALL</div>
 				</div>
 
 				<div className="custom-playlist-scroll-box">

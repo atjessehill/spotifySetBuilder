@@ -215,3 +215,24 @@ export const getPlayer = () => {
         getOAuthToken: cb => { cb(cookies.get('SPOT_USER_accessToken'));}
     })
 }
+
+export const addToPlay = async(device_id, songs) => {
+    console.log(device_id);
+    console.log(songs);
+    //device_id: A string used to identify our web sdk device
+    // songs: a list of song URIs in form ["spotify:track:xxxx",...]
+    return await axios({
+        method: 'put',
+        url: `https://api.spotify.com/v1/me/player/play?device_id=${device_id}`,
+        data: {
+            uris: songs
+        }
+        
+        // headers: {
+        //     'Accept': 'application/json'
+        // }
+    })
+    .catch((error) => {
+        console.log(error)
+    })
+}
