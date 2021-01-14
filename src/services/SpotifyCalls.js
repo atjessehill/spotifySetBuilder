@@ -141,7 +141,7 @@ export const addSongstoPlaylist = async(id, uris) => {
 
 export const login = (toGenerate) => {
 
-    const scope = 'playlist-modify-public,playlist-modify-private,playlist-read-private,playlist-read-collaborative'
+    const scope = 'playlist-modify-public,playlist-modify-private,playlist-read-private,playlist-read-collaborative,streaming,web-playback'
     const redirect = toGenerate ? REACT_APP_CALLBACK_ENCODED_GENERATE : REACT_APP_CALLBACK_ENCODED_HOME
     console.log(redirect)
     const client_id = 'f4d25f2bdfee4094a7d93f0ec7e4f264'
@@ -207,4 +207,11 @@ export const isSignedIn = () => {
 
     return false;
 
+}
+
+export const getPlayer = () => {
+    return new window.Spotify.Player({
+        name: "NoShuffle.club",
+        getOAuthToken: cb => { cb(cookies.get('SPOT_USER_accessToken'));}
+    })
 }
