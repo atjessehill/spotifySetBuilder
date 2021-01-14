@@ -41,17 +41,13 @@ class Playlist extends React.Component {
         });
         this.player.addListener('account_error', e => { console.error(e); });
         this.player.addListener('playback_error', e => { console.error(e); });
-      
-        // Playback status updates
-        this.player.addListener('player_state_changed', state => { console.log(state); });
-      
+           
         // Ready
         this.player.addListener('ready', data => {
-        //   let { device_id } = data;
-            console.log("Let the music play on!");
+
             this.state.device_id = data.device_id;
             this.setState({device_loaded: true})
-        //   this.setState({ deviceId: device_id });
+
         });
         this.player.connect();
       
@@ -164,11 +160,16 @@ class Playlist extends React.Component {
                                         </i>
                                         REMOVE */}
                                     </span>
+                                    {/* <span className={colorPlay} id={"parent:"+s.id} onClick={this.playSong}>
+                                        <i className="las la-pause" id={"child:"+s.id}  >
+                                        </i>
+                                    </span> */}
                                     <span className={colorPlay} id={"parent:"+s.id} onClick={this.playSong}>
                                         <i className="las la-play" id={"child:"+s.id}  >
                                         </i>
                                         PLAY
                                     </span>
+
                                 </td>
                             </tr>
                             <tr>
