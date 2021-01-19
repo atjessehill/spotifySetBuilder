@@ -6,6 +6,7 @@ const CycleLarge = (props) => {
     let history = useHistory();
     let [featureIndex, setFeature] = useState(0)
     const features = ["Danceability", "Energy"]
+    const classColor = ["orange", "spotify"]
 
     useEffect(() => {
         console.log(featureIndex);
@@ -21,7 +22,7 @@ const CycleLarge = (props) => {
             toUpdate = featureIndex+1
             // setFeature(featureIndex+1,() => props.updateFeature(features[featureIndex]));
         }
-        console.log(toUpdate, features[toUpdate]);
+        // console.log(toUpdate, features[toUpdate]);
         props.updateFeatureType(features[toUpdate]);
         setFeature((featureIndex) => toUpdate);
 
@@ -31,7 +32,7 @@ const CycleLarge = (props) => {
 
     return (
 
-        <p className="heading-text" style={{marginTop: "40px"}} onClick={cycleFeature}>Generate New Playlist for <span className="orange">{features[featureIndex]} <i class="las la-sort"></i></span></p>
+        <p className="heading-text" style={{marginTop: "40px"}} onClick={cycleFeature}>Generate New Playlist for <span className={classColor[featureIndex]}>{features[featureIndex]} <i class="las la-sort"></i></span></p>
 
         )
 }

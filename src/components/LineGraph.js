@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {select, scaleLinear, line, curveCatmullRom, drag, curveCatmullRomClosed, curveCatmullRomOpen} from "d3";
+import {select, scaleLinear, line, curveCatmullRom, drag, curveCatmullRomClosed, curveCatmullRomOpen, color} from "d3";
 import '../App.css';
 // import Column from 'react-bootstrap/CardColumns';
 import ResizeObserver from "resize-observer-polyfill";
@@ -21,13 +21,14 @@ const useResizeObserver = (ref) => {
     return dimensions;
   };
 
-function LineGraph({data}) {
+function LineGraph({data, featureType}) {
     const svgRef = useRef();
     const wrapperRef = useRef();
     const dimensions = useResizeObserver(wrapperRef);
-
+    const lineColor = featureType == 'target_danceability' ? "#FF4732" : "#17B350"
+    console.log(lineColor);
     useEffect(() => {
-        const svg = select(svgRef.current)
+      const svg = select(svgRef.current)
 
         if (!dimensions) return;       
 
@@ -38,9 +39,9 @@ function LineGraph({data}) {
         //   .attr('width', dimensions.width)
         //   .attr('height', dimensions.height+20)
         //   .attr('color', 'red');
-
+        console.log("Use Effect");
         svg.append("line")
-          .style("stroke", "#FF4732")
+          .style("stroke", color(lineColor))
           .style("stroke-width", 2)
           .attr("x1", 0)
           .attr("y1", dimensions.height+20)
@@ -58,7 +59,7 @@ function LineGraph({data}) {
           .attr("line-height", "14px")
           .attr("letter-spacing", "0.3px")
           .attr("font-weight", "200")
-          .text("Start of Playlist  ")
+          .text("Start of Playlist → ")
 
         svg.append("text")
           .attr("class", "x label")
@@ -133,7 +134,7 @@ function LineGraph({data}) {
           .join("path")
           .attr("d", value => myLine(value))
           .attr("fill", "none")
-          .attr("stroke", "#FF4732")
+          .attr("stroke", lineColor)
           .attr("stroke-width", 4)
 
           return
@@ -152,14 +153,14 @@ function LineGraph({data}) {
             .join("path")
             .attr("d", value => myLine(value))
             .attr("fill", "none")
-            .attr("stroke", "#FF4732")
+            .attr("stroke", lineColor)
             .attr("stroke-width", 4)
               
         function clamp(x, lo, hi){
           return x < lo ? lo : x > hi ? hi : x;
         }
 
-        }, [data, dimensions])
+        }, [data, dimensions, featureType])
 
         return (
 

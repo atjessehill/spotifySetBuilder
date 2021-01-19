@@ -179,9 +179,12 @@ class PlaylistBuilderC extends React.Component {
     console.log("updating feature type to"+feature)
 
     if(feature==="Energy"){
-      this.state.FEATURE_TYPE='target_energy'
+      this.setState({FEATURE_TYPE: 'target_energy'})
+      // this.state.FEATURE_TYPE='target_energy'
     }else if(feature==="Danceability"){
-      this.state.FEATURE_TYPE='target_danceability'
+      this.setState({FEATURE_TYPE: 'target_danceability'})
+
+      // this.state.FEATURE_TYPE='target_danceability'
     }
 
   }
@@ -208,7 +211,7 @@ class PlaylistBuilderC extends React.Component {
         </div>
         <Reference handler={this.handleChange}/>
 
-        <LineGraph data={this.state.data}/>
+        <LineGraph data={this.state.data} featureType={this.state.FEATURE_TYPE}/>
 
 
 
