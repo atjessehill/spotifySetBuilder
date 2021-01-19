@@ -70,6 +70,8 @@ export const getSubsets = (arr, length) => {
 
 export const SimplifyLine = (arr, expected) => {
 
+    // TODO check if straight line  
+
     const data = [];
     let total = 0;
 

@@ -1,7 +1,7 @@
 const Datagen = () => {
     let data = [];
     
-    for(let i=1; i<101; i++){
+    for(let i=1; i<51; i++){
 
         const point = {}
         let y;

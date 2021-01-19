@@ -76,7 +76,7 @@ class PlaylistBuilderC extends React.Component {
 
   generate(){
 
-    this.props.popuphandler(false, true, false)
+    // this.props.popuphandler(false, true, false)
 
     const scroller = document.getElementById('scroller');
 
@@ -85,6 +85,9 @@ class PlaylistBuilderC extends React.Component {
 		this.setState({PLAYLIST_LENGTH: ((((scroller.scrollLeft)/50)*1)+6)})
         
     let sampledPoints = SimplifyLine(this.state.data, PLAYLIST_LENGTH)
+
+    console.log(sampledPoints);
+    return
 
     let seedIndex;
 
