@@ -184,6 +184,7 @@ function LineGraph({data, featureType}) {
                     <g className="y-axis"/>
                 </svg>
             </div>
+            <div style={{marginTop: "25px"}}></div>
             <p className="reduntant-text grey1 stick-to-bottom" style={{margin: "40px"}}>Click and drag the line to match how the {label} will evolve over time!</p>
 
         </div>
