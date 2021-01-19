@@ -86,7 +86,7 @@ function LineGraph({data, featureType}) {
         svg.append("text")
           .attr("class", "featureLabel")
           .attr("x", 0)
-          .attr("y", 0)
+          .attr("y", -10)
           .attr("text-anchor", "end")
           .attr("fill", "#999999")
           .attr("font-family", "ubuntu")
