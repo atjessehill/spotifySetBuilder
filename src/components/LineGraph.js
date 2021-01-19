@@ -27,7 +27,7 @@ function LineGraph({data, featureType}) {
     const dimensions = useResizeObserver(wrapperRef);
     const lineColor = featureType == 'target_danceability' ? "#FF4732" : "#17B350"
     let label = featureType.split('_')[1];
-    console.log(lineColor);
+
     useEffect(() => {
       const svg = select(svgRef.current)
 
@@ -185,7 +185,7 @@ function LineGraph({data, featureType}) {
                 </svg>
             </div>
             <div style={{marginTop: "25px"}}></div>
-            <p className="reduntant-text grey1 stick-to-bottom" style={{margin: "40px"}}>Click and drag the line to match how the {label} will evolve over time!</p>
+            <p className="reduntant-text grey1 stick-to-bottom" style={{margin: "40px"}}>Click and drag the line to match how the <span style={{color:lineColor}}> {label} </span> will evolve over time!</p>
 
         </div>
 
