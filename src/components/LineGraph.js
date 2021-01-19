@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {select, scaleLinear, line, curveCardinal, drag} from "d3";
+import {select, scaleLinear, line, curveCatmullRom, drag, curveCatmullRomClosed, curveCatmullRomOpen} from "d3";
 import '../App.css';
 // import Column from 'react-bootstrap/CardColumns';
 import ResizeObserver from "resize-observer-polyfill";
@@ -32,12 +32,66 @@ function LineGraph({data}) {
         if (!dimensions) return;       
 
          
-        svg.append('rect')
-          .attr('x', 0)
-          .attr('y', 0)
-          .attr('width', dimensions.width)
-          .attr('height', dimensions.height+20)
-          .attr('color', 'red');
+        // svg.append('rect')
+        //   .attr('x', 0)
+        //   .attr('y', 0)
+        //   .attr('width', dimensions.width)
+        //   .attr('height', dimensions.height+20)
+        //   .attr('color', 'red');
+
+        svg.append("line")
+          .style("stroke", "#FF4732")
+          .style("stroke-width", 2)
+          .attr("x1", 0)
+          .attr("y1", dimensions.height+20)
+          .attr("x2", dimensions.width)
+          .attr("y2", dimensions.height+20);
+
+        svg.append("text")
+          .attr("class", "x label")
+          .attr("text-anchor", "start")
+          .attr("x", 0)
+          .attr("y", dimensions.height+45)
+          .attr("fill", "#999999")
+          .attr("font-family", "ubuntu")
+          .attr("font-size", "10px")
+          .attr("line-height", "14px")
+          .attr("letter-spacing", "0.3px")
+          .attr("font-weight", "200")
+          .text("Start of Playlist  ")
+
+        svg.append("text")
+          .attr("class", "x label")
+          .attr("text-anchor", "end")
+          .attr("x", dimensions.width)
+          .attr("y", dimensions.height+45)
+          .attr("fill", "#999999")
+          .attr("font-family", "ubuntu")
+          .attr("font-size", "10px")
+          .attr("line-height", "14px")
+          .attr("letter-spacing", "0.3px")
+          .attr("font-weight", "200")
+          .text("End of Playlist")
+
+        svg.append("text")
+          .attr("x", 0)
+          .attr("y", 0)
+          .attr("text-anchor", "end")
+          .attr("fill", "#999999")
+          .attr("font-family", "ubuntu")
+          .attr("font-size", "10px")
+          .attr("line-height", "14px")
+          .attr("letter-spacing", "0.3px")
+          .attr("font-weight", "200")
+          .text("Danceability →")
+          .attr("transform", "rotate(270)")
+
+          // font-family: ubuntu;
+          // font-size: 10px;
+          // font-weight: 200;
+          // line-height: 14px;
+          // letter-spacing: 0.3px; 
+
 
         svg.call(
           drag()
@@ -45,6 +99,7 @@ function LineGraph({data}) {
           .on('drag', dragged)
           .on('end', dragEnd)
         )
+
 
         const xScale = scaleLinear()
             .domain([0, data.length-1])
@@ -57,7 +112,7 @@ function LineGraph({data}) {
         const myLine = line()
             .x((value, index) => xScale(index))
             .y(value => yScale(value))
-            .curve(curveCardinal)
+            .curve(curveCatmullRomOpen)
 
         function click(event, d){
           select(this)
@@ -78,8 +133,8 @@ function LineGraph({data}) {
           .join("path")
           .attr("d", value => myLine(value))
           .attr("fill", "none")
-          .attr("stroke", "steelblue")
-          .attr("stroke-width", 2)
+          .attr("stroke", "#FF4732")
+          .attr("stroke-width", 4)
 
           return
 
@@ -97,8 +152,8 @@ function LineGraph({data}) {
             .join("path")
             .attr("d", value => myLine(value))
             .attr("fill", "none")
-            .attr("stroke", "steelblue")
-            .attr("stroke-width", 5)
+            .attr("stroke", "#FF4732")
+            .attr("stroke-width", 4)
               
         function clamp(x, lo, hi){
           return x < lo ? lo : x > hi ? hi : x;
