@@ -202,7 +202,7 @@ class PlaylistBuilderC extends React.Component {
             <div className="numbered-disc orange-bg float-to-left">1</div><p className="title-text float-to-left">Number of songs</p>
           </div>
 
-          <p style={{marginTop: "100px"}} className="input-headers align-text-center"><i className="las la-exchange-alt"></i> Slide to change</p>
+          <p style={{marginTop: "130px"}} className="input-headers align-text-center"><i className="las la-exchange-alt"></i> Slide to change</p>
           <Scroller/>
 
 
