@@ -26,6 +26,7 @@ function LineGraph({data, featureType}) {
     const wrapperRef = useRef();
     const dimensions = useResizeObserver(wrapperRef);
     const lineColor = featureType == 'target_danceability' ? "#FF4732" : "#17B350"
+    let label = featureType.split('_')[1];
     console.log(lineColor);
     useEffect(() => {
       const svg = select(svgRef.current)
@@ -39,8 +40,16 @@ function LineGraph({data, featureType}) {
         //   .attr('width', dimensions.width)
         //   .attr('height', dimensions.height+20)
         //   .attr('color', 'red');
-        console.log("Use Effect");
+        const _ = featureType.split('_')[1];
+        label = _.charAt(0).toUpperCase()+_.slice(1)
+
+        svg.select(".featureLabel").remove()
+        svg.select(".startLabel").remove()
+        svg.select(".endLabel").remove()
+        svg.select(".borderLine").remove()
+
         svg.append("line")
+          .attr("class", "borderLine")
           .style("stroke", color(lineColor))
           .style("stroke-width", 2)
           .attr("x1", 0)
@@ -49,7 +58,7 @@ function LineGraph({data, featureType}) {
           .attr("y2", dimensions.height+20);
 
         svg.append("text")
-          .attr("class", "x label")
+          .attr("class", "startLabel")
           .attr("text-anchor", "start")
           .attr("x", 0)
           .attr("y", dimensions.height+45)
@@ -62,7 +71,7 @@ function LineGraph({data, featureType}) {
           .text("Start of Playlist → ")
 
         svg.append("text")
-          .attr("class", "x label")
+          .attr("class", "endLabel")
           .attr("text-anchor", "end")
           .attr("x", dimensions.width)
           .attr("y", dimensions.height+45)
@@ -75,6 +84,7 @@ function LineGraph({data, featureType}) {
           .text("End of Playlist")
 
         svg.append("text")
+          .attr("class", "featureLabel")
           .attr("x", 0)
           .attr("y", 0)
           .attr("text-anchor", "end")
@@ -84,7 +94,7 @@ function LineGraph({data, featureType}) {
           .attr("line-height", "14px")
           .attr("letter-spacing", "0.3px")
           .attr("font-weight", "200")
-          .text("Danceability →")
+          .text(`${label} →`)
           .attr("transform", "rotate(270)")
 
           // font-family: ubuntu;
@@ -174,7 +184,7 @@ function LineGraph({data, featureType}) {
                     <g className="y-axis"/>
                 </svg>
             </div>
-            <p className="reduntant-text grey1 stick-to-bottom" style={{margin: "40px"}}>Click and drag the line to match how the danceability will evolve over time!</p>
+            <p className="reduntant-text grey1 stick-to-bottom" style={{margin: "40px"}}>Click and drag the line to match how the {label} will evolve over time!</p>
 
         </div>
 
