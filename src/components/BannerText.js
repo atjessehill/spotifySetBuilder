@@ -48,7 +48,7 @@ const BannerText = (props) => {
     return (
         <div id="banner-text-area">
             {/* <script type="module" src="banner-slideshow.js"></script> */}
-            <p id="banner-text">Create the <span id='text-to-fill' style={{backgroundImage: "linear-gradient(90deg, #FF4732 " + fillValue/10 + "%, #ffffff " + fillValue/10 + "%, #ffffff 0%)"}}>perfect Spotify</span> Playlist</p>
+            <p id="banner-text">Create the <span id='text-to-fill' style={{backgroundImage: "linear-gradient(90deg, #FF4732 " + fillValue/10 + "%, #ffffff " + fillValue/10 + "%, #ffffff 0%)"}}><br className="mobileOnly"/>perfect Spotify</span> Playlist</p>
             <div class="slideshow-bullets">
                 <div class="bullets grey-bg-2" id="bullet-1"></div><div class="bullets grey-bg-2" id="bullet-2"></div><div class="bullets orange-bg" id="bullet-3"></div>
             </div>

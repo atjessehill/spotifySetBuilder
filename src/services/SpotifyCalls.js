@@ -41,10 +41,23 @@ axios.interceptors.request.use(req => {
 //     return Promise.reject(error);
 // })
 
+export const removeAndLogout = () => {
+    const c = new Cookies();
+
+    c.remove('SPOT_USER_accessToken', {path: '/'});
+    c.remove('SPOT_USER_refreshToken', {path: '/'});
+    c.remove('SPOT_DISPLAY_ID', {path: '/'});
+    c.remove('SPOT_USER_ID', {path: '/'});
+    const url = 'http://localhost:3000/'
+    // console.log(url)
+    window.location.assign(url);
+
+}
+
 const startRefreshAuth = failedRequest => {
     // refreshing = true;
     console.log("Starting refresh")
-    cookies.remove('SPOT_USER_accessToken');
+    cookies.remove('SPOT_USER_accessToken', {path: '/'});
     return refreshAuthLogic(failedRequest);
 }
 
@@ -97,8 +110,14 @@ export const getFeatures = async(id) => {
 }
 
 export const requestRecs = async(seed_tracks, metricStr) => {
+    
+    // console.log(seed_tracks);
+    // console.log(metricStr);
+
     return await axios.get(`https://api.spotify.com/v1/recommendations/?&${seed_tracks}&${metricStr}`, {
 
+    }, (res) => {
+        console.log(res);
     })
 }
 

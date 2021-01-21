@@ -76,7 +76,7 @@ class PlaylistBuilderC extends React.Component {
 
   generate(){
 
-    this.props.popuphandler(false, true, false)
+    // this.props.popuphandler(false, true, false);
 
     const scroller = document.getElementById('scroller');
 
@@ -135,7 +135,7 @@ class PlaylistBuilderC extends React.Component {
         promise = this.addToChain(promise, i, seedIndex, end, k);
 
       }
-
+      console.log(this.state.THIS_PLAYLIST);
       for(let i=seedIndex-1; i>-1; i--){
         const k = {}
         k[FEATURE_TYPE] = sampledPoints[i];

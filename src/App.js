@@ -38,9 +38,9 @@ class App extends Component{
         login(toGenerate)
     }
 
-    showPopup(isIndex, isBuildingPlaylist, isPlaylist){
+    showPopup(isIndex, isBuildingPlaylist, isPlaylist, isLogout){
         this.setState({popup: !this.state.popup})
-        this.setState({isIndex: isIndex, isBuildingPlaylist: isBuildingPlaylist, isPlaylist: isPlaylist})
+        this.setState({isIndex: isIndex, isBuildingPlaylist: isBuildingPlaylist, isPlaylist: isPlaylist, isLogout:isLogout})
     }
 
     getbackgroundRef(){
@@ -61,7 +61,7 @@ class App extends Component{
                     isIndex={this.state.isIndex} 
                     isBuildingPlaylist={this.state.isBuildingPlaylist}
                     isPlaylist={this.state.isPlaylist}
-                        
+                    isLogout={this.state.isLogout}
                     /> : null}
                 <Background ref={this.refreshBackground}/> 
                 <div id="content-area">

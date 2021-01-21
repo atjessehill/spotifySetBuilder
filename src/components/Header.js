@@ -4,6 +4,7 @@ import Cookies from 'universal-cookie';
 import {withRouter} from 'react-router-dom';
 import GenerateButton from './GenerateButton';
 
+
 class Header extends React.Component {
 
     constructor(props){
@@ -28,9 +29,16 @@ class Header extends React.Component {
     }
 
     gotoLogin(){
-        this.props.handler(false);
-    }
+        const cookies = new Cookies();
 
+        if(cookies.get('SPOT_USER_accessToken') && cookies.get('SPOT_USER_refreshToken')){
+            console.log("Should Logout")
+            this.props.popuphandler(false, false, false, true);
+        }else{
+            this.props.handler(false);
+        }
+
+    }
 
 
     render(){

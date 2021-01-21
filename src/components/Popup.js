@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
+import {removeAndLogout } from "../services/SpotifyCalls";
 import lottie from 'lottie-web';
 import '../App.css';
 
@@ -23,6 +24,9 @@ const Popup = (props) =>   {
         else if(props.isPlaylist){
             testvar = require('../SavePlaylist.json');
         }
+        else if(props.isLogout){
+            testvar = require('../Logout.json')
+        }
 
         // let test = '../assets/SpotifyRounded.js'
         
@@ -39,6 +43,11 @@ const Popup = (props) =>   {
         props.login(true)
     }
     
+    function logout(){
+        removeAndLogout();
+
+    }
+
     return(
         <div>
 
@@ -61,6 +70,26 @@ const Popup = (props) =>   {
                     </div>      
                     : null 
             }
+
+            {props.isLogout ?     
+                <div className="pop-up-div" id="connect-to-spotify-popup-id" style={{display: "block"}}>
+                    <div className="pop-up">
+
+                    <p className="title-text align-text-center">Spotify Logout</p>
+
+                    <div className="lottie-spotify-success" ref={container}> </div>
+
+                    {/* <p className="sub-text align-text-center" style={{marginTop: "20px"}}>Quicky add custom playlists to your Spotify by logging in with your Spotify account</p> */}
+
+                    <div className="text-button spotify align-text-center" style={{marginTop: "40px"}} onClick={logout}><i class="lab la-spotify"></i> Logout from your Spotify <i class="las la-external-link-alt"></i></div>
+
+                    <div onClick={props.togglePopup} className="text-button grey1 align-text-center" style={{marginTop: "30px"}}><i class="las la-times-circle"></i> CLOSE</div>
+            
+                    </div>
+                    </div>      
+                    : null 
+            }
+
 
             {props.isPlaylist ? 
             
