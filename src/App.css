@@ -1208,7 +1208,7 @@ button { outline: none;
 					float: right;
 					position: relative;
 					margin-top: 0px;
-					opacity: 30%;
+					opacity: 0.30;
 					 }
 	
 	
@@ -1802,7 +1802,7 @@ button { outline: none;
 				float: right;
 				position: relative;
 				margin-top: -80px;
-				opacity: 30%;
+				opacity: 0.30;
 				 }
 
 

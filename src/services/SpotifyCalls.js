@@ -6,7 +6,8 @@ import createAuthRefreshInterceptor from 'axios-auth-refresh';
 const { REACT_APP_SPOT_CLIENT, 
     REACT_APP_SPOT_CLIENT_SECRET, 
     REACT_APP_CALLBACK_ENCODED_HOME, 
-    REACT_APP_CALLBACK_ENCODED_GENERATE } = process.env;
+    REACT_APP_CALLBACK_ENCODED_GENERATE,
+    REACT_APP_LOGOUT_REDIRECT } = process.env;
 
 const cookies = new Cookies();
 // let refreshing = false;
@@ -48,9 +49,8 @@ export const removeAndLogout = () => {
     c.remove('SPOT_USER_refreshToken', {path: '/'});
     c.remove('SPOT_DISPLAY_ID', {path: '/'});
     c.remove('SPOT_USER_ID', {path: '/'});
-    const url = 'http://localhost:3000/'
     // console.log(url)
-    window.location.assign(url);
+    window.location.assign(REACT_APP_LOGOUT_REDIRECT);
 
 }
 
