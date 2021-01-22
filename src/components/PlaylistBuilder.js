@@ -76,7 +76,7 @@ class PlaylistBuilderC extends React.Component {
 
   generate(){
 
-    // this.props.popuphandler(false, true, false);
+    this.props.popuphandler(false, true, false);
 
     const scroller = document.getElementById('scroller');
 
