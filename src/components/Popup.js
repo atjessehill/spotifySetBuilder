@@ -81,7 +81,7 @@ const Popup = (props) =>   {
 
                     {/* <p className="sub-text align-text-center" style={{marginTop: "20px"}}>Quicky add custom playlists to your Spotify by logging in with your Spotify account</p> */}
 
-                    <div className="text-button spotify align-text-center" style={{marginTop: "40px"}} onClick={logout}><i class="lab la-spotify"></i> Logout from your Spotify <i class="las la-external-link-alt"></i></div>
+                    <div className="text-button spotify align-text-center" style={{marginTop: "40px"}} onClick={logout}><i class="lab la-spotify"></i> Logout from your Spotify </div>
 
                     <div onClick={props.togglePopup} className="text-button grey1 align-text-center" style={{marginTop: "30px"}}><i class="las la-times-circle"></i> CLOSE</div>
             
