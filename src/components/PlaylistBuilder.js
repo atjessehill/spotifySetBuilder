@@ -22,7 +22,7 @@ class PlaylistBuilderC extends React.Component {
     this.state = {
       data: data,
       selected: false,
-      FEATURE_TYPE: 'target_danceability'
+      FEATURE_TYPE: 'target_danceability',
     }
     this.handleChange = this.handleChange.bind(this);
     this.generate = this.generate.bind(this);
@@ -193,6 +193,8 @@ class PlaylistBuilderC extends React.Component {
 
   render() { 
 
+    let selectedText = this.state.selected ? "Generate playlist " : "Choose a song"
+
     return (
     <div>
       <CycleLarge updateFeatureType={this.updateFeatureType}/>
@@ -219,11 +221,11 @@ class PlaylistBuilderC extends React.Component {
 
     </div>
       <div style={{"marginTop": "20px"}} className="float-to-right">
-        {this.state.selected ? 
-            <button className="button-fill orange-bg" onClick={this.generate}>Generate playlist <img src="assets/icons/right-circle-white.svg" className="button-icons-on-right"/></button>
-            :
-            null
-        }
+        {/* {this.state.selected ?  */}
+            <button disabled={!this.state.selected} className={this.state.selected?"button-fill orange-bg":"button-fill" } onClick={this.generate}>{selectedText} <img src="assets/icons/right-circle-white.svg" className="button-icons-on-right"/></button>
+            {/* :
+            null */}
+        {/* } */}
       </div>
     </div>
   );
