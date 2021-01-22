@@ -31,7 +31,7 @@ const CycleSmall = (props) => {
 
     return (
 
-            <p class="sub-text" style={{paddingTop: "10px"}} onClick={cycleFeature}>Curate playlists with changing <span class="orange"> {features[featureIndex]} <i class="las la-sort"></i></span> with time
+            <p class="sub-text" style={{paddingTop: "10px", cursor: "pointer"}} onClick={cycleFeature}>Curate playlists with changing <span class="orange"> {features[featureIndex]} <i class="las la-sort"></i></span> with time
             </p>
 //featureIndex => setFeature(featureIndex == features.length-1 ? 0: featureIndex+1)
     )

@@ -32,7 +32,7 @@ const CycleLarge = (props) => {
 
     return (
 
-        <p className="heading-text" style={{marginTop: "40px"}} onClick={cycleFeature}>Generate New Playlist for <span className={classColor[featureIndex]}>{features[featureIndex]} <i class="las la-sort"></i></span></p>
+        <p className="heading-text" style={{marginTop: "40px", cursor: "pointer"}} onClick={cycleFeature}>Generate New Playlist for <span className={classColor[featureIndex]}>{features[featureIndex]} <i class="las la-sort"></i></span></p>
 
         )
 }
