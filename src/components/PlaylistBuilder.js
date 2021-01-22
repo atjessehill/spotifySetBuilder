@@ -151,10 +151,12 @@ class PlaylistBuilderC extends React.Component {
 
       promise.finally(() => {
         this.props.popuphandler(false, false, false)
+        console.log(this.state.FEATURE_TYPE);
         this.props.history.push({
           pathname: '/playlist',
           state: {
             playlist: this.state.THIS_PLAYLIST,
+            feature: this.state.FEATURE_TYPE,
             genre: document.getElementById("genre-text-id").innerHTML,
             uri: this.state.SEED_URI_MAIN
           }

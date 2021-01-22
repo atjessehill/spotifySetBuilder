@@ -10,9 +10,10 @@ class Playlist extends React.Component {
             tracklist: [],
             genre: "",
             device_id: "none",
-            device_loaded: false
+            device_loaded: false,
+            FEATURE_TYPE: this.props.history.location.state.feature.split('_')[1]
         }
-
+        console.log(this.state);
 
 
         this.savePlaylist = this.savePlaylist.bind(this);
@@ -235,7 +236,7 @@ class Playlist extends React.Component {
 			<div id="playlist-right">
 
 				<div>
-					<div className="input-headers float-to-left" style={{marginTop: "0px"}}><span id="playlist-no-of-tracks">{songChoices.length}</span> songs for <span id="playlist-metric">Dancibility</span></div>
+					<div className="input-headers float-to-left" style={{marginTop: "0px"}}><span id="playlist-no-of-tracks">{songChoices.length}</span> songs based on <span id="playlist-metric">{this.state.FEATURE_TYPE}</span></div>
 					<div className={colorPlay} onClick={this.playAll}><i className="las la-play"></i> PLAY ALL</div>
 				</div>
 
